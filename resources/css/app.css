@@ -1,0 +1,42 @@
+/* Import custom font */
+@import url(https://fonts.bunny.net/css?family=figtree:400i,500i,600i,700i,800i);
+/* Import bootstrap icons font */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+@import "flatpickr/dist/flatpickr.min.css";
+@import "tom-select/dist/css/tom-select.bootstrap4.min.css";
+/* TODO: IDK */
+/* @import "slim-select/dist/slimselect.css"; */
+
+/* Set root font to custom font */
+:root {
+  font-family: "Figtree", sans-serif;
+}
+
+.ts-control {
+  border: none;
+  border-radius: var(--cui-border-radius);
+  background-color: inherit;
+  color: inherit;
+}
+
+.full .ts-control {
+  background-color: inherit;
+}
+
+.ts-control,
+.ts-wrapper.single.input-active .ts-control {
+  background-color: inherit;
+}
+
+.ts-dropdown,
+.ts-dropdown.form-control {
+  background-color: inherit;
+  color: inherit;
+}
+
+input.form-control:disabled,
+input.form-control[readonly] {
+  background-color: var(--cui-secondary-bg) !important;
+  opacity: 1;
+}

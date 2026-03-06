@@ -1,0 +1,19 @@
+{
+  "editor.formatOnSave": true,
+  "emmet.includeLanguages": {
+    "blade": "html",
+  },
+  "auto-rename-tag.activationOnLanguage": [
+    "html",
+    "php",
+    "blade",
+  ],
+  "bladeFormatter.format.indentSize": 2,
+  "php.format.codeStyle": "PSR-12",
+  "php.completion.showParameters": true,
+  "php.inlayHints.parameters.suppressNameMatchingValue": true,
+  "php.inlayHints.insertOnDoubleClick": false,
+  "php.inlayHints.parameters.byReference": false,
+  "php.inlayHints.parameters.enabled": false,
+  "intelephense.format.enable": false
+}

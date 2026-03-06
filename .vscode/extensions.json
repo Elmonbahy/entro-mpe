@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "devsense.intelli-php-vscode",
+    "onecentlin.laravel-blade",
+    "shufo.vscode-blade-formatter",
+    "donjayamanne.githistory",
+    "mhutchie.git-graph",
+    "formulahendry.auto-rename-tag",
+    "formulahendry.auto-close-tag"
+  ]
+}
