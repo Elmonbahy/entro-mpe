@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
   /**
    * Run the migrations.
    */
@@ -30,6 +29,8 @@ return new class extends Migration
 
       $table->enum('status_bayar', ['PAID', 'UNPAID'])->default('UNPAID');
       $table->enum('status_faktur', ['NEW', 'PROCESS_FAKTUR', 'PROCESS_GUDANG', 'DONE'])->default('NEW');
+      $table->enum('status_kirim', ['PENDING', 'PARTIAL', 'SHIPPED'])
+        ->default('PENDING');
 
       $table->dateTime('cetak_titip_faktur_at')->nullable()->comment('Tgl cetak titip faktur.');
       // Relationships
