@@ -1,12 +1,9 @@
 <?php
 
-use App\Http\Controllers\Gudang\SampleOutController;
 use App\Http\Controllers\Gudang\JualController;
 use App\Http\Controllers\Gudang\JualDetailController;
-use App\Http\Controllers\Gudang\SampleOutDetailController;
 use App\Http\Controllers\Gudang\BarangStockController;
 use App\Http\Controllers\Gudang\BeliDetailController;
-use App\Http\Controllers\Gudang\SampleInDetailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Gudang\BarangController;
 use App\Http\Controllers\Gudang\BeliController;
@@ -21,7 +18,6 @@ use App\Http\Controllers\Gudang\Laporan\Pengiriman\LaporanPengirimanController;
 use App\Http\Controllers\Gudang\Laporan\ListPengiriman\LaporanListPengirimanController;
 use App\Http\Controllers\Gudang\Laporan\Pending\LaporanPendingController;
 use App\Http\Controllers\Gudang\BarangExpiredController;
-use App\Http\Controllers\Gudang\SampleInController;
 
 Route::resource('/barang', BarangController::class);
 Route::resource('/pelanggan', PelangganController::class);
@@ -121,35 +117,4 @@ Route::prefix('laporan-list-pengiriman')->as('laporan-list-pengiriman.')->group(
 Route::prefix('laporan-pending')->as('laporan-pending.')->group(function () {
   Route::get('/', [LaporanPendingController::class, 'index'])->name('index');
   Route::get('/excel', [LaporanPendingController::class, 'exportExcel'])->name('excel');
-});
-
-//route sampel
-Route::prefix('sample-in')->as('sample-in.')->group(function () {
-  Route::get('/', [SampleInController::class, 'index'])->name('index');
-  Route::get('/{id}', [SampleInController::class, 'show'])->name('show');
-  Route::patch('/{id}/done', [SampleInController::class, 'done'])->name('done');
-  Route::put('/retur/update-keterangan/{id}', [SampleInController::class, 'updateKeterangan'])->name('updateKeterangan');
-
-  Route::get('/retur/{id}', [SampleInDetailController::class, 'returDone'])->name('retur-done');
-  Route::get('/{id}/retur/{sample_in_detail_id}', [SampleInDetailController::class, 'retur'])->name('retur-item');
-  Route::patch('/{id}/retur/{sample_in_detail_id}', [SampleInDetailController::class, 'returUpdate'])->name('retur-update');
-
-  Route::get('/{id}/stock/{sample_in_detail_id}', [SampleInDetailController::class, 'stock'])->name('stock-item');
-  Route::patch('/{id}/stock/{sample_in_detail_id}', [SampleInDetailController::class, 'stockUpdate'])->name('stock-item-update');
-});
-
-Route::prefix('sample-out')->as('sample-out.')->group(function () {
-  Route::get('/', [SampleOutController::class, 'index'])->name('index');
-  Route::get('/{id}', [SampleOutController::class, 'show'])->name('show');
-  Route::patch('/{id}/done', [SampleOutController::class, 'done'])->name('done');
-  Route::get('/{id}/pdf', [SampleOutController::class, 'exportPdf'])->name('pdf');
-  Route::put('/retur/update-keterangan/{id}', [SampleOutController::class, 'updateKeterangan'])->name('updateKeterangan');
-
-  Route::get('/retur/{id}', [SampleOutDetailController::class, 'returDone'])->name('retur-done');
-  Route::get('/{id}/retur/{sample_out_detail_id}', [SampleOutDetailController::class, 'retur'])->name('retur-item');
-  Route::patch('/{id}/retur/{sample_out_detail_id}', [SampleOutDetailController::class, 'returUpdate'])->name('retur-update');
-
-  // stock barang masuk
-  Route::get('/{id}/stock/{sample_out_detail_id}', [SampleOutDetailController::class, 'stock'])->name('stock-item');
-  Route::patch('/{id}/stock/{sample_out_detail_id}', [SampleOutDetailController::class, 'stockUpdate'])->name('stock-item-update');
 });

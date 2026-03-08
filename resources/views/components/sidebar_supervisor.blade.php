@@ -34,16 +34,6 @@
           'icon' => '"bi bi-card-text',
           'route' => 'supervisor.surat-jalan.index',
       ],
-      [
-          'title' => 'Sampel',
-          'icon' => 'bi bi-box2',
-          'items' => [
-              ['title' => 'Data Barang', 'route' => 'supervisor.sample-barang.index'],
-              ['title' => 'Sampel Masuk', 'route' => 'supervisor.sample-in.index'],
-              ['title' => 'Sampel Keluar', 'route' => 'supervisor.sample-out.index'],
-              ['title' => 'Kartu Stock', 'route' => 'supervisor.sample-mutation.kartu-stock'],
-          ],
-      ],
   ];
 
 @endphp

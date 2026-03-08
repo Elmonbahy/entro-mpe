@@ -62,16 +62,6 @@
           'icon' => 'bi bi-file-earmark',
           'items' => [['title' => 'Slow Moving', 'route' => 'fakturis.slow-moving.index']],
       ],
-      [
-          'title' => 'Sampel',
-          'icon' => 'bi bi-box2',
-          'items' => [
-              ['title' => 'Data Barang', 'route' => 'fakturis.sample-barang.index'],
-              ['title' => 'Sampel Masuk', 'route' => 'fakturis.sample-in.index'],
-              ['title' => 'Sampel Keluar', 'route' => 'fakturis.sample-out.index'],
-              ['title' => 'Kartu Stock', 'route' => 'fakturis.sample-mutation.kartu-stock'],
-          ],
-      ],
   ];
 
 @endphp

@@ -44,14 +44,6 @@
               ['title' => 'Pending', 'route' => 'gudang.laporan-pending.index'],
           ],
       ],
-      [
-          'title' => 'Sampel',
-          'icon' => 'bi bi-box2',
-          'items' => [
-              ['title' => 'Barang Masuk', 'route' => 'gudang.sample-in.index'],
-              ['title' => 'Barang Keluar', 'route' => 'gudang.sample-out.index'],
-          ],
-      ],
   ];
 
 @endphp

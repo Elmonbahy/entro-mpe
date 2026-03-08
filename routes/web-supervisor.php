@@ -12,10 +12,6 @@ use App\Http\Controllers\Supervisor\SupplierController;
 use App\Http\Controllers\Supervisor\BeliController;
 use App\Http\Controllers\Supervisor\BarangStockController;
 use App\Http\Controllers\Supervisor\JualController;
-use App\Http\Controllers\Supervisor\SampleBarangController;
-use App\Http\Controllers\Supervisor\SampleInController;
-use App\Http\Controllers\Supervisor\SampleMutationController;
-use App\Http\Controllers\Supervisor\SampleOutController;
 use App\Http\Controllers\Supervisor\SuratJalanController;
 
 Route::resource('/barang', BarangController::class);
@@ -75,33 +71,4 @@ Route::prefix('mutation')->as('mutation.')->group(function () {
 Route::prefix('persediaan')->as('persediaan.')->group(function () {
   Route::get('/', [PersediaanController::class, 'index'])->name('index');
   Route::get('/excel', [PersediaanController::class, 'exportExcel'])->name('excel');
-});
-
-//route sampel
-Route::resource('/sample-barang', SampleBarangController::class);
-
-Route::prefix('sample-in')->as('sample-in.')->group(function () {
-  Route::get('/', [SampleInController::class, 'index'])->name('index');
-  Route::post('/', [SampleInController::class, 'store'])->name('store');
-  Route::get('/create', [SampleInController::class, 'create'])->name('create');
-  Route::get('/{id}/add-item', [SampleInController::class, 'addItem'])->name('add-item');
-  Route::get('/{id}/edit', [SampleInController::class, 'edit'])->name('edit');
-  Route::get('/{id}', [SampleInController::class, 'show'])->name('show');
-  Route::patch('/{id}', [SampleInController::class, 'update'])->name('update');
-});
-
-Route::prefix('sample-out')->as('sample-out.')->group(function () {
-  Route::get('/', [SampleOutController::class, 'index'])->name('index');
-  Route::post('/', [SampleOutController::class, 'store'])->name('store');
-  Route::get('/create', [SampleOutController::class, 'create'])->name('create');
-  Route::get('/{id}', [SampleOutController::class, 'show'])->name('show');
-  Route::get('/{id}/add-item', [SampleOutController::class, 'addItem'])->name('add-item');
-  Route::get('/{id}/edit', [SampleOutController::class, 'edit'])->name('edit');
-  Route::patch('/{id}/edit', [SampleOutController::class, 'update'])->name('update');
-  Route::get('/{id}/pdf/surat-sample', [SampleOutController::class, 'exportSuratSample'])->name('surat-sample');
-  Route::get('/{id}/pdf/spkb', [SampleOutController::class, 'exportSpkb'])->name('spkb');
-});
-
-Route::prefix('sample-mutation')->as('sample-mutation.')->group(function () {
-  Route::get('/kartu-stock', [SampleMutationController::class, 'kartuStock'])->name('kartu-stock');
 });
