@@ -16,8 +16,6 @@
           'title' => 'Transaksi',
           'icon' => 'bi bi-cart3',
           'items' => [
-              // ['title' => 'SP Pembelian', 'route' => 'fakturis.spbeli.index'],
-              // ['title' => 'SP Penjualan', 'route' => 'fakturis.spjual.index'],
               ['title' => 'Pembelian', 'route' => 'fakturis.beli.index'],
               ['title' => 'Penjualan', 'route' => 'fakturis.jual.index'],
           ],
