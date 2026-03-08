@@ -18,6 +18,7 @@ return new class extends Migration {
       $table->string('batch')->nullable();
       $table->dateTime('tgl_expired')->nullable();
       $table->enum('jenis_perubahan', ['AWAL', 'TAMBAH', 'KURANG']);
+      $table->string('keterangan')->nullable();
 
       $table->timestamps();
     });

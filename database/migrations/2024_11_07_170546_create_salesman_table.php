@@ -14,6 +14,7 @@ return new class extends Migration {
       $table->id();
       $table->string('kode', 10)->unique();
       $table->string('nama')->unique();
+      $table->softDeletes();
       $table->timestamps();
     });
   }

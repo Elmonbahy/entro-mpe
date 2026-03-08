@@ -13,6 +13,7 @@ return new class extends Migration {
     Schema::create('surat_jalans', function (Blueprint $table) {
       $table->id();
       $table->dateTime('tgl_surat_jalan');
+      $table->dateTime('tgl_kembali_surat_jalan')->nullable();
       $table->string('nomor_surat_jalan')->unique()->comment('auto, e.g. format: SJ/2024-01-1 (tahun, bulan, urutan, bulan & urutan direset setiap bulan baru)');
       $table->smallInteger('koli')->default(0)->unsigned();
       $table->string('staf_logistik')->nullable();

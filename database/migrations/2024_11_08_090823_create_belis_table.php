@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
   /**
    * Run the migrations.
    */
@@ -21,6 +20,8 @@ return new class extends Migration
       $table->smallInteger('kredit')->default(0)->unsigned()->comment('lama kredit dalam hari');
       $table->decimal('ppn', 4, 2)->default(0)->unsigned();
       $table->decimal('ongkir', 15, 2)->default(0)->unsigned();
+      $table->decimal('materai', 15, 2)->default(0)->unsigned();
+      $table->decimal('biaya_lainnya', 15, 2)->default(0)->unsigned();
       $table->string('keterangan_faktur')->nullable();
 
       // Bayar
