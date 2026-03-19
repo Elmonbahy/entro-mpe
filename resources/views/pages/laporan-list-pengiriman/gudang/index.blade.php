@@ -82,7 +82,6 @@
                   <th>Pelanggan</th>
                   <th>Sales</th>
                   <th>Status Kirim</th>
-                  <th>Rayon</th>
                   <th>Nama PJ</th>
                   <th>Kendaraan</th>
                   <th>Koli</th>
@@ -98,7 +97,6 @@
                     <td class="text-start">{{ $row['pelanggan'] }}</td>
                     <td class="text-start">{{ $row['sales'] }}</td>
                     <td>{{ $row['status_kirim'] }}</td>
-                    <td>{{ $row['rayon'] }}</td>
                     <td class="text-start">{{ $row['staf_logistik'] }}</td>
                     <td class="text-start">{{ $row['kendaraan'] }}</td>
                     <td>{{ $row['koli'] }}</td>

@@ -19,7 +19,6 @@ return new class extends Migration {
       $table->string('npwp')->nullable();
       $table->string('contact_phone')->nullable();
       $table->string('contact_person')->nullable();
-      $table->string('rayon')->nullable();
       $table->string('tipe')->comment('e.g. Rumah sakit, apotek, dinkes, etc')->nullable();
       $table->string('tipe_harga')->nullable()->comment('only SWASTA, PEMERINTAH');
       $table->string('area')->nullable();

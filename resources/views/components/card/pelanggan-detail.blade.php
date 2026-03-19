@@ -47,10 +47,6 @@
           <td>{{ $data->tipe_harga ?: '-' }}</td>
         </tr>
         <tr>
-          <td>Rayon</td>
-          <td>{{ $data->rayon }}</td>
-        </tr>
-        <tr>
           <td>Area</td>
           <td>{{ $data->area }}</td>
         </tr>

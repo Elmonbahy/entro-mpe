@@ -16,7 +16,7 @@ class LaporanListPengirimanController extends Controller
   {
     $query = SuratJalan::with([
       'suratJalanDetails.jualDetail.jual:id,nomor_faktur,tgl_faktur,pelanggan_id,salesman_id,status_kirim',
-      'suratJalanDetails.jualDetail.jual.pelanggan:id,nama,rayon',
+      'suratJalanDetails.jualDetail.jual.pelanggan:id,nama',
       'suratJalanDetails.jualDetail.jual.salesman:id,nama',
       'kendaraan:id,nama',
     ])
@@ -44,7 +44,6 @@ class LaporanListPengirimanController extends Controller
         'kendaraan' => $sj->kendaraan?->nama ?? '-',
         'status_kirim' => $jual->status_kirim,
         'koli' => $sj?->koli ?? '-',
-        'rayon' => $jual?->pelanggan?->rayon ?? '-',
       ];
     });
   }

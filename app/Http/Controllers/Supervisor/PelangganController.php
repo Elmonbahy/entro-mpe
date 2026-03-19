@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Supervisor;
 
 use App\Http\Controllers\Controller;
-use App\Constants\Rayon;
 use App\Constants\Area;
 use App\Constants\TipePelanggan;
 use App\Constants\Kota;
@@ -29,12 +28,10 @@ class PelangganController extends Controller
   public function create()
   {
     $tipePelanggans = TipePelanggan::all();
-    $rayons = Rayon::all();
     $kotas = Kota::all();
     $areas = Area::all();
     return view('pages.pelanggan.supervisor.create', [
       'tipePelanggans' => $tipePelanggans,
-      'rayons' => $rayons,
       'kotas' => $kotas,
       'areas' => $areas
     ]);
@@ -83,15 +80,6 @@ class PelangganController extends Controller
           }
         }
       ],
-      'rayon' => [
-        'required',
-        'string',
-        function ($attribute, $value, $fail) {
-          if (!in_array($value, Rayon::all())) {
-            $fail('The selected ' . $attribute . ' is invalid.');
-          }
-        }
-      ],
       'area' => [
         'required',
         'string',
@@ -122,7 +110,6 @@ class PelangganController extends Controller
         'contact_phone' => $request->contact_phone,
         'tipe' => $request->tipe,
         'tipe_harga' => $request->tipe_harga,
-        'rayon' => $request->rayon,
         'area' => $request->area,
       ]);
 
@@ -146,13 +133,11 @@ class PelangganController extends Controller
   public function edit(Pelanggan $pelanggan)
   {
     $tipePelanggans = TipePelanggan::all();
-    $rayons = Rayon::all();
     $kotas = Kota::all();
     $areas = Area::all();
     return view('pages.pelanggan.supervisor.edit', [
       'pelanggan' => $pelanggan,
       'tipePelanggans' => $tipePelanggans,
-      'rayons' => $rayons,
       'kotas' => $kotas,
       'areas' => $areas
     ]);
@@ -174,7 +159,6 @@ class PelangganController extends Controller
     $pelanggan->contact_phone = $request->contact_phone;
     $pelanggan->tipe = $request->tipe;
     $pelanggan->tipe_harga = $request->tipe_harga;
-    $pelanggan->rayon = $request->rayon;
     $pelanggan->area = $request->area;
     $pelanggan->save();
 

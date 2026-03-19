@@ -18,7 +18,6 @@ class Pelanggan extends Model
     'npwp',
     'contact_person',
     'contact_phone',
-    'rayon',
     'tipe',
     'tipe_harga',
     'area',
