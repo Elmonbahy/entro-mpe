@@ -193,7 +193,6 @@ final class JualTable extends PowerGridComponent
       ],
       'edit' => [
         'af' => 'fakturis.jual.edit',
-        'as' => 'supervisor.jual.edit',
       ],
     ];
 

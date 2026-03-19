@@ -61,7 +61,7 @@ final class BrandTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (!Auth::user()->hasAnyRole(['af'])) {
       abort(403);
     }
 
@@ -78,7 +78,6 @@ final class BrandTable extends PowerGridComponent
     $routeMaps = [
       'edit' => [
         'af' => 'fakturis.brand.edit',
-        'as' => 'supervisor.brand.edit',
       ]
     ];
 
@@ -92,7 +91,7 @@ final class BrandTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['brand' => $row->id]);
     }
 
-    if (Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (Auth::user()->hasAnyRole(['af'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)

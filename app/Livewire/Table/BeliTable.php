@@ -164,7 +164,6 @@ final class BeliTable extends PowerGridComponent
       ],
       'edit' => [
         'af' => 'fakturis.beli.edit',
-        'as' => 'supervisor.beli.edit',
       ],
     ];
 

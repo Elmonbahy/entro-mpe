@@ -96,7 +96,7 @@ final class BarangTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (!Auth::user()->hasAnyRole(['af'])) {
       abort(403);
     }
 
@@ -122,7 +122,6 @@ final class BarangTable extends PowerGridComponent
         'ag' => 'gudang.barang.edit',
         'aw' => 'warehouse.barang.edit',
         'af' => 'fakturis.barang.edit',
-        'as' => 'supervisor.barang.edit',
       ],
     ];
 
@@ -144,7 +143,7 @@ final class BarangTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['barang' => $row->id]);
     }
 
-    if (Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (Auth::user()->hasAnyRole(['af'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)

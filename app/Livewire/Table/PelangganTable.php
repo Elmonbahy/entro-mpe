@@ -98,7 +98,7 @@ final class PelangganTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (!Auth::user()->hasAnyRole(['af'])) {
       abort(403);
     }
 
@@ -126,7 +126,6 @@ final class PelangganTable extends PowerGridComponent
         'ak' => 'keuangan.pelanggan.edit',
         'af' => 'fakturis.pelanggan.edit',
         'ag' => 'gudang.pelanggan.edit',
-        'as' => 'supervisor.pelanggan.edit',
       ],
     ];
 
@@ -150,8 +149,8 @@ final class PelangganTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['pelanggan' => $row->id]);
     }
 
-    // Tombol Delete (hanya role 'af' dan 'as')
-    if (Auth::user()->hasAnyRole(['as', 'af'])) {
+    // Tombol Delete (hanya role 'af')
+    if (Auth::user()->hasAnyRole(['af'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)
