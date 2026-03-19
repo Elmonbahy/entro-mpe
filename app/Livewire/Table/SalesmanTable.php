@@ -66,7 +66,7 @@ final class SalesmanTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (!Auth::user()->hasAnyRole(['af'])) {
       abort(403);
     }
 
@@ -83,7 +83,6 @@ final class SalesmanTable extends PowerGridComponent
     $routeMaps = [
       'edit' => [
         'af' => 'fakturis.salesman.edit',
-        'as' => 'supervisor.salesman.edit',
       ]
     ];
 
@@ -97,7 +96,7 @@ final class SalesmanTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['salesman' => $row->id]);
     }
 
-    if (Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (Auth::user()->hasAnyRole(['af'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)

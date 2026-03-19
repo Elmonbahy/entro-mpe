@@ -20,6 +20,7 @@ class AdminSeeder extends Seeder
     $gudangUser = Role::where('slug', 'ag')->first();
     $keuanganUser = Role::where('slug', 'ak')->first();
     $logistikUser = Role::where('slug', 'al')->first();
+    $supervisorUser = Role::where('slug', 'as')->first();
     // TODO: minta daftar user
 
     User::create([
@@ -60,6 +61,13 @@ class AdminSeeder extends Seeder
       'email' => 'logistik@apm.com',
       'password' => Hash::make('password'),
       'role_id' => $logistikUser->id
+    ]);
+    User::create([
+      'name' => 'Emma supervisor',
+      'username' => 'supervisor',
+      'email' => 'supervisor@apm.com',
+      'password' => Hash::make('password'),
+      'role_id' => $supervisorUser->id
     ]);
   }
 }

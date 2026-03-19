@@ -72,11 +72,6 @@
             </div>
 
             <div class="mb-3 col-md">
-              <x-form.label value="Rayon" />
-              <x-form.select name="rayon" placeholder="Cari atau pilih rayon" :options="$rayons" :selected="old('rayon') ?? $pelanggan->rayon" />
-            </div>
-
-            <div class="mb-3 col-md">
               <x-form.label value="Area" />
               <x-form.select name="area" placeholder="Cari atau pilih area" :options="$areas" :selected="old('area') ?? $pelanggan->area" />
             </div>

@@ -38,6 +38,10 @@ class RoleSeeder extends Seeder
         'slug' => 'aiv'
       ],
       [
+        'name' => 'Admin Supervisor',
+        'slug' => 'as'
+      ],
+      [
         'name' => 'Admin Inkaso',
         'slug' => 'aik'
       ]

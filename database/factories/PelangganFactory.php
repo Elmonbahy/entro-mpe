@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Constants\Area;
 use App\Constants\Kota;
-use App\Constants\Rayon;
 use App\Constants\TipePelanggan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +18,7 @@ class PelangganFactory extends Factory
    *
    * @return array<string, mixed>
    */
-  public function definition() : array
+  public function definition(): array
   {
     self::$counter++;
 
@@ -33,7 +32,6 @@ class PelangganFactory extends Factory
       'npwp' => $this->faker->unique()->numerify('##.###.###.#-###.###'),
       'contact_person' => $this->faker->name,
       'contact_phone' => $this->faker->phoneNumber,
-      'rayon' => $this->faker->randomElement(Rayon::all()),
       'tipe' => $this->faker->randomElement(TipePelanggan::all()),
     ];
   }

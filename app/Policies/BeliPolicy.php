@@ -13,7 +13,7 @@ class BeliPolicy
 {
   public function update(User $user, Beli $beli)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
@@ -30,7 +30,7 @@ class BeliPolicy
 
   public function delete(User $user, Beli $beli)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
@@ -55,7 +55,7 @@ class BeliPolicy
 
   public function sendToGudang(User $user, Beli $beli)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
@@ -68,7 +68,7 @@ class BeliPolicy
 
   public function createBeliDetail(User $user, Beli $beli)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 

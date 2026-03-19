@@ -17,7 +17,7 @@ class LaporanPendingController extends Controller
   {
 
     $query = Jual::with([
-      'pelanggan:nama,id,rayon',
+      'pelanggan:nama,id',
       'salesman:nama,id',
     ])
       ->whereIn('status_kirim', ['PENDING'])
@@ -39,7 +39,6 @@ class LaporanPendingController extends Controller
           'tgl_faktur' => Carbon::parse($jual->tgl_faktur)->format('d/m/Y'),
           'sales' => $jual?->salesman?->nama ?? '-',
           'status_kirim' => $jual->status_kirim,
-          'rayon' => $jual?->pelanggan?->rayon ?? '-',
         ];
       });
 

@@ -10,7 +10,7 @@ class PelangganExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return Pelanggan::select('id', 'kode', 'nama', 'kota', 'alamat', 'npwp', 'contact_phone', 'contact_person', 'rayon', 'tipe', 'tipe_harga', 'area', 'plafon_hutang', 'limit_hari')->get();
+        return Pelanggan::select('id', 'kode', 'nama', 'kota', 'alamat', 'npwp', 'contact_phone', 'contact_person', 'tipe', 'tipe_harga', 'area', 'plafon_hutang', 'limit_hari')->get();
     }
 
     public function headings(): array
@@ -24,7 +24,6 @@ class PelangganExport implements FromCollection, WithHeadings
             'NPWP',
             'Contact Phone',
             'Contact Person',
-            'Rayon',
             'Tipe',
             'Tipe Harga',
             'Area',

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Keuangan;
 
 use App\Http\Controllers\Controller;
-use App\Constants\Rayon;
 use App\Constants\Area;
-use App\Constants\TipePelanggan;
 use App\Constants\Kota;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;

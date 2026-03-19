@@ -13,7 +13,7 @@ class JualPolicy
 {
   public function update(User $user, Jual $jual)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
@@ -30,7 +30,7 @@ class JualPolicy
 
   public function delete(User $user, Jual $jual)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
@@ -55,7 +55,7 @@ class JualPolicy
 
   public function sendToGudang(User $user, Jual $jual)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
@@ -68,7 +68,7 @@ class JualPolicy
 
   public function createJualDetail(User $user, Jual $jual)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 

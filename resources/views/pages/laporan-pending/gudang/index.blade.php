@@ -79,7 +79,6 @@
                   <th>Pelanggan</th>
                   <th>Sales</th>
                   <th>Status Kirim</th>
-                  <th>Rayon</th>
                 </tr>
               </thead>
 
@@ -91,7 +90,6 @@
                     <td class="text-start">{{ $faktur['pelanggan_nama'] }} </td>
                     <td class="text-start">{{ $faktur['sales'] }}</td>
                     <td>{{ $faktur['status_kirim'] }}</td>
-                    <td>{{ $faktur['rayon'] }}</td>
                   </tr>
                 @endforeach
               </tbody>

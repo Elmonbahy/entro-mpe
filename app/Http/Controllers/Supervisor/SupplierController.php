@@ -20,94 +20,11 @@ class SupplierController extends Controller
   }
 
   /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    return view('pages.supplier.supervisor.create');
-  }
-
-  /**
-   * Validate the request
-   * @param \Illuminate\Http\Request $request
-   * @return void
-   */
-  protected function validation(Request $request, int $id = null)
-  {
-    $request->validate([
-      'nama' => [
-        'required',
-        'string',
-        'max:255',
-        Rule::unique('suppliers')->ignore($id)
-      ],
-      'alamat' => 'max:255',
-      'kota' => 'max:100',
-      'npwp' => 'max:100',
-      'contact_person' => 'max:100',
-      'contact_phone' => 'max:32',
-    ]);
-  }
-
-  /**
-   * Store a newly created resource in storage.
-   */
-  public function store(Request $request)
-  {
-    $this->validation($request);
-
-    try {
-      Supplier::create([
-        'kode' => Supplier::getNewCode(),
-        'nama' => $request->nama,
-        'alamat' => $request->alamat,
-        'kota' => $request->kota,
-        'npwp' => $request->npwp,
-        'contact_person' => $request->contact_person,
-        'contact_phone' => $request->contact_phone
-      ]);
-      return redirect()->route('supervisor.supplier.index')->with('success', 'Berhasil menambahkan data supplier.');
-    } catch (\Exception $e) {
-      return redirect()->route('supervisor.supplier.index')->with('error', 'Gagal menambahkan data supplier.');
-    }
-  }
-
-  /**
    * Display the specified resource.
    */
   public function show(Supplier $supplier)
   {
     return view('pages.supplier.supervisor.show', ['supplier' => $supplier,]);
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(int $id)
-  {
-    $supplier = Supplier::findOrFail($id);
-    return view('pages.supplier.supervisor.edit', [
-      'supplier' => $supplier
-    ]);
-  }
-
-  /**
-   * Update the specified resource in storage.
-   */
-  public function update(Request $request, int $id)
-  {
-    $this->validation($request, $id);
-
-    $supplier = Supplier::findOrFail($id);
-    $supplier->nama = $request->nama;
-    $supplier->alamat = $request->alamat;
-    $supplier->kota = $request->kota;
-    $supplier->npwp = $request->npwp;
-    $supplier->contact_person = $request->contact_person;
-    $supplier->contact_phone = $request->contact_phone;
-    $supplier->save();
-
-    return redirect()->route('supervisor.supplier.index')->with('success', 'Berhasil mengubah data supplier.');
   }
 
   public function exportExcel()

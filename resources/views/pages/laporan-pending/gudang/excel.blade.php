@@ -7,7 +7,6 @@
       <th>Pelanggan</th>
       <th>Sales</th>
       <th>Status Kirim</th>
-      <th>Rayon</th>
     </tr>
   </thead>
   <tbody>
@@ -18,7 +17,6 @@
         <td>{{ $faktur['pelanggan_nama'] }} </td>
         <td>{{ $faktur['sales'] }}</td>
         <td>{{ $faktur['status_kirim'] }}</td>
-        <td>{{ $faktur['rayon'] }}</td>
       </tr>
     @endforeach
   </tbody>
