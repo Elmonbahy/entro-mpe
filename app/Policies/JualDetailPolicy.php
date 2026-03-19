@@ -13,7 +13,7 @@ class JualDetailPolicy
 {
   public function delete(User $user, JualDetail $jual_detail)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
@@ -33,7 +33,7 @@ class JualDetailPolicy
   }
   public function edit(User $user, JualDetail $jual_detail)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 

@@ -15,7 +15,7 @@ class BeliDetailPolicy
 
   public function delete(User $user, BeliDetail $beli_detail)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
@@ -36,7 +36,7 @@ class BeliDetailPolicy
 
   public function edit(User $user, BeliDetail $beli_detail)
   {
-    if (!$user->hasAnyRole(['af', 'as'])) {
+    if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
     }
 
