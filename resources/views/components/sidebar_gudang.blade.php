@@ -18,6 +18,14 @@
           ],
       ],
       [
+          'title' => 'Retur',
+          'icon' => 'bi bi-cart3',
+          'items' => [
+              ['title' => 'Barang Masuk', 'route' => 'gudang.retur.beli'],
+              ['title' => 'Barang Keluar', 'route' => 'gudang.retur.jual'],
+          ],
+      ],
+      [
           'title' => 'Stock',
           'icon' => 'bi bi-box-seam',
           'items' => [

@@ -18,6 +18,7 @@ use App\Http\Controllers\Gudang\Laporan\Pengiriman\LaporanPengirimanController;
 use App\Http\Controllers\Gudang\Laporan\ListPengiriman\LaporanListPengirimanController;
 use App\Http\Controllers\Gudang\Laporan\Pending\LaporanPendingController;
 use App\Http\Controllers\Gudang\BarangExpiredController;
+use App\Http\Controllers\Gudang\ReturController;
 
 Route::resource('/barang', BarangController::class);
 Route::resource('/pelanggan', PelangganController::class);
@@ -40,6 +41,8 @@ Route::prefix('beli')->as('beli.')->group(function () {
 
   Route::get('/{id}/stock/{beli_detail_id}', [BeliDetailController::class, 'stock'])->name('stock-item');
   Route::patch('/{id}/stock/{beli_detail_id}', [BeliDetailController::class, 'stockUpdate'])->name('stock-item-update');
+
+  Route::patch('{id}/stock/{beli_detail_id}/split', [BeliDetailController::class, 'splitRemainingStock'])->name('split-stock');
 });
 
 Route::prefix('stock')->as('stock.')->group(function () {
@@ -80,6 +83,8 @@ Route::prefix('jual')->as('jual.')->group(function () {
   // stock barang masuk
   Route::get('/{id}/stock/{jual_detail_id}', [JualDetailController::class, 'stock'])->name('stock-item');
   Route::patch('/{id}/stock/{jual_detail_id}', [JualDetailController::class, 'stockUpdate'])->name('stock-item-update');
+
+  Route::patch('{id}/stock/{jual_detail_id}/split', [JualDetailController::class, 'splitRemainingStock'])->name('split-stock');
 });
 
 Route::prefix('surat-jalan')->as('surat-jalan.')->group(function () {
@@ -117,4 +122,22 @@ Route::prefix('laporan-list-pengiriman')->as('laporan-list-pengiriman.')->group(
 Route::prefix('laporan-pending')->as('laporan-pending.')->group(function () {
   Route::get('/', [LaporanPendingController::class, 'index'])->name('index');
   Route::get('/excel', [LaporanPendingController::class, 'exportExcel'])->name('excel');
+});
+
+Route::prefix('retur')->as('retur.')->group(function () {
+  // Route Verifikasi Retur Penjualan (Masuk)
+  Route::get('/jual', [ReturController::class, 'indexJual'])
+    ->name('jual');
+
+  // Route Verifikasi Retur Pembelian (Keluar)
+  Route::get('/beli', [ReturController::class, 'indexBeli'])
+    ->name('beli');
+
+  // Halaman Detail Retur
+  Route::get('detail/{id}', [ReturController::class, 'show'])
+    ->name('show');
+
+  //  Action Verifikasi (Approve/Reject) dari halaman detail
+  Route::patch('verify/{id}', [ReturController::class, 'verify'])
+    ->name('verify');
 });
