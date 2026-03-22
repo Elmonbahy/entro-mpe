@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
   /**
    * Run the migrations.
    */
@@ -19,6 +18,10 @@ return new class extends Migration
       $table->boolean('is_diganti')->default(false);
       $table->date('diganti_at')->nullable();
       $table->foreignId('barang_id')->constrained()->restrictOnDelete();
+
+      $table->string('status')->default('pending');
+      $table->text('keterangan_gudang')->nullable(); // Alasan jika ditolak/pending
+      $table->timestamp('verified_at')->nullable();
 
       $table->timestamps();
     });

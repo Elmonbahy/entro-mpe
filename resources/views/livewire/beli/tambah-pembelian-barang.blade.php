@@ -99,7 +99,7 @@
       labelField: 'text',
       searchField: ['value', 'text'], // <--- Kuncinya di sini (mencari berdasarkan ID dan Nama)
       onChange(value) {
-        Livewire.dispatch('Jual.TambahPenjualanBarang:onBarangChange', {
+        Livewire.dispatch('Beli.TambahPembelianBarang:onBarangChange', {
           id: value
         });
       },

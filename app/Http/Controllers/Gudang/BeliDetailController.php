@@ -8,145 +8,32 @@ use App\Models\BarangRetur;
 use App\Models\BarangStock;
 use App\Models\Beli;
 use App\Models\BeliDetail;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class BeliDetailController extends Controller
 {
+  // Fitur ini sudah dipindah ke modul Retur terpisah
   public function retur(int $beli_id, int $beli_detail_id)
   {
-    $beli_detail = BeliDetail::where('id', $beli_detail_id)
-      ->where('beli_id', $beli_id)
-      ->with(['beli'])
-      ->firstOrFail();
-
-    return view('pages.beli.gudang.retur-item', compact('beli_detail'));
+    abort(403);
   }
 
   public function returDone(int $id)
   {
-    $barang_retur = BarangRetur::findOrFail($id);
-    $beli_detail = BeliDetail::findOrFail($barang_retur->returnable_id);
-
-    try {
-      DB::transaction(function () use ($beli_detail, $barang_retur) {
-        $barang_retur->diganti_at = now();
-        $barang_retur->save();
-
-        if ($beli_detail->status_barang_masuk === StatusBarangMasuk::LENGKAP) {
-          abort(403);
-        }
-
-        $barang_stock = BarangStock::where('barang_id', $beli_detail->barang_id)
-          ->where('batch', $beli_detail->batch)
-          ->where('tgl_expired', $beli_detail->tgl_expired)
-          ->firstOrFail();
-
-        $stock_awal = (int) $barang_stock->jumlah_stock;
-        $barang_stock->jumlah_stock += $barang_retur->jumlah_barang_retur;
-        $barang_stock->save();
-
-        $beli_detail->jumlah_barang_masuk += $barang_retur->jumlah_barang_retur;
-        $beli_detail->status_barang_masuk = StatusBarangMasuk::LENGKAP;
-        $beli_detail->save();
-
-        $beli_detail->mutation()->create([
-          'stock_awal' => $stock_awal,
-          'stock_masuk' => $barang_retur->jumlah_barang_retur,
-          'stock_akhir' => $barang_stock->jumlah_stock,
-          'barang_id' => $barang_stock->barang_id,
-          'batch' => $barang_stock->batch,
-          'tgl_expired' => $barang_stock->tgl_expired,
-          'tgl_mutation' => Carbon::now(),
-        ]);
-      });
-
-      return back()->with('success', 'Jumlah barang masuk berhasil diperbarui.');
-    } catch (\Exception $e) {
-      return back()->withInput()->with('error', $e->getMessage());
-    }
+    abort(403);
   }
   public function returUpdate(int $beli_id, int $beli_detail_id, Request $request)
   {
-    $request->validate([
-      'jumlah_barang_retur' => 'required|numeric|gt:0',
-      'keterangan' => 'required|string',
-      'jenis_retur' => 'required|in:0,1',
-    ]);
-
-    $beli_detail = BeliDetail::where('id', $beli_detail_id)
-      ->where('beli_id', $beli_id)
-      ->with('beli')
-      ->firstOrFail();
-
-    \Gate::authorize('retur', $beli_detail);
-
-    try {
-      DB::transaction(function () use ($beli_detail, $request) {
-        $jumlah_barang_retur = (int) $request->jumlah_barang_retur;
-        $keterangan = $request->keterangan ?: null;
-        $is_diganti = (bool) $request->jenis_retur;
-
-        if ($jumlah_barang_retur > $beli_detail->jumlah_barang_masuk) {
-          throw new \Exception('Gagal! Melebihi jumlah barang masuk.');
-        }
-
-        $barang_stock = BarangStock::where('barang_id', $beli_detail->barang_id)
-          ->where('batch', $beli_detail->batch)
-          ->where('tgl_expired', $beli_detail->tgl_expired)
-          ->firstOrFail();
-
-        $stock_awal = (int) $barang_stock->jumlah_stock;
-        $barang_stock->jumlah_stock -= $jumlah_barang_retur;
-        if ($barang_stock->jumlah_stock < 0) {
-          throw new \Exception('Gagal! Stock tidak cukup.');
-        }
-
-        $barang_stock->save();
-
-        if ($is_diganti) {
-          $beli_detail->jumlah_barang_masuk -= $jumlah_barang_retur;
-          $beli_detail->status_barang_masuk = StatusBarangMasuk::BELUM_LENGKAP;
-          $beli_detail->save();
-        } else {
-          $beli_detail->jumlah_barang_masuk -= $jumlah_barang_retur;
-          $beli_detail->jumlah_barang_dipesan -= $jumlah_barang_retur;
-          $beli_detail->save();
-        }
-
-        $beli_detail->mutation()->create([
-          'stock_awal' => $stock_awal,
-          'stock_retur_beli' => $jumlah_barang_retur,
-          'stock_akhir' => $barang_stock->jumlah_stock,
-          'barang_id' => $barang_stock->barang_id,
-          'batch' => $barang_stock->batch,
-          'tgl_expired' => $barang_stock->tgl_expired,
-          'tgl_mutation' => Carbon::now(),
-        ]);
-
-        $beli_detail->returs()->create([
-          'jumlah_barang_retur' => $jumlah_barang_retur,
-          'keterangan' => $keterangan,
-          'is_diganti' => $is_diganti,
-          'barang_id' => $beli_detail->barang_id,
-          'batch' => $barang_stock->batch,
-          'tgl_expired' => $barang_stock->tgl_expired
-        ]);
-      });
-
-      return redirect()->route('gudang.beli.show', $beli_id)->with('success', 'Jumlah barang masuk berhasil diperbarui.');
-    } catch (\Exception $e) {
-      return back()->withInput()->with('error', $e->getMessage());
-    }
+    abort(403);
   }
 
   public function stock(int $beli_id, int $beli_detail_id)
   {
-    $beli_detail = BeliDetail::where('id', $beli_detail_id)
-      ->where('beli_id', $beli_id)
-      ->with(['beli'])
-      ->firstOrFail();
+    $beli = Beli::findOrFail($beli_id);
+    $beli_detail = $beli->beliDetails()->with('beli')->findOrFail($beli_detail_id);
 
     \Gate::authorize('stock', $beli_detail);
 
@@ -173,90 +60,72 @@ class BeliDetailController extends Controller
       'tgl_expired' => 'nullable|date|after_or_equal:today',
     ]);
 
-    $beli_detail = BeliDetail::where('id', $beli_detail_id)
-      ->where('beli_id', $beli_id)
-      ->with('beli')
-      ->firstOrFail();
+    $beli = Beli::findOrFail($beli_id);
+    $beli_detail = $beli->beliDetails()->with('beli')->findOrFail($beli_detail_id);
 
     \Gate::authorize('stock', $beli_detail);
 
     DB::beginTransaction();
     try {
-      if ($request->jumlah_barang_masuk < $beli_detail->jumlah_barang_masuk) {
-        throw new \Exception('Gagal! Tidak bisa mengurangi jumlah barang masuk.');
+      // 1. VALIDASI KONSISTENSI BATCH
+      // Jika sudah ada barang keluar sebelumnya, Batch & Expired TIDAK BOLEH BERUBAH.
+      if ($beli_detail->jumlah_barang_masuk > 0) {
+        if ($beli_detail->batch !== $request->batch) {
+          throw new \Exception("Gagal! Batch berubah. Item ini sudah tercatat menggunakan Batch: {$beli_detail->batch}. Tidak boleh mencampur batch dalam satu baris.");
+        }
+        // Normalisasi tanggal database
+        $dbDate = $beli_detail->tgl_expired
+          ? Carbon::parse($beli_detail->tgl_expired)->format('Y-m-d')
+          : null;
+
+        // Normalisasi tanggal input user
+        $reqDate = $request->tgl_expired
+          ? Carbon::parse($request->tgl_expired)->format('Y-m-d')
+          : null;
+
+        if ($dbDate !== $reqDate) {
+          // Tampilkan format tanggal yang mudah dibaca di pesan error
+          $showDbDate = $dbDate ? Carbon::parse($dbDate)->format('d/m/Y') : 'Kosong';
+
+          throw new \Exception("Gagal! Tanggal Expired berbeda dengan inputan sebelumnya ({$showDbDate}).");
+        }
       }
 
-      $masuk_diff = $request->jumlah_barang_masuk - $beli_detail->jumlah_barang_masuk;
-      $remaining_masuk = $beli_detail->jumlah_barang_dipesan - $beli_detail->jumlah_barang_masuk;
+      // 2. Hitung Selisih
+      $input_total_masuk = (int) $request->jumlah_barang_masuk;
+      $current_total_masuk = (int) $beli_detail->jumlah_barang_masuk;
+      $selisih = $input_total_masuk - $current_total_masuk;
 
-      if (
-        ($request->batch !== $beli_detail->batch || $request->tgl_expired !== $beli_detail->tgl_expired)
-        && $request->jumlah_barang_masuk > 0
-      ) {
-        $remaining_masuk = $beli_detail->jumlah_barang_dipesan - $beli_detail->jumlah_barang_masuk;
+      if ($selisih < 0) {
+        throw new \Exception('Gagal! Gunakan fitur Retur untuk mengurangi/koreksi barang.');
+      }
 
-        if ($request->jumlah_barang_masuk > $remaining_masuk) {
-          throw new \Exception('Jumlah masuk melebihi jumlah dipesan.');
-        }
+      if ($input_total_masuk > $beli_detail->jumlah_barang_dipesan) {
+        throw new \Exception('Gagal! Melebihi pesanan.');
+      }
 
-        // Kurangi dari batch lama
-        $beli_detail->jumlah_barang_dipesan -= $request->jumlah_barang_masuk;
+      // 3. Update Detail
+      $beli_detail->jumlah_barang_masuk = $input_total_masuk;
+      $beli_detail->batch = $request->batch;
+      $beli_detail->tgl_expired = $request->tgl_expired;
+      $beli_detail->status_barang_masuk = $this->determineStatusBarangMasuk($beli_detail);
+      $beli_detail->save();
 
-        // Jika jumlah_barang_dipesan dan jumlah_barang_masuk sudah nol → hapus record lama
-        if ($beli_detail->jumlah_barang_dipesan <= 0 && $beli_detail->jumlah_barang_masuk == 0) {
-          $beli_detail->delete();
-        } else {
-          $beli_detail->save(); // tetap simpan kalau tidak nol
-        }
-
-        // Buat batch baru
-        $newDetail = $beli_detail->replicate();
-        $newDetail->batch = $request->batch;
-        $newDetail->tgl_expired = $request->tgl_expired;
-        $newDetail->jumlah_barang_masuk = $request->jumlah_barang_masuk;
-        $newDetail->jumlah_barang_dipesan = $request->jumlah_barang_masuk;
-        $newDetail->status_barang_masuk = $this->determineStatusBarangMasuk($newDetail);
-        $newDetail->save();
-
-        // Update stok
-        $stock = BarangStock::firstOrNew([
-          'barang_id' => $newDetail->barang_id,
-          'batch' => $newDetail->batch,
-          'tgl_expired' => $newDetail->tgl_expired,
-        ]);
-
-        $stock_awal = (int) $stock->jumlah_stock;
-        $stock->jumlah_stock += $request->jumlah_barang_masuk;
-        $stock->save();
-
-        $newDetail->mutation()->create([
-          'stock_awal' => $stock_awal,
-          'stock_masuk' => $request->jumlah_barang_masuk,
-          'stock_akhir' => $stock->jumlah_stock,
-          'barang_id' => $stock->barang_id,
-          'batch' => $stock->batch,
-          'tgl_expired' => $stock->tgl_expired,
-          'tgl_mutation' => Carbon::now(),
-        ]);
-      } else {
-        // Batch sama → update langsung
-        $beli_detail->jumlah_barang_masuk = $request->jumlah_barang_masuk;
-        $beli_detail->status_barang_masuk = $this->determineStatusBarangMasuk($beli_detail);
-        $beli_detail->save();
-
+      // 4. Update Stock & Mutasi
+      if ($selisih > 0) {
         $stock = BarangStock::firstOrNew([
           'barang_id' => $beli_detail->barang_id,
-          'batch' => $beli_detail->batch,
-          'tgl_expired' => $beli_detail->tgl_expired,
+          'batch' => $request->batch,
+          'tgl_expired' => $request->tgl_expired,
         ]);
 
         $stock_awal = (int) $stock->jumlah_stock;
-        $stock->jumlah_stock += $masuk_diff;
+        $stock->jumlah_stock += $selisih;
         $stock->save();
 
         $beli_detail->mutation()->create([
           'stock_awal' => $stock_awal,
-          'stock_masuk' => $masuk_diff,
+          'stock_masuk' => $selisih,
           'stock_akhir' => $stock->jumlah_stock,
           'barang_id' => $stock->barang_id,
           'batch' => $stock->batch,
@@ -266,11 +135,76 @@ class BeliDetailController extends Controller
       }
 
       DB::commit();
-      return redirect()->route('gudang.beli.show', $beli_id)->with('success', 'Jumlah barang masuk berhasil diperbarui.');
+      return redirect()->route('gudang.beli.show', $beli_id)->with('success', 'Barang masuk berhasil diupdate.');
+
     } catch (\Exception $e) {
       DB::rollBack();
       return back()->withInput()->with('error', $e->getMessage());
     }
   }
 
+  /**
+   * Memecah BeliDetail yang memiliki sisa barang yang belum masuk
+   * menjadi dua baris: satu baris LENGKAP dan satu baris BELUM_LENGKAP.
+   * * @param int $beli_id
+   * @param int $beli_detail_id
+   * @return \Illuminate\Http\RedirectResponse
+   */
+  public function splitRemainingStock(int $beli_id, int $beli_detail_id)
+  {
+    // 1. Ambil data Beli dan BeliDetail
+    $beli = Beli::findOrFail($beli_id);
+    $beli_detail = $beli->beliDetails()->findOrFail($beli_detail_id);
+
+    // Otorisasi jika diperlukan, asumsi 'split' diizinkan
+    // \Gate::authorize('split', $beli_detail); 
+
+    DB::beginTransaction();
+    try {
+      $jumlah_masuk = (int) $beli_detail->jumlah_barang_masuk;
+      $jumlah_dipesan = (int) $beli_detail->jumlah_barang_dipesan;
+
+      // 2. Hitung sisa barang masuk (selisih)
+      $selisih_belum_masuk = $jumlah_dipesan - $jumlah_masuk;
+
+      // Jika tidak ada selisih, tidak perlu dipecah/split.
+      if ($selisih_belum_masuk <= 0) {
+        DB::rollBack();
+        return back()->with('error', 'Item ini sudah lengkap atau jumlah masuk melebihi pesanan. Tidak perlu dipecah.');
+      }
+
+      if ($jumlah_masuk <= 0) {
+        DB::rollBack();
+        return back()->with('error', 'Belum ada barang masuk. Tidak perlu dipecah.');
+      }
+
+      // 3. Update BeliDetail yang lama:
+      // - Ubah jumlah_barang_dipesan agar sama dengan jumlah_barang_masuk
+      // - Set status_barang_masuk menjadi LENGKAP
+      $beli_detail->jumlah_barang_dipesan = $jumlah_masuk;
+      $beli_detail->status_barang_masuk = StatusBarangMasuk::LENGKAP;
+      $beli_detail->save();
+
+      // 4. Buat BeliDetail baru untuk sisa barang yang belum masuk
+      $new_beli_detail = $beli_detail->replicate(); // Salin semua atribut
+
+      // Atribut yang disesuaikan untuk baris baru (sisa barang)
+      $new_beli_detail->jumlah_barang_dipesan = $selisih_belum_masuk;
+      $new_beli_detail->jumlah_barang_masuk = 0; // Barang masuk di baris baru ini 0
+      $new_beli_detail->batch = null; // Reset batch
+      $new_beli_detail->tgl_expired = null; // Reset tgl_expired
+      $new_beli_detail->status_barang_masuk = StatusBarangMasuk::BELUM_LENGKAP; // Set status BELUM_LENGKAP
+
+      // Simpan baris baru (akan otomatis terkait ke Beli yang sama)
+      $new_beli_detail->save();
+
+      DB::commit();
+
+      return redirect()->route('gudang.beli.show', $beli_id)->with('success', "Barang berhasil dipecah. Item lama LENGKAP ({$jumlah_masuk} unit). Item baru BELUM LENGKAP ({$selisih_belum_masuk} unit) dibuat.");
+
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return back()->withInput()->with('error', 'Gagal memecah detail barang: ' . $e->getMessage());
+    }
+  }
 }

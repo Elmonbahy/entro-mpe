@@ -119,60 +119,8 @@
       </div>
     </div>
 
+    <x-card.retur-list :returs="$returs" />
 
-    <div class="card mt-3">
-      <div class="card-header p-3 d-flex justify-content-between align-items-center">
-        <p class="mb-0 fw-semibold">Daftar barang retur</p>
-      </div>
-
-      <div class="card-body">
-        @if ($returs->isEmpty())
-          <p class="mb-0 text-center">Tidak ada data.</p>
-        @else
-          <div class="table-responsive">
-            <table class="table table-bordered mb-0">
-              <thead class="text-nowrap">
-                <th>Brand</th>
-                <th>Nama</th>
-                <th>Retur</th>
-                <th>Satuan</th>
-                <th>Batch</th>
-                <th>Tgl Expired</th>
-                <th>Nomor izin edar</th>
-                <th>Keterangan</th>
-                <th>Diganti</th>
-              </thead>
-              <tbody>
-                @foreach ($returs as $item)
-                  <tr>
-                    <td>{{ $item->barang->brand->nama }}</td>
-                    <td>{{ $item->barang->nama }}</td>
-                    <td>{{ $item->jumlah_barang_retur }}</td>
-                    <td>{{ $item->barang->satuan }}</td>
-                    <td>{{ $item->returnable->batch ?: '-' }}</td>
-                    <td>
-                      {{ $item->returnable->tgl_expired ? \Carbon\Carbon::parse($item->returnable->tgl_expired)->format('d/m/Y') : '-' }}
-                    </td>
-                    <td>{{ $item->barang->nie ?: '-' }}</td>
-                    <td>{{ $item->keterangan }}</td>
-                    <td>
-                      @if ($item->is_diganti && !$item->diganti_at)
-                        <i class="bi bi-check-circle-fill text-warning"></i>
-                      @elseif ($item->is_diganti && $item->diganti_at)
-                        <i class="bi bi-check-circle-fill text-success"></i>
-                      @else
-                        <i class="bi bi-dash-circle-fill text-danger"></i>
-                      @endif
-                    </td>
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>
-
-          </div>
-        @endif
-      </div>
-    </div>
   </div>
 @endsection
 

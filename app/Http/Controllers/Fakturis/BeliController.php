@@ -79,17 +79,11 @@ class BeliController extends Controller
   public function show(int $id)
   {
     $beli = Beli::findOrFail($id);
-    $beli_details = BeliDetail::where('beli_id', $id)->get();
+    $beli_details = $beli->beliDetails;
 
-    $returs = BarangRetur::whereHasMorph(
-      'returnable',
-      [BeliDetail::class],
-      function ($q) use ($id) {
-        $q->where('beli_id', $id);
-      }
-    )
+    $returs = $beli->barangReturs()
       ->with([
-        'barang:id,nama,satuan,brand_id,kode',
+        'barang:id,nama,satuan,brand_id',
         'barang.brand:id,nama',
         'returnable' => function ($q) {
           $q->select('id', 'beli_id', 'batch', 'tgl_expired', 'barang_id', 'keterangan');
@@ -101,7 +95,7 @@ class BeliController extends Controller
     return view('pages.beli.fakturis.show', [
       'beli' => $beli,
       'beli_details' => $beli_details,
-      'returs' => $returs
+      'returs' => $returs,
     ]);
   }
 

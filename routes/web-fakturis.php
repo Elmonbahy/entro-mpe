@@ -21,6 +21,7 @@ use App\Http\Controllers\Fakturis\Laporan\Beli\LaporanBeliController;
 use App\Http\Controllers\Fakturis\Laporan\SlowMoving\LaporanSlowMovingController;
 use App\Http\Controllers\Fakturis\Laporan\ListFakturJual\LaporanListFakturJualController;
 use App\Http\Controllers\Fakturis\Laporan\ListFakturBeli\LaporanListFakturBeliController;
+use App\Http\Controllers\Fakturis\ReturController;
 
 Route::resource('/barang', BarangController::class);
 Route::resource('/brand', BrandController::class);
@@ -123,4 +124,8 @@ Route::prefix('laporan-list-faktur-beli')->as('laporan-list-faktur-beli.')->grou
 Route::prefix('slow-moving')->as('slow-moving.')->group(function () {
   Route::get('/', [LaporanSlowMovingController::class, 'index'])->name('index');
   Route::get('/excel', [LaporanSlowMovingController::class, 'exportExcel'])->name('excel');
+});
+
+Route::prefix('retur')->as('retur.')->group(function () {
+  Route::post('/store', [ReturController::class, 'store'])->name('store');
 });
