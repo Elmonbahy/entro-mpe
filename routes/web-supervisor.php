@@ -13,6 +13,7 @@ use App\Http\Controllers\Supervisor\BeliController;
 use App\Http\Controllers\Supervisor\BarangStockController;
 use App\Http\Controllers\Supervisor\JualController;
 use App\Http\Controllers\Supervisor\SuratJalanController;
+use App\Http\Controllers\Supervisor\WorkProgressController;
 
 Route::resource('/barang', BarangController::class);
 Route::resource('/brand', BrandController::class);
@@ -27,6 +28,10 @@ Route::prefix('export')->group(function () {
   Route::get('/group', [GroupController::class, 'exportExcel'])->name('group.export');
   Route::get('/pelanggan', [PelangganController::class, 'exportExcel'])->name('pelanggan.export');
   Route::get('/supplier', [SupplierController::class, 'exportExcel'])->name('supplier.export');
+});
+
+Route::prefix('work-progres')->as('work-progres.')->group(function () {
+  Route::get('/', [WorkProgressController::class, 'index'])->name('index');
 });
 
 Route::prefix('beli')->as('beli.')->group(function () {

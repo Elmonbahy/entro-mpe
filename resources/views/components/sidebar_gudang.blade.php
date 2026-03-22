@@ -48,27 +48,4 @@
 
 @endphp
 
-<li class="nav-title">Main menu</li>
-
-@foreach ($navigation as $nav)
-  <li class="nav-group">
-    <a class="nav-link nav-group-toggle" href="#">
-      <span class="nav-icon">
-        <i class="{{ $nav['icon'] }}"></i>
-      </span>
-      {{ $nav['title'] }}
-    </a>
-    <ul class="nav-group-items compact">
-      @foreach ($nav['items'] as $item)
-        <li class="nav-item">
-          <a class="nav-link" href="{{ $item['route'] === '#' ? '#' : route($item['route']) }}">
-            <span class="nav-icon">
-              <span class="nav-icon-bullet"></span>
-            </span>
-            {{ $item['title'] }}
-          </a>
-        </li>
-      @endforeach
-    </ul>
-  </li>
-@endforeach
+<x-sidebar-menu :menu="$navigation" />

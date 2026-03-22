@@ -8,9 +8,6 @@
   <div class="container-fluid px-4">
     <x-alert.session-alert />
     <x-page-header title="Data barang" class="mb-3">
-      <a href="{{ route('supervisor.barang.create') }}" class="btn btn-primary">
-        Tambah data
-      </a>
     </x-page-header>
 
     <div class="card">

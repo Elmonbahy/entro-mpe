@@ -1,6 +1,11 @@
 @php
   $navigation = [
       [
+          'title' => 'Work Progress',
+          'icon' => 'bi bi-activity',
+          'route' => 'supervisor.work-progres.index',
+      ],
+      [
           'title' => 'Master Data',
           'icon' => 'bi bi-database',
           'items' => [
@@ -38,40 +43,4 @@
 
 @endphp
 
-<li class="nav-title">Main menu</li>
-
-@foreach ($navigation as $nav)
-  @if (isset($nav['items']))
-    {{-- Menu dropdown --}}
-    <li class="nav-group">
-      <a class="nav-link nav-group-toggle" href="#">
-        <span class="nav-icon">
-          <i class="{{ $nav['icon'] }}"></i>
-        </span>
-        {{ $nav['title'] }}
-      </a>
-      <ul class="nav-group-items compact">
-        @foreach ($nav['items'] as $item)
-          <li class="nav-item">
-            <a class="nav-link" href="{{ $item['route'] === '#' ? '#' : route($item['route']) }}">
-              <span class="nav-icon">
-                <span class="nav-icon-bullet"></span>
-              </span>
-              {{ $item['title'] }}
-            </a>
-          </li>
-        @endforeach
-      </ul>
-    </li>
-  @else
-    {{-- Menu langsung --}}
-    <li class="nav-item">
-      <a class="nav-link" href="{{ $nav['route'] === '#' ? '#' : route($nav['route']) }}">
-        <span class="nav-icon">
-          <i class="{{ $nav['icon'] }}"></i>
-        </span>
-        {{ $nav['title'] }}
-      </a>
-    </li>
-  @endif
-@endforeach
+<x-sidebar-menu :menu="$navigation" />
