@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Livewire\Dashboard;
+namespace App\Livewire;
 
 use App\Models\Beli;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Component;
-use Illuminate\Support\Facades\Cache;
 
 class WeeklyPurchaseChart extends Component
 {
@@ -26,10 +25,9 @@ class WeeklyPurchaseChart extends Component
       return [$month => Carbon::create(null, $month, 1)->translatedFormat('F')];
     });
 
-    // Tampilkan hanya bulan berjalan saat pertama kali load
-    $thisMonth = (int) now()->month;
-    $this->startMonth = $thisMonth;
-    $this->endMonth = $thisMonth;
+    // Set initial month range
+    $this->endMonth = (int) now()->month;
+    $this->startMonth = (int) max(1, $this->endMonth - 2);
 
     $this->loadChartData();
   }
@@ -52,7 +50,6 @@ class WeeklyPurchaseChart extends Component
 
   public function loadChartData()
   {
-    $user = Auth::user();
 
     $startMonth = (int) $this->startMonth;
     $endMonth = (int) $this->endMonth;
@@ -66,40 +63,38 @@ class WeeklyPurchaseChart extends Component
       return;
     }
 
-    // Buat cache key unik per user dan range bulan
-    $cacheKey = 'weekly_purchase_chart_' . $user->id . "_{$this->currentYear}_{$startMonth}_{$endMonth}";
-
-    // Cek cache dulu
-    if (Cache::has($cacheKey)) {
-      $this->chartData = Cache::get($cacheKey);
-      $this->dispatch('updateChartBeli', data: $this->chartData);
-      return;
-    }
-
+    // ⭐ CHANGE 1: Target the Beli model
     $query = Beli::with('beliDetails')
       ->selectRaw('
-            FLOOR((DAY(tgl_faktur) - 1) / 7) + 1 as week_of_month,
-            MONTH(tgl_faktur) as month,
-            YEAR(tgl_faktur) as year,
-            id,
-            ppn,
-            bayar,
-            tgl_faktur
-        ')
-      ->whereBetween('tgl_faktur', [$startRange, $endRange]);
-
-    if (!$user->hasAnyRole(['su', 'as']) && $user->branch_id) {
-      $query->where('branch_id', $user->branch_id);
-    }
+                FLOOR((DAY(tgl_terima_faktur) - 1) / 7) + 1 as week_of_month,
+                MONTH(tgl_terima_faktur) as month,
+                YEAR(tgl_terima_faktur) as year,
+                id,
+                ppn,
+                bayar,
+                tgl_terima_faktur
+            ')
+      // ⭐ CHANGE 2: Filter by 'tgl_terima_faktur' (date the invoice was received)
+      ->whereBetween('tgl_terima_faktur', [$startRange, $endRange]);
 
     $result = $query->get()
-      ->groupBy(fn($item) => Carbon::parse($item->tgl_faktur)->weekOfYear . '-' . $item->year)
+      ->groupBy(function ($item) {
+        // Grouping uses the invoice received date
+        return Carbon::parse($item->tgl_terima_faktur)->weekOfYear . '-' . $item->year;
+      })
       ->map(function ($group) {
         $firstItem = $group->first();
-        $total_tagihan = $group->sum(fn($item) => $item->total_tagihan);
-        $total_terbayar = $group->sum(fn($item) => $item->total_terbayar);
-        $weekNumber = Carbon::parse($firstItem->tgl_faktur)->weekOfYear;
-        $monthName = Carbon::parse($firstItem->tgl_faktur)->translatedFormat('M');
+
+        // Use Beli model accessors: getTotalTagihanAttribute and getTotalTerbayarAttribute
+        $total_tagihan = $group->sum(function ($item) {
+          return $item->total_tagihan;
+        });
+        $total_terbayar = $group->sum(function ($item) {
+          return $item->total_terbayar;
+        });
+
+        $weekNumber = Carbon::parse($firstItem->tgl_terima_faktur)->weekOfYear;
+        $monthName = Carbon::parse($firstItem->tgl_terima_faktur)->translatedFormat('M');
 
         return [
           'label' => "W{$weekNumber} ({$monthName})",
@@ -112,14 +107,12 @@ class WeeklyPurchaseChart extends Component
 
     $this->chartData = $result;
 
-    // Simpan ke cache sampai akhir hari
-    Cache::put($cacheKey, $this->chartData, now()->endOfDay());
-
+    // ⭐ CHANGE 3: Use a unique dispatch event name
     $this->dispatch('updateChartBeli', data: $this->chartData);
   }
 
   public function render()
   {
-    return view('livewire.dashboard.weekly-purchase-chart');
+    return view('livewire.weekly-purchase-chart');
   }
 }

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Livewire\Dashboard;
+namespace App\Livewire;
 
 use App\Models\Jual;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Component;
-use Illuminate\Support\Facades\Cache;
 
 class WeeklySalesChart extends Component
 {
@@ -26,14 +25,12 @@ class WeeklySalesChart extends Component
       return [$month => Carbon::create(null, $month, 1)->translatedFormat('F')];
     });
 
-    // Tampilkan hanya bulan berjalan saat pertama kali load
-    $thisMonth = (int) now()->month;
-    $this->startMonth = $thisMonth;
-    $this->endMonth = $thisMonth;
+    // Set initial month range (e.g., current month only or a default quarter)
+    $this->endMonth = (int) now()->month;
+    $this->startMonth = (int) max(1, $this->endMonth - 2);
 
     $this->loadChartData();
   }
-
 
   // Runs automatically when $startMonth or $endMonth changes
   public function updated($propertyName)
@@ -54,7 +51,6 @@ class WeeklySalesChart extends Component
 
   public function loadChartData()
   {
-    $user = Auth::user();
 
     $startMonth = (int) $this->startMonth;
     $endMonth = (int) $this->endMonth;
@@ -68,48 +64,42 @@ class WeeklySalesChart extends Component
       return;
     }
 
-    // Buat cache key berdasarkan user, tahun, bulan mulai dan bulan akhir
-    $cacheKey = 'weekly_sales_chart_' . $user->id . "_{$this->currentYear}_{$startMonth}_{$endMonth}";
-
-    // Cek cache terlebih dahulu
-    if (Cache::has($cacheKey)) {
-      $this->chartData = Cache::get($cacheKey);
-      $this->dispatch('updateChart', data: $this->chartData);
-      return;
-    }
-
     $query = Jual::with('jualDetails')
       ->selectRaw('
-            FLOOR((DAY(tgl_faktur) - 1) / 7) + 1 as week_of_month,
-            MONTH(tgl_faktur) as month,
-            YEAR(tgl_faktur) as year,
-            id,
-            is_pungut_ppn,
-            bayar,
-            tgl_faktur
-        ')
+                FLOOR((DAY(tgl_faktur) - 1) / 7) + 1 as week_of_month,
+                MONTH(tgl_faktur) as month,
+                YEAR(tgl_faktur) as year,
+                id,
+                is_pungut_ppn,
+                bayar,
+                tgl_faktur
+            ')
       ->whereBetween('tgl_faktur', [$startRange, $endRange]);
-
-    // Apply branch scope manually since this is a custom query
-    if (!$user->hasAnyRole(['su', 'as']) && $user->branch_id) {
-      $query->where('branch_id', $user->branch_id);
-    }
 
     $result = $query->get()
       ->groupBy(function ($item) {
+        // Grouping by week number within the year for unique points
         return Carbon::parse($item->tgl_faktur)->weekOfYear . '-' . $item->year;
       })
       ->map(function ($group) {
         $firstItem = $group->first();
-        $total_tagihan = $group->sum(fn($item) => $item->total_tagihan);
-        $total_terbayar = $group->sum(fn($item) => $item->total_terbayar);
+
+        // Calculate total tagihan and terbayar using the model accessors
+        $total_tagihan = $group->sum(function ($item) {
+          return $item->total_tagihan;
+        });
+        $total_terbayar = $group->sum(function ($item) {
+          return $item->total_terbayar;
+        });
+
+        // Create a label combining week and month name
         $weekNumber = Carbon::parse($firstItem->tgl_faktur)->weekOfYear;
         $monthName = Carbon::parse($firstItem->tgl_faktur)->translatedFormat('M');
 
         return [
           'label' => "W{$weekNumber} ({$monthName})",
           'total_tagihan' => (string) ($total_tagihan ?? 0),
-          'total_terbayar' => (string) ($total_terbayar ?? 0),
+          'total_terbayar' => (string) ($total_terbayar ?? 0)
         ];
       })
       ->values()
@@ -117,14 +107,11 @@ class WeeklySalesChart extends Component
 
     $this->chartData = $result;
 
-    // Simpan data ke cache sampai akhir hari ini
-    Cache::put($cacheKey, $this->chartData, now()->endOfDay());
-
     $this->dispatch('updateChart', data: $this->chartData);
   }
 
   public function render()
   {
-    return view('livewire.dashboard.weekly-sales-chart');
+    return view('livewire.weekly-sales-chart');
   }
 }

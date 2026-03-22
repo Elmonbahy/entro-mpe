@@ -46,6 +46,20 @@ class User extends Authenticatable
     'password' => 'hashed',
   ];
 
+  public function getIsOnlineAttribute(): bool
+  {
+    // Jika di controller Anda sudah melakukan join 'last_interaction', gunakan itu
+    if (isset($this->last_interaction)) {
+      return $this->last_interaction >= now()->subMinutes(5)->getTimestamp();
+    }
+
+    // Jika tidak ada (fallback), baru lakukan query manual
+    return \DB::table('sessions')
+      ->where('user_id', $this->id)
+      ->where('last_activity', '>=', now()->subMinutes(5)->getTimestamp())
+      ->exists();
+  }
+
   public function role()
   {
     return $this->belongsTo(Role::class);
@@ -54,16 +68,28 @@ class User extends Authenticatable
 
   public function hasRole($role)
   {
-    return $this->role->slug === $role;
+    return $this->role && $this->role->slug === $role;
   }
 
+  /**
+   * Check if the user has any of the given roles.
+   *
+   * @param array|string $roles An array of role slugs or a single role slug.
+   * @return bool
+   */
   public function hasAnyRole($roles)
   {
-    return in_array($this->role->slug, (array) $roles);
+    // Checks if the user's role slug is in the provided array of roles.
+    return $this->role && in_array($this->role->slug, (array) $roles);
   }
 
   public function getRoutePrefix(): string
   {
+    // Return a default prefix if the user has no role.
+    if (!$this->role) {
+      return 'dashboard';
+    }
+
     return match ($this->role->slug) {
       'af' => 'fakturis',
       'ag' => 'gudang',

@@ -8,33 +8,28 @@ use App\Models\Beli;
 use App\Models\Jual;
 use App\Models\Pelanggan;
 use App\Models\Supplier;
+use Auth;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
   public function index()
   {
-    $today = Carbon::today();
+    /**
+     * Display a listing of the resource.
+     */
+    $user = Auth::user();
+
+    $beliQuery = Beli::query();
+    $jualQuery = Jual::query();
 
     $counts = [
       'total_barang' => Barang::count(),
-      'today_barang' => Barang::whereDate('created_at', $today)->count(),
-
       'total_supplier' => Supplier::count(),
-      'today_supplier' => Supplier::whereDate('created_at', $today)->count(),
-
       'total_pelanggan' => Pelanggan::count(),
-      'today_pelanggan' => Pelanggan::whereDate('created_at', $today)->count(),
-
-      'total_beli' => Beli::count(),
-      'today_beli' => Beli::whereDate('created_at', $today)->count(),
-
-      'total_jual' => Jual::count(),
-      'today_jual' => Jual::whereDate('created_at', $today)->count(),
-
+      'total_beli' => $beliQuery->count(),
+      'total_jual' => $jualQuery->count(),
       'total_rusak' => BarangRusak::count(),
-      'today_rusak' => BarangRusak::whereDate('created_at', $today)->count(),
     ];
 
     return view('pages.dashboard.index', ['counts' => $counts]);

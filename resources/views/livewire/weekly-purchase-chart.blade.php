@@ -76,13 +76,13 @@
           data: {
             labels: chartData.map(item => item.label),
             datasets: [{
-              label: 'Total Tagihan',
+              label: 'Total Tagihan Beli',
               data: valuesTagihan,
               borderColor: 'rgb(255, 99, 132)', // Use a distinct color (Red)
               tension: 0.1,
               fill: false
             }, {
-              label: 'Total Terbayar',
+              label: 'Total Terbayar Beli',
               data: valuesTerbayar,
               borderColor: 'rgb(54, 162, 235)', // Use a distinct color (Blue)
               tension: 0.1,
