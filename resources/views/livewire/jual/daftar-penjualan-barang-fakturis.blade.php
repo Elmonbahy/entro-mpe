@@ -70,7 +70,7 @@
                     <input type="text" class="form-control" wire:model.defer="editHargaJualFormatted"
                       oninput="formatRupiah(this)" />
                   @else
-                    {{ Number::currency($item->harga_jual, in: 'IDR', locale: 'id_ID') }}
+                    {{ formatCurrencyDinamis($item->harga_jual) }}
                   @endif
                 </td>
 

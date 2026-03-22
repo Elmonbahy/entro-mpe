@@ -119,7 +119,7 @@
     // Pisahkan bagian ribuan dan desimal
     let parts = value.split(',');
     let integerPart = parts[0];
-    let decimalPart = parts[1] !== undefined ? ',' + parts[1].slice(0, 2) : '';
+    let decimalPart = parts[1] !== undefined ? ',' + parts[1].slice(0, 4) : '';
 
     // Hapus nol depan (kecuali 0 sendiri)
     integerPart = integerPart.replace(/^0+(?!$)/, '');

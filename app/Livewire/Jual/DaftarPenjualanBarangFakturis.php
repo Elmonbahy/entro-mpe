@@ -92,7 +92,7 @@ class DaftarPenjualanBarangFakturis extends Component
     $jual_detail = JualDetail::findOrFail($id);
     $this->editingId = $id;
     $this->editHargaJual = $jual_detail->harga_jual;
-    $this->editHargaJualFormatted = number_format($jual_detail->harga_jual, 2, ',', '.');
+    $this->editHargaJualFormatted = number_format($jual_detail->harga_jual, 4, ',', '.');
     $this->editDiskon1 = $jual_detail->diskon1;
     $this->editDiskon2 = $jual_detail->diskon2;
   }

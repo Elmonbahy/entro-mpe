@@ -92,8 +92,12 @@ class TambahPenjualanBarang extends Component
       // Ubah nilai ke float untuk pemrosesan lebih lanjut
       $floatValue = (float) str_replace(',', '.', $cleanValue);
 
-      // Format kembali ke Rupiah dengan desimal
-      $this->harga_jual = number_format($floatValue, 2, ',', '.');
+      // Format dinamis: hanya tampilkan desimal kalau ada koma
+      if (fmod($floatValue, 1) == 0) {
+        $this->harga_jual = number_format($floatValue, 0, ',', '.');
+      } else {
+        $this->harga_jual = rtrim(rtrim(number_format($floatValue, 4, ',', '.'), '0'), ',');
+      }
     }
 
     if (in_array($property, ['harga_jual', 'jumlah_barang_dipesan', 'diskon1', 'diskon2'])) {
@@ -137,7 +141,7 @@ class TambahPenjualanBarang extends Component
 
       $harga_beli = (float) BeliDetail::where('barang_id', $item->id)->latest()->value('harga_beli');
 
-      $this->harga_jual = number_format((float) $harga_jual, 2, ',', '.');
+      $this->harga_jual = number_format((float) $harga_jual, 4, ',', '.');
       $this->harga_beli_formatted = \Number::currency($harga_beli, 'IDR', 'id_ID');
 
       $this->setBarangStock($item->id);

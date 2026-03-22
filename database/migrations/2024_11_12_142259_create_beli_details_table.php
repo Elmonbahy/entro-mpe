@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
   /**
    * Run the migrations.
    */
@@ -20,7 +19,7 @@ return new class extends Migration
       $table->decimal('diskon1', 5, 2)->default(0);
       $table->decimal('diskon2', 5, 2)->default(0);
       $table->string('keterangan')->nullable();
-      $table->decimal('harga_beli', 15, 2)->unsigned();
+      $table->decimal('harga_beli', 15, 4)->unsigned();
 
       $table->enum('status_barang_masuk', ['BELUM_LENGKAP', 'LENGKAP'])->default('BELUM_LENGKAP');
 

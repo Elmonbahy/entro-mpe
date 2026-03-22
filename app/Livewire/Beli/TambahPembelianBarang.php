@@ -74,7 +74,7 @@ class TambahPembelianBarang extends Component
       $floatValue = (float) str_replace(',', '.', $cleanValue);
 
       // Format kembali ke Rupiah dengan desimal
-      $this->harga_beli = number_format($floatValue, 2, ',', '.');
+      $this->harga_beli = number_format($floatValue, 4, ',', '.');
     }
 
     if (in_array($property, ['harga_beli', 'jumlah_barang_dipesan', 'diskon1', 'diskon2'])) {
@@ -107,7 +107,7 @@ class TambahPembelianBarang extends Component
 
     if ($item) {
       $result = (float) BeliDetail::where('barang_id', $item->id)->latest()->value('harga_beli');
-      $this->harga_beli = number_format($result ?? 0, 2, ',', '.');
+      $this->harga_beli = number_format($result ?? 0, 4, ',', '.');
     }
 
     $this->calculateTotalTagihan();

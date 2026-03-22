@@ -91,7 +91,7 @@ class DaftarPembelianBarangFakturis extends Component
     $beli_detail = BeliDetail::findOrFail($id);
     $this->editingId = $id;
     $this->editHargaBeli = $beli_detail->harga_beli;
-    $this->editHargaBeliFormatted = number_format($beli_detail->harga_beli, 2, ',', '.');
+    $this->editHargaBeliFormatted = number_format($beli_detail->harga_beli, 4, ',', '.');
     $this->editDiskon1 = $beli_detail->diskon1;
     $this->editDiskon2 = $beli_detail->diskon2;
   }
