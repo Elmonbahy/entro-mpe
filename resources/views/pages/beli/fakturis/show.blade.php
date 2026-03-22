@@ -67,7 +67,7 @@
                         -
                       @endif
                     </td>
-                    <td>{{ Number::currency($item->harga_beli, in: 'IDR', locale: 'id_ID') }}</td>
+                    <td>{{ formatCurrencyDinamis($item->harga_beli) }}</td>
                     <td>{{ Number::currency($item->total_tagihan, in: 'IDR', locale: 'id_ID') }}</td>
                   </tr>
                 @endforeach

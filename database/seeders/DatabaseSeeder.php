@@ -17,17 +17,17 @@ class DatabaseSeeder extends Seeder
      * We use `MasterDataSeeder` to import real master data
      *
      */
-    // if (app()->environment('local')) {
-    //   $this->call([
-    //     BrandSeeder::class,
-    //     SupplierSeeder::class,
-    //     GroupSeeder::class,
-    //     BarangSeeder::class,
-    //     SalesmanSeeder::class,
-    //     PelangganSeeder::class,
-    //     KendaraanSeeder::class
-    //   ]);
-    // }
+    if (app()->environment('local')) {
+      $this->call([
+        BrandSeeder::class,
+        SupplierSeeder::class,
+        GroupSeeder::class,
+        BarangSeeder::class,
+        SalesmanSeeder::class,
+        PelangganSeeder::class,
+        KendaraanSeeder::class
+      ]);
+    }
 
     $this->call([
       RoleSeeder::class,
