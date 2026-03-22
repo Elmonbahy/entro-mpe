@@ -56,10 +56,9 @@
   <div class="row border pt-3 mb-3 mx-0 rounded">
     <div class="col-md mb-3">
       <x-form.label value="Harga jual" />
-      <x-form.input name="harga_jual" type="text" placeholder="Input harga jual..." 
-          wire:model.lazy="harga_jual" />
-  </div>
-  
+      <x-form.input name="harga_jual" type="text" placeholder="Input harga jual..." wire:model.lazy="harga_jual" />
+    </div>
+
 
     <div class="col-md mb-3">
       <x-form.label value="Diskon 1" />
@@ -124,10 +123,26 @@
     });
 
     let barangSelectEl = new TomSelect('#barang_id', {
+      valueField: 'value',
+      labelField: 'text',
+      searchField: ['value', 'text'], // <--- Kuncinya di sini (mencari berdasarkan ID dan Nama)
       onChange(value) {
         Livewire.dispatch('Jual.TambahPenjualanBarang:onBarangChange', {
           id: value
         });
+      },
+      // Opsional: Custom rendering agar tampilan list menunjukkan ID [Nama]
+      render: {
+        option: function(data, escape) {
+          return '<div>' +
+            '<span class="fw-bold">' + escape(data.value) + '</span>' +
+            ' - ' +
+            '<span>' + escape(data.text) + '</span>' +
+            '</div>';
+        },
+        item: function(data, escape) {
+          return '<div>' + escape(data.value) + ' - ' + escape(data.text) + '</div>';
+        }
       }
     });
 

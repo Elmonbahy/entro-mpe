@@ -95,10 +95,26 @@
     });
 
     let barangSelectEl = new TomSelect('#barang_id', {
+      valueField: 'value',
+      labelField: 'text',
+      searchField: ['value', 'text'], // <--- Kuncinya di sini (mencari berdasarkan ID dan Nama)
       onChange(value) {
-        Livewire.dispatch('Beli.TambahPembelianBarang:onBarangChange', {
+        Livewire.dispatch('Jual.TambahPenjualanBarang:onBarangChange', {
           id: value
         });
+      },
+      // Opsional: Custom rendering agar tampilan list menunjukkan ID [Nama]
+      render: {
+        option: function(data, escape) {
+          return '<div>' +
+            '<span class="fw-bold">' + escape(data.value) + '</span>' +
+            ' - ' +
+            '<span>' + escape(data.text) + '</span>' +
+            '</div>';
+        },
+        item: function(data, escape) {
+          return '<div>' + escape(data.value) + ' - ' + escape(data.text) + '</div>';
+        }
       }
     });
 
