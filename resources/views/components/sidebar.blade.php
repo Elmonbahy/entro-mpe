@@ -17,6 +17,10 @@
       </a>
     </li>
 
+    @role('su')
+      @include('components/sidebar_superadmin')
+    @endrole
+
     @role('as')
       @include('components/sidebar_supervisor')
     @endrole

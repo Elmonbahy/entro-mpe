@@ -29,6 +29,13 @@ Route::middleware('auth')->group(function () {
   });
 });
 
+Route::middleware(['auth', CheckRole::class . ':su'])
+  ->prefix('superadmin')
+  ->as('superadmin.')
+  ->group(function () {
+    require base_path('routes/web-superadmin.php');
+  });
+
 Route::middleware(['auth', CheckRole::class . ':as'])
   ->prefix('supervisor')
   ->as('supervisor.')
