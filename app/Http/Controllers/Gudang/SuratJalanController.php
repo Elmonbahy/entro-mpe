@@ -22,7 +22,7 @@ class SuratJalanController extends Controller
 
   public function create()
   {
-    $pelanggans = Pelanggan::select('nama', 'id')->get();
+    $pelanggans = Pelanggan::select('nama', 'id', 'alamat', 'kota', 'contact_phone', 'contact_person')->get();
     $kendaraan = Kendaraan::select('nama', 'id')->get();
     $staf_logistiks = StafLogistik::all();
 
@@ -71,7 +71,11 @@ class SuratJalanController extends Controller
           }
         }
       ],
-      'keterangan' => 'nullable|string|max:255'
+      'keterangan' => 'nullable|string|max:255',
+      'alamat_kirim' => 'required|max:255',
+      'kota' => 'required|string|max:255',
+      'contact_phone' => 'required|string|max:255',
+      'contact_person' => 'required|string|max:255',
     ]);
   }
 
@@ -90,6 +94,10 @@ class SuratJalanController extends Controller
         'koli' => $request->koli,
         'staf_logistik' => $request->staf_logistik,
         'keterangan' => $request->keterangan,
+        'alamat_kirim' => $request->alamat_kirim,
+        'kota' => $request->kota,
+        'contact_phone' => $request->contact_phone,
+        'contact_person' => $request->contact_person,
       ]);
 
       \DB::commit();
@@ -114,6 +122,10 @@ class SuratJalanController extends Controller
         'koli' => $request->koli,
         'staf_logistik' => $request->staf_logistik,
         'keterangan' => $request->keterangan,
+        'alamat_kirim' => $request->alamat_kirim,
+        'kota' => $request->kota,
+        'contact_phone' => $request->contact_phone,
+        'contact_person' => $request->contact_person,
       ]);
 
       return redirect()->route('gudang.surat-jalan.add-item', ['id' => $surat_jalan->id])

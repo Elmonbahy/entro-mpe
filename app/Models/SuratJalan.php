@@ -15,6 +15,10 @@ class SuratJalan extends Model
     'staf_logistik',
     'keterangan',
     'pelanggan_id',
+    'alamat_kirim',
+    'kota',
+    'contact_phone',
+    'contact_person',
     'kendaraan_id'
   ];
 

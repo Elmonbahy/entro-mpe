@@ -22,6 +22,28 @@
 
           <div class="row">
             <div class="mb-3 col-md">
+              <x-form.label value="Alamat Pengiriman" />
+              <x-form.input name="alamat_kirim" placeholder="Input alamat pengiriman..." :value="old('alamat_kirim', $surat_jalan->alamat_kirim ?? $surat_jalan->pelanggan->alamat)" />
+            </div>
+            <div class="mb-3 col-md">
+              <x-form.label value="Kota" />
+              <x-form.input name="kota" placeholder="Input kota pengiriman..." :value="old('kota', $surat_jalan->kota ?? $surat_jalan->pelanggan->kota)" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="mb-3 col-md">
+              <x-form.label value="Contact Phone" />
+              <x-form.input name="contact_phone" placeholder="Input contact phone..." :value="old('contact_phone', $surat_jalan->contact_phone ?? $surat_jalan->pelanggan->contact_phone)" />
+            </div>
+            <div class="mb-3 col-md">
+              <x-form.label value="Contact Person" />
+              <x-form.input name="contact_person" placeholder="Input contact person..." :value="old('contact_person', $surat_jalan->contact_person ?? $surat_jalan->pelanggan->contact_person)" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="mb-3 col-md">
               <x-form.label value="Kendaraan" />
               <x-form.select name="kendaraan" placeholder="Cari atau pilih kendaraan" :options="$kendaraans" :selected="old('kendaraan', $surat_jalan->kendaraan_id)"
                 valueKey="id" labelKey="nama" />

@@ -72,19 +72,19 @@
           <tbody>
             <tr>
               <td width="45" style="padding: 0;">Alamat</td>
-              <td style="padding: 0;">: {{ $surat_jalan->pelanggan->alamat }}</td>
+              <td style="padding: 0;">: {{ $surat_jalan->alamat_kirim ?? $surat_jalan->pelanggan->alamat }}</td>
             </tr>
             <tr>
               <td style="padding: 0;">Kota</td>
-              <td style="padding: 0;">: {{ $surat_jalan->pelanggan->kota }}</td>
+              <td style="padding: 0;">: {{ $surat_jalan->kota ?? $surat_jalan->pelanggan->kota }}</td>
             </tr>
             <tr>
               <td style="padding: 0;">Up Nama</td>
-              <td style="padding: 0;">: {{ $surat_jalan->pelanggan->contact_person }}</td>
+              <td style="padding: 0;">: {{ $surat_jalan->contact_person ?? $surat_jalan->pelanggan->contact_person }}</td>
             </tr>
             <tr>
               <td style="padding: 0;">No HP</td>
-              <td style="padding: 0;">: {{ $surat_jalan->pelanggan->contact_phone }}</td>
+              <td style="padding: 0;">: {{ $surat_jalan->contact_phone ?? $surat_jalan->pelanggan->contact_phone }}</td>
             </tr>
           </tbody>
         </table>

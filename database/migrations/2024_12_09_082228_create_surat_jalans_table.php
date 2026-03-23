@@ -20,6 +20,10 @@ return new class extends Migration {
       $table->string('keterangan')->nullable();
 
       $table->foreignId('pelanggan_id')->constrained()->restrictOnDelete();
+      $table->string('alamat_kirim');
+      $table->string('kota');
+      $table->string('contact_phone');
+      $table->string('contact_person');
       $table->foreignId('kendaraan_id')->constrained()->restrictOnDelete();
       $table->timestamps();
     });
