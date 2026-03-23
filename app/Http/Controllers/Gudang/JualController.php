@@ -69,6 +69,7 @@ class JualController extends Controller
   {
     $jual = Jual::findOrFail($id);
     $jual_detail = JualDetail::where('jual_id', $id)
+      ->where('jumlah_barang_dipesan', '>', 0)
       ->with([
         'barang:barangs.nama,barangs.id,barangs.satuan,barangs.kode,barangs.brand_id,barangs.nie',
         'barang.brand:id,nama'
