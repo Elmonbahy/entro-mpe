@@ -45,7 +45,7 @@
                     {{ number_format($item->jumlah_barang_dipesan, 0, ',', '.') }}
 
                     @if ($editingId === $item->id && $item->jumlah_barang_keluar)
-                      <br><small class="text-danger">Sudah ada barang kelar</small>
+                      <br><small class="text-danger">Sudah ada barang keluar</small>
                     @endif
                   @endif
                 </td>

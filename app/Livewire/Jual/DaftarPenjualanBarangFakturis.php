@@ -3,6 +3,7 @@
 namespace App\Livewire\Jual;
 
 use App\Enums\StatusFaktur;
+use App\Models\BarangStock;
 use App\Models\Jual;
 use App\Models\JualDetail;
 use Livewire\Attributes\On;
@@ -113,12 +114,23 @@ class DaftarPenjualanBarangFakturis extends Component
 
         \Gate::authorize('edit', $jual_detail);
 
+        if (!$jual_detail->jumlah_barang_keluar) {
+          // Ambil total stok dari relasi atau tabel stok (sesuaikan dengan struktur DB Anda)
+          // Contoh: Mengambil dari tabel stok berdasarkan barang_id
+          $totalStock = BarangStock::where('barang_id', $jual_detail->barang_id)
+            ->sum('jumlah_stock');
+
+          if ($totalStock < $this->editJumlahDipesan) {
+            throw new \Exception("Gagal! Stok barang tidak cukup. Sisa stok: $totalStock");
+          }
+
+          $jual_detail->jumlah_barang_dipesan = $this->editJumlahDipesan;
+        }
+
         $jual_detail->harga_jual = $this->editHargaJual;
         $jual_detail->diskon1 = $this->editDiskon1;
         $jual_detail->diskon2 = $this->editDiskon2;
-        if (!$jual_detail->jumlah_barang_keluar) {
-          $jual_detail->jumlah_barang_dipesan = $this->editJumlahDipesan;
-        }
+
         $jual_detail->save();
       });
 
