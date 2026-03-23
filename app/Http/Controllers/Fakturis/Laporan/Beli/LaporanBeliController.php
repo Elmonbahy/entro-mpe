@@ -13,13 +13,15 @@ class LaporanBeliController extends Controller
 {
   private function getLaporanBeliData(Request $request)
   {
+    $column = $request->filter_berdasarkan === 'tgl_terima' ? 'tgl_terima_faktur' : 'tgl_faktur';
+
     $query = Beli::with([
       'beliDetails',
       'beliDetails.barang:nama,id,satuan',
       'supplier:nama,id',
     ])
       ->withCount('beliDetails')
-      ->whereBetween('tgl_terima_faktur', [
+      ->whereBetween($column, [
         $request->tgl_awal,
         $request->tgl_akhir ? Carbon::parse($request->tgl_akhir)->endOfDay() : null
       ]);
@@ -86,6 +88,7 @@ class LaporanBeliController extends Controller
       'tgl_akhir' => ['nullable', 'date', 'after_or_equal:tgl_awal'],
       'supplier_id' => 'nullable|exists:suppliers,id',
       'status_bayar' => 'nullable|in:PAID,UNPAID',
+      'filter_berdasarkan' => 'nullable|in:tgl_faktur,tgl_terima'
     ];
 
     $messages = [
@@ -116,6 +119,7 @@ class LaporanBeliController extends Controller
       'tgl_awal' => $request->tgl_awal,
       'tgl_akhir' => $request->tgl_akhir,
       'status_bayar' => $request->status_bayar,
+      'filter_berdasarkan' => $request->filter_berdasarkan ?? 'tgl_faktur',
       'data' => $data
     ]);
   }
@@ -126,7 +130,8 @@ class LaporanBeliController extends Controller
       'tgl_awal' => 'required|date',
       'tgl_akhir' => 'required|date|after_or_equal:tgl_awal',
       'supplier_id' => 'nullable|exists:suppliers,id',
-      'status_bayar' => 'nullable|in:PAID,UNPAID'
+      'status_bayar' => 'nullable|in:PAID,UNPAID',
+      'filter_berdasarkan' => 'nullable|in:tgl_faktur,tgl_terima'
     ]);
 
     $data = $this->getLaporanBeliData($request);
@@ -149,7 +154,12 @@ class LaporanBeliController extends Controller
     }
 
     return Excel::download(
-      new LaporanBeliExport($data, $request->tgl_awal, $request->tgl_akhir),
+      new LaporanBeliExport(
+        $data,
+        $request->tgl_awal,
+        $request->tgl_akhir,
+        $request->filter_berdasarkan ?? 'tgl_faktur'
+      ),
       $filename
     );
   }

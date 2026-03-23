@@ -20,12 +20,21 @@
         <form method="GET" action="{{ route('fakturis.laporan-list-faktur-beli.index') }}" autocomplete="off">
           <div class="row">
             <div class="col-md-4 mb-3">
+              <x-form.label value="Filter Berdasarkan" />
+              <select name="filter_berdasarkan" class="form-control">
+                <option value="tgl_faktur" {{ request('filter_berdasarkan') == 'tgl_faktur' ? 'selected' : '' }}>Tanggal
+                  Faktur</option>
+                <option value="tgl_terima" {{ request('filter_berdasarkan') == 'tgl_terima' ? 'selected' : '' }}>Tanggal
+                  Terima Faktur</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
               <x-form.label value="Tanggal awal" />
-              <x-form.input name="tgl_awal" wire:model="tgl_awal" type="date" value="{{ $tgl_awal }}" />
+              <x-form.input name="tgl_awal" type="date" value="{{ $tgl_awal }}" />
             </div>
             <div class="col-md-4 mb-3">
               <x-form.label value="Tanggal akhir" />
-              <x-form.input name="tgl_akhir" wire:model="tgl_akhir" type="date" value="{{ $tgl_akhir }}" />
+              <x-form.input name="tgl_akhir" type="date" value="{{ $tgl_akhir }}" />
             </div>
           </div>
 

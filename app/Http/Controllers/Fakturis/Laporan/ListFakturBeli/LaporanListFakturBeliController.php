@@ -13,12 +13,14 @@ class LaporanListFakturBeliController extends Controller
 {
   private function getLaporanListFakturBeliData(Request $request)
   {
+    $column = $request->filter_berdasarkan === 'tgl_terima' ? 'tgl_terima_faktur' : 'tgl_faktur';
+
     $query = Beli::with([
       'supplier:id,nama',
       'beliDetails',
     ])
       ->where('status_faktur', 'DONE')
-      ->whereBetween('tgl_terima_faktur', [
+      ->whereBetween($column, [
         $request->tgl_awal,
         $request->tgl_akhir ? Carbon::parse($request->tgl_akhir)->endOfDay() : null
       ])
@@ -95,6 +97,7 @@ class LaporanListFakturBeliController extends Controller
       'tgl_akhir' => ['nullable', 'date', 'after_or_equal:tgl_awal'],
       'supplier_id' => 'nullable|exists:suppliers,id',
       'status_bayar' => 'nullable|in:PAID,UNPAID',
+      'filter_berdasarkan' => 'nullable|in:tgl_faktur,tgl_terima',
     ];
 
     $messages = [
@@ -125,6 +128,7 @@ class LaporanListFakturBeliController extends Controller
       'tgl_awal' => $request->tgl_awal,
       'tgl_akhir' => $request->tgl_akhir,
       'status_bayar' => $request->status_bayar,
+      'filter_berdasarkan' => $request->filter_berdasarkan ?? 'tgl_faktur',
       'data' => $data
     ]);
   }
@@ -135,7 +139,8 @@ class LaporanListFakturBeliController extends Controller
       'tgl_awal' => 'required|date',
       'tgl_akhir' => 'required|date|after_or_equal:tgl_awal',
       'supplier_id' => 'nullable|exists:suppliers,id',
-      'status_bayar' => 'nullable|in:PAID,UNPAID'
+      'status_bayar' => 'nullable|in:PAID,UNPAID',
+      'filter_berdasarkan' => 'nullable|in:tgl_faktur,tgl_terima'
     ]);
 
     $data = $this->getLaporanListFakturBeliData($request);
@@ -158,7 +163,12 @@ class LaporanListFakturBeliController extends Controller
     }
 
     return Excel::download(
-      new LaporanListFakturBeliExport($data, $request->tgl_awal, $request->tgl_akhir),
+      new LaporanListFakturBeliExport(
+        $data,
+        $request->tgl_awal,
+        $request->tgl_akhir,
+        $request->filter_berdasarkan ?? 'tgl_faktur'
+      ),
       $filename
     );
   }
