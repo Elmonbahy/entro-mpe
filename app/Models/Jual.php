@@ -49,17 +49,6 @@ class Jual extends Model
     static::creating(function ($jual) {
       HutangChecker::validateHutang($jual->pelanggan_id);
     });
-
-    // Perbarui tgl_faktur di mutasi saat Jual diperbarui
-    // static::updated(function ($jual) {
-    //   if ($jual->isDirty('tgl_faktur')) {
-    //     foreach ($jual->jualDetails as $jualDetail) {
-    //       $jualDetail->mutation()->update([
-    //         'tgl_mutation' => $jual->tgl_faktur
-    //       ]);
-    //     }
-    //   }
-    // });
   }
 
 

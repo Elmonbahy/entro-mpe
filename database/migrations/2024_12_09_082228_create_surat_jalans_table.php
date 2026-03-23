@@ -15,7 +15,7 @@ return new class extends Migration {
       $table->dateTime('tgl_surat_jalan');
       $table->dateTime('tgl_kembali_surat_jalan')->nullable();
       $table->string('nomor_surat_jalan')->unique()->comment('auto, e.g. format: SJ/2024-01-1 (tahun, bulan, urutan, bulan & urutan direset setiap bulan baru)');
-      $table->smallInteger('koli')->default(0)->unsigned();
+      $table->string('koli');
       $table->string('staf_logistik')->nullable();
       $table->string('keterangan')->nullable();
 

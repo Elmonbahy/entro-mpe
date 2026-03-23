@@ -29,7 +29,7 @@
 
             <div class="col-md mb-3">
               <x-form.label value="Jumlah koli" />
-              <x-form.input name="koli" type="number" placeholder="Input koli..." :value="$surat_jalan->koli" />
+              <x-form.input name="koli" type="text" placeholder="Input koli..." :value="$surat_jalan->koli" />
             </div>
           </div>
 

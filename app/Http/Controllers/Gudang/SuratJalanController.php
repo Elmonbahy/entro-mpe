@@ -39,8 +39,6 @@ class SuratJalanController extends Controller
     $kendaraan = Kendaraan::select('nama', 'id')->get();
     $staf_logistiks = StafLogistik::all();
 
-    // \Gate::authorize('update', $surat_jalan);
-
     return view('pages.surat-jalan.gudang.edit', [
       'surat_jalan' => $surat_jalan,
       'kendaraans' => $kendaraan,
@@ -63,7 +61,7 @@ class SuratJalanController extends Controller
           }
         }
       ],
-      'koli' => 'required|integer|min:1',
+      'koli' => 'required|string|max:255',
       'staf_logistik' => [
         'required',
         'string',
@@ -81,8 +79,6 @@ class SuratJalanController extends Controller
   {
     $this->validation($request, $id);
     $surat_jalan = SuratJalan::where('id', $id);
-
-    // \Gate::authorize('update', $surat_jalan);
 
     try {
       \DB::beginTransaction();
@@ -149,8 +145,6 @@ class SuratJalanController extends Controller
   public function addItem(int $id)
   {
     $surat_jalan = SuratJalan::with(['pelanggan', 'kendaraan'])->findOrFail($id);
-
-    \Gate::authorize('update', $surat_jalan);
 
     return view('pages.surat-jalan.gudang.add-item', [
       'surat_jalan' => $surat_jalan,

@@ -170,19 +170,4 @@ final class SuratJalanTable extends PowerGridComponent
     return $actions;
   }
 
-  public function actionRules(): array
-  {
-    return [
-      Rule::button('delete')
-        ->when(
-          fn($row) =>
-          !Carbon::parse($row->created_at)
-            ->timezone('Asia/Makassar')
-            ->isSameDay(now('Asia/Makassar'))
-        )
-        ->hide(),
-    ];
-
-  }
-
 }

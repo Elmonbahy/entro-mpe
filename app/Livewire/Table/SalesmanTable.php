@@ -107,16 +107,4 @@ final class SalesmanTable extends PowerGridComponent
 
     return $actions;
   }
-
-  public function actionRules(): array
-  {
-    return [
-      Rule::button('delete')
-        ->when(function ($barang) {
-          return
-            $barang->juals()->exists();
-        })
-        ->hide(),
-    ];
-  }
 }

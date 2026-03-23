@@ -28,7 +28,7 @@
             </div>
             <div class="col-md mb-3">
               <x-form.label value="Jumlah koli" />
-              <x-form.input name="koli" type="number" placeholder="Input jumlah koli..." value="0" />
+              <x-form.input name="koli" type="text" placeholder="Input jumlah koli..." />
             </div>
           </div>
 
