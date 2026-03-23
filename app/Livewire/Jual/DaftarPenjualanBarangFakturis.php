@@ -16,6 +16,7 @@ class DaftarPenjualanBarangFakturis extends Component
   public $editHargaJualFormatted;
   public $editDiskon1 = null;
   public $editDiskon2 = null;
+  public $editJumlahDipesan = null;
 
   #[Locked]
   public Jual $jual;
@@ -95,6 +96,7 @@ class DaftarPenjualanBarangFakturis extends Component
     $this->editHargaJualFormatted = number_format($jual_detail->harga_jual, 4, ',', '.');
     $this->editDiskon1 = $jual_detail->diskon1;
     $this->editDiskon2 = $jual_detail->diskon2;
+    $this->editJumlahDipesan = $jual_detail->jumlah_barang_dipesan;
   }
 
   public function updatedEditHargaJualFormatted($value)
@@ -114,10 +116,13 @@ class DaftarPenjualanBarangFakturis extends Component
         $jual_detail->harga_jual = $this->editHargaJual;
         $jual_detail->diskon1 = $this->editDiskon1;
         $jual_detail->diskon2 = $this->editDiskon2;
+        if (!$jual_detail->jumlah_barang_keluar) {
+          $jual_detail->jumlah_barang_dipesan = $this->editJumlahDipesan;
+        }
         $jual_detail->save();
       });
 
-      $this->reset(['editingId', 'editHargaJual', 'editDiskon1']);
+      $this->reset(['editingId', 'editHargaJual', 'editDiskon1', 'editDiskon2', 'editJumlahDipesan']);
       $this->getJualDetail();
 
     } catch (\Exception $e) {

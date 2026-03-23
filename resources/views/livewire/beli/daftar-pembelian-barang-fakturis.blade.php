@@ -39,7 +39,17 @@
                 <td>{{ $item->barang->brand->nama }}</td>
                 <td>{{ $item->barang->kode }}</td>
                 <td>{{ $item->barang->nama }}</td>
-                <td>{{ number_format($item->jumlah_barang_dipesan, 0, ',', '.') }}</td>
+                <td>
+                  @if ($editingId === $item->id && !$item->jumlah_barang_masuk)
+                    <input type="number" class="form-control" wire:model.defer="editJumlahDipesan">
+                  @else
+                    {{ number_format($item->jumlah_barang_dipesan, 0, ',', '.') }}
+
+                    @if ($editingId === $item->id && $item->jumlah_barang_masuk)
+                      <br><small class="text-danger">Sudah ada barang masuk</small>
+                    @endif
+                  @endif
+                </td>
                 <td>{{ $item->jumlah_barang_masuk ? number_format($item->jumlah_barang_masuk, 0, ',', '.') : '-' }}</td>
                 <td>{{ $item->barang->satuan }}</td>
                 <td>
@@ -78,9 +88,16 @@
                     wire:confirm="Hapus barang dari daftar pembelian?">
                     <i class="bi-trash text-white"></i>
                   </button>
-                  <button class="btn btn-warning mb-1" wire:click="edit({{ $item->id }})">
-                    <i class="bi-pencil text-white"></i>
-                  </button>
+                  @if ($item->jumlah_barang_dipesan > 0)
+                    {{-- Cek jika bukan retur --}}
+                    <button class="btn btn-warning mb-1" wire:click="edit({{ $item->id }})">
+                      <i class="bi-pencil text-white"></i>
+                    </button>
+                  @else
+                    <button class="btn btn-secondary mb-1" disabled title="Barang retur tidak bisa diedit">
+                      <i class="bi-pencil text-white"></i>
+                    </button>
+                  @endif
 
                   @if ($editingId === $item->id)
                     <button class="btn btn-primary mb-1" wire:click="updateHargaBeli"
