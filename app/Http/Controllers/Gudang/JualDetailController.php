@@ -40,8 +40,11 @@ class JualDetailController extends Controller
 
     // Ambil batch untuk barang yang sesuai dan stok > 0
     $daftarBatch = BarangStock::where('barang_id', $jual_detail->barang_id)
-      ->where('jumlah_stock', '>', 0)
-      ->get(['batch', 'tgl_expired']);
+      ->where(function ($query) use ($jual_detail) {
+        $query->where('jumlah_stock', '>', 0)
+          ->orWhere('batch', $jual_detail->batch);
+      })
+      ->get(['batch', 'tgl_expired', 'jumlah_stock']);
 
     return view('pages.jual.gudang.item.stock-item', compact('jual_detail', 'daftarBatch'));
   }
@@ -123,7 +126,13 @@ class JualDetailController extends Controller
       if ($selisih > 0) {
         $stock = BarangStock::where('barang_id', $jual_detail->barang_id)
           ->where('batch', $request->batch)
-          ->where('tgl_expired', $request->tgl_expired)
+          ->where(function ($q) use ($request) {
+            if (empty($request->tgl_expired)) {
+              $q->whereNull('tgl_expired');
+            } else {
+              $q->whereDate('tgl_expired', $request->tgl_expired);
+            }
+          })
           ->first();
 
         if (!$stock || $stock->jumlah_stock < $selisih) {

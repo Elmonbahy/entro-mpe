@@ -153,25 +153,24 @@ class TambahPenjualanBarang extends Component
 
   private function setBarangStock(int $barang_id)
   {
-    $this->stock_all = BarangStock::where('barang_id', $barang_id)
+    // Hitung total stok untuk informasi di UI
+    $this->stock_all = BarangStock::where('barang_id', $barang_id)->sum('jumlah_stock');
+
+    // Ambil data stok yang tersedia (FIFO)
+    $barang_stock = BarangStock::where('barang_id', $barang_id)
       ->where('jumlah_stock', '>', 0)
-      ->sum('jumlah_stock');
+      ->orderByRaw('ISNULL(tgl_expired) DESC, tgl_expired ASC, created_at DESC')
+      ->first();
 
-    if (!$this->stock_all) {
-      // No stock available
-      $this->reset(['tgl_expired', 'batch', 'stock', 'stock_all']);
-      $this->js('alert("Stock tidak tersedia!")');
-    } else {
-      // Attempt to find the stock with the earliest expiration date
-      $barang_stock = BarangStock::where('barang_id', $barang_id)
-        ->where('jumlah_stock', '>', 0)
-        ->orderByRaw('ISNULL(tgl_expired) DESC, tgl_expired ASC, created_at DESC')
-        ->first();
-
+    if ($barang_stock) {
       $this->tgl_expired = $barang_stock->tgl_expired;
       $this->tgl_expired_formatter = $barang_stock->tgl_expired ? Carbon::parse($barang_stock->tgl_expired)->format('d/m/Y') : null;
       $this->batch = $barang_stock->batch;
       $this->stock = $barang_stock->jumlah_stock;
+    } else {
+      // Jika stok 0 atau tidak ada, biarkan null/0 agar diisi manual oleh gudang nanti
+      $this->reset(['tgl_expired', 'batch', 'stock', 'tgl_expired_formatter']);
+      $this->stock = 0;
     }
   }
 
@@ -223,76 +222,63 @@ class TambahPenjualanBarang extends Component
   private function getAllocateStocks()
   {
     $barangId = (int) $this->barang_id;
-    $batch = $this->batch ?: null;
-    $tglExpired = $this->tgl_expired ?: null;
     $jumlahBarang = (int) $this->jumlah_barang_dipesan;
 
-    $stockQuery = BarangStock::where('barang_id', $barangId)->where('jumlah_stock', '>', 0);
+    // 1. Ambil stok yang memang tersedia di sistem
+    $prioritizedStock = BarangStock::where('barang_id', $barangId)
+      ->where('jumlah_stock', '>', 0)
+      ->orderByRaw('ISNULL(tgl_expired) DESC, tgl_expired ASC, created_at DESC')
+      ->get();
 
-    if ($batch) {
-      $stockQuery->where('batch', $batch);
+    $totalStockTersedia = (int) $prioritizedStock->sum('jumlah_stock');
+
+    // 2. Jika stok tersedia mencukupi semua pesanan, kembalikan stok tersebut
+    if ($totalStockTersedia >= $jumlahBarang) {
+      return $prioritizedStock;
     }
 
-    if ($tglExpired) {
-      $stockQuery->where('tgl_expired', $tglExpired)->orderBy('tgl_expired', 'asc');
+    // 3. Jika stok TIDAK CUKUP atau 0:
+    // Buat satu baris "Virtual Stock" untuk sisa kekurangan pesanan.
+    // Batch dan Expired diset NULL agar orang gudang wajib input manual.
+    $virtualStock = new BarangStock([
+      'barang_id' => $barangId,
+      'jumlah_stock' => 0, // Indikator bahwa ini bukan stok fisik sistem
+      'batch' => null,
+      'tgl_expired' => null
+    ]);
+
+    if ($totalStockTersedia > 0) {
+      return $prioritizedStock->push($virtualStock);
     }
 
-    $prioritizedStock = $stockQuery->get();
-    $totalStock = (int) $prioritizedStock->sum('jumlah_stock');
-
-    if ($totalStock === 0) {
-      throw new \Exception('Gagal! stock barang tidak tersedia.');
-    }
-
-    if ($totalStock < $jumlahBarang) {
-      // ambil stock lainnya jika stock utama tidak cukup
-      $additionalStock = BarangStock::where('barang_id', $barangId)
-        ->where('jumlah_stock', '>', 0)
-        ->where('id', '!=', $prioritizedStock->pluck('id'))
-        ->orderBy('tgl_expired', 'asc')
-        ->get();
-
-      $prioritizedStock = $prioritizedStock->merge($additionalStock);
-    }
-
-    $totalStock = (int) $prioritizedStock->sum('jumlah_stock');
-    if ($totalStock < $jumlahBarang) {
-      throw new \Exception('Gagal! stock barang tidak cukup.');
-    }
-
-    return $prioritizedStock;
+    return collect([$virtualStock]);
   }
 
   private function createJualDetailRecords($stocks)
   {
-    $remaining = $this->jumlah_barang_dipesan;
+    $remaining = (float) $this->jumlah_barang_dipesan;
 
     foreach ($stocks as $item) {
-      if ($remaining <= 0) {
+      if ($remaining <= 0)
         break;
-      }
 
-      $usableStock = min($remaining, $item->jumlah_stock);
-      // ini akan mengurangi jumlah stock
-      // $item->decrement('jumlah_stock', $usableStock);
+      // Jika stok fisik (>0), ambil maksimal yang tersedia.
+      // Jika virtual stock (<=0), ambil semua sisa pesanan.
+      $usableStock = ($item->jumlah_stock > 0) ? min($remaining, $item->jumlah_stock) : $remaining;
 
       JualDetail::create([
         'jumlah_barang_dipesan' => $usableStock,
-        'batch' => $item->batch,
-        'tgl_expired' => $item->tgl_expired,
+        'batch' => $item->batch, // Akan NULL jika berasal dari virtualStock
+        'tgl_expired' => $item->tgl_expired, // Akan NULL jika berasal dari virtualStock
         'jual_id' => $this->jual_id,
         'barang_id' => $this->barang_id,
         'diskon1' => $this->diskon1,
         'diskon2' => $this->diskon2,
         'keterangan' => $this->keterangan,
-        'harga_jual' => $this->harga_jual,
+        'harga_jual' => (float) str_replace(',', '.', str_replace('.', '', $this->harga_jual)),
       ]);
 
       $remaining -= $usableStock;
-    }
-
-    if ($remaining > 0) {
-      throw new \Exception('Gagal! Stock barang tidak cukup setelah menggunakan semua stock yang tersedia.');
     }
   }
 
@@ -312,30 +298,18 @@ class TambahPenjualanBarang extends Component
         $jual = Jual::findOrFail($this->jual_id);
         \Gate::authorize('createJualDetail', $jual);
 
-        // Hitung total semua detail barang (tidak peduli barang_id-nya)
-        $jumlahDetail = $this->getJumlahDetailAktif();
-
-        // Estimasi jumlah detail yang akan ditambahkan
+        $jumlahDetailAktif = $this->getJumlahDetailAktif();
         $allocatedStocks = $this->getAllocateStocks();
-        $jumlahYangAkanDitambah = 0;
-        $remaining = $this->jumlah_barang_dipesan;
 
-        foreach ($allocatedStocks as $item) {
-          if ($remaining <= 0)
-            break;
-          $usableStock = min($remaining, $item->jumlah_stock);
-          $jumlahYangAkanDitambah++;
-          $remaining -= $usableStock;
-        }
+        // Hitung berapa baris yang akan tercipta (pecah batch vs virtual)
+        $jumlahYangAkanDitambah = $allocatedStocks->count();
 
-        if ($jumlahDetail + $jumlahYangAkanDitambah > 40) {
+        if ($jumlahDetailAktif + $jumlahYangAkanDitambah > 40) {
           throw new \Exception("Maksimal hanya boleh 40 item penjualan per transaksi.");
         }
 
-        // Buat detail
         $this->createJualDetailRecords($allocatedStocks);
 
-        // Update status faktur
         $jual->status_faktur = StatusFaktur::PROCESS_FAKTUR;
         $jual->save();
       });
@@ -344,8 +318,7 @@ class TambahPenjualanBarang extends Component
       $this->dispatch('refresh-daftar-penjualan-barang');
       $this->dispatch('Jual.TambahPenjualanBarang:created');
     } catch (\Exception $e) {
-      $msg = $e->getMessage();
-      $this->js("alert('" . $msg . "')");
+      $this->js("alert('" . $e->getMessage() . "')");
     }
   }
 
