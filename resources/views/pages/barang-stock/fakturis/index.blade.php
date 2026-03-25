@@ -11,9 +11,24 @@
       </div>
 
       <div class="p-3">
-        <a href="{{ route('fakturis.stock.excel') }}" class="btn btn-secondary" title="Download Excel">
-          <i class="bi bi-file-earmark-arrow-down"></i>
-        </a>
+        <div class="dropdown d-inline-block">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-coreui-toggle="dropdown"
+            aria-expanded="false">
+            <i class="bi bi-file-earmark-arrow-down me-1"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{{ route('fakturis.stock.excel') }}">
+                <i class="bi bi-file-earmark-excel me-2"></i> Stock Barang
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ route('fakturis.stock.exportbarangperbatchExcel') }}">
+                <i class="bi bi-file-earmark-excel me-2"></i> Stock Barang Per Batch
+              </a>
+            </li>
+          </ul>
+        </div>
         @livewire('table.barang-stock-table')
       </div>
     </div>

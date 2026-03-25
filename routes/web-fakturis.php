@@ -51,6 +51,7 @@ Route::prefix('beli')->as('beli.')->group(function () {
 Route::prefix('stock')->as('stock.')->group(function () {
   Route::get('/', [BarangStockController::class, 'index'])->name('index');
   Route::get('/excel', [BarangStockController::class, 'exportExcel'])->name('excel');
+  Route::get('/exportbarangperbatchExcel', [BarangStockController::class, 'exportbarangperbatchExcel'])->name('exportbarangperbatchExcel');
 });
 
 Route::prefix('stock-awal')->as('stock-awal.')->group(function () {
