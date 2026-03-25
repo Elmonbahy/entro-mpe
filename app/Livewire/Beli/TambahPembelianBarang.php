@@ -36,6 +36,8 @@ class TambahPembelianBarang extends Component
   public $harga_beli = 0;
   public $diskon1 = 0;
   public $diskon2 = 0;
+  public $harga_beli_terakhir = 0;
+  public $diskon1_terakhir = 0;
 
   public function mount(int $beli_id, int $ppn)
   {
@@ -73,8 +75,12 @@ class TambahPembelianBarang extends Component
       // Ubah nilai ke float untuk pemrosesan lebih lanjut
       $floatValue = (float) str_replace(',', '.', $cleanValue);
 
-      // Format kembali ke Rupiah dengan desimal
-      $this->harga_beli = number_format($floatValue, 4, ',', '.');
+      // Format dinamis: hanya tampilkan desimal kalau ada koma
+      if (fmod($floatValue, 1) == 0) {
+        $this->harga_beli = number_format($floatValue, 0, ',', '.');
+      } else {
+        $this->harga_beli = rtrim(rtrim(number_format($floatValue, 4, ',', '.'), '0'), ',');
+      }
     }
 
     if (in_array($property, ['harga_beli', 'jumlah_barang_dipesan', 'diskon1', 'diskon2'])) {
@@ -106,8 +112,26 @@ class TambahPembelianBarang extends Component
     $item = Barang::select('id', 'nama', 'satuan')->find($this->barang_id);
 
     if ($item) {
-      $result = (float) BeliDetail::where('barang_id', $item->id)->latest()->value('harga_beli');
-      $this->harga_beli = number_format($result ?? 0, 4, ',', '.');
+      $lastPurchase = BeliDetail::where('barang_id', $item->id)
+        ->latest()
+        ->first(['harga_beli', 'diskon1']);
+
+      if ($lastPurchase) {
+        $harga = (float) $lastPurchase->harga_beli;
+        $this->harga_beli_terakhir = (fmod($harga, 1) == 0)
+          ? number_format($harga, 0, ',', '.')
+          : rtrim(rtrim(number_format($harga, 4, ',', '.'), '0'), ',');
+
+        $this->diskon1_terakhir = $lastPurchase->diskon1 ?? 0;
+      } else {
+        // PENTING: Reset ke 0 jika barang belum pernah dibeli sebelumnya
+        $this->harga_beli_terakhir = 0;
+        $this->diskon1_terakhir = 0;
+      }
+    } else {
+      // Reset jika tidak ada barang yang dipilih (barang_id null)
+      $this->harga_beli_terakhir = 0;
+      $this->diskon1_terakhir = 0;
     }
 
     $this->calculateTotalTagihan();
@@ -119,7 +143,7 @@ class TambahPembelianBarang extends Component
   {
     if ($id) {
       $this->brand_id = (int) $id;
-      $this->reset(['barang_id', 'satuan']);
+      $this->reset(['barang_id', 'satuan', 'harga_beli_terakhir', 'diskon1_terakhir']);
       $this->dispatch('Beli.TambahPembelianBarang:brandChanged', ['data' => $this->barangs]);
     }
   }
@@ -182,7 +206,7 @@ class TambahPembelianBarang extends Component
 
       $this->dispatch('refresh-daftar-pembelian-barang');
 
-      $this->reset(['harga_beli', 'diskon1', 'diskon2', 'tgl_expired', 'batch', 'keterangan', 'jumlah_barang_dipesan', 'total_tagihan', 'satuan', 'total_tagihan_formatted', 'barang_id', 'brand_id', 'total_formatted']);
+      $this->reset(['harga_beli', 'diskon1', 'diskon2', 'tgl_expired', 'batch', 'keterangan', 'jumlah_barang_dipesan', 'total_tagihan', 'satuan', 'total_tagihan_formatted', 'barang_id', 'brand_id', 'total_formatted', 'harga_beli_terakhir', 'diskon1_terakhir']);
 
       $this->dispatch('Beli.TambahPembelianBarang:created');
     } catch (\Exception $e) {

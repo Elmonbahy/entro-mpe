@@ -9,23 +9,36 @@
       </div>
     </div>
 
-    <div class="col-md-8 mb-3" wire:ignore>
+    <div class="col-md-4 mb-3" wire:ignore>
       <x-form.label value="Barang" />
       <div>
         <select name="barang_id" id="barang_id" class="form-select" placeholder="Cari atau pilih barang"></select>
       </div>
     </div>
+
+    <div class="col-md-2 mb-3">
+      <x-form.label value="Harga terakhir" />
+      <div class="input-group">
+        <span class="input-group-text bg-light border-end-0">Rp</span>
+        <x-form.input name="harga_beli_terakhir" :readonly="true" wire:model="harga_beli_terakhir" />
+      </div>
+    </div>
+
+    <div class="col-md-2 mb-3">
+      <x-form.label value="Diskon" />
+      <x-form.input name="diskon1_terakhir" :readonly="true" wire:model="diskon1_terakhir" />
+    </div>
   </div>
 
   <div class="row">
-    {{-- <div class="col-md-4 mb-3">
+    <div class="col-md-4 mb-3">
       <x-form.label value="Batch" optional />
       <x-form.input name="batch" placeholder="Input batch..." wire:model="batch" />
     </div>
     <div class="col-md-4 mb-3">
       <x-form.label value="Expired" optional />
       <x-form.input name="tgl_expired" wire:model="tgl_expired" type="date" placeholder="Input expired..." />
-    </div> --}}
+    </div>
     <div class="col-md-4 mb-3 ">
       <x-form.label value="Keterangan" optional />
       <x-form.input name="keterangan" wire:model="keterangan" />
@@ -35,8 +48,11 @@
   <div class="row border pt-3 mb-3 mx-0 rounded">
     <div class="col-md mb-3">
       <x-form.label value="Harga beli" />
-      <x-form.input name="harga_beli" type="text" placeholder="Input harga beli..."
-        wire:model.live.lazy="harga_beli" />
+      <div class="input-group">
+        <span class="input-group-text">Rp</span>
+        <x-form.input name="harga_beli" type="text" placeholder="Input harga beli..."
+          wire:model.live.lazy="harga_beli" />
+      </div>
     </div>
     <div class="col-md mb-3">
       <x-form.label value="Diskon 1" />
@@ -64,7 +80,7 @@
         {{ $total_formatted }}
       </p>
     </div>
-    <div class="col-md mb-3">
+    <div class="col-md mb-3 border-start">
       <x-form.label value="Tagihan" />
       <p class="mb-0 fw-bold fs-5">
         {{ $total_tagihan_formatted }}
