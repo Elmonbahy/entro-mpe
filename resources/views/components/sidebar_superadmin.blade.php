@@ -3,7 +3,10 @@
       [
           'title' => 'Master Data',
           'icon' => 'bi bi-database',
-          'items' => [['title' => 'Data User', 'route' => 'user.index']],
+          'items' => [
+              ['title' => 'Data User', 'route' => 'user.index'],
+              ['title' => 'Kontrol Akses', 'route' => 'superadmin.manage-access.index'],
+          ],
       ],
   ];
 

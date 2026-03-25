@@ -9,28 +9,38 @@ class CheckRole
 {
   public function handle(Request $request, Closure $next, ...$roles)
   {
-    // Check if the user is authenticated
+    // 1. Cek Autentikasi
     if (!auth()->check()) {
       return redirect('login');
     }
 
-    // Ensure the user has a role assigned
     $user = auth()->user();
-    if (!$user->role || !isset($user->role->slug)) {
-      // Abort if role is missing or invalid
+    $role = $user->role;
+
+    // 2. Validasi Keberadaan Role
+    if (!$role || !isset($role->slug)) {
       abort(403, 'Unauthorized action.');
     }
 
-    // Get the role of the authenticated user
-    $userRole = $user->role->slug;
+    // 3. Logika Lockdown (Cek status aktif)
+    // Pastikan kolom di database memang bernama 'is_active'
+    if (isset($role->is_active) && !$role->is_active) {
+      // Izinkan Superadmin tetap masuk
+      if ($role->slug !== 'su') {
+        auth()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    // Check if the user's role is in the list of allowed roles & not empty
-    if (!empty($roles) && in_array($userRole, $roles)) {
-      // Allow request to proceed if role is authorized
-      return $next($request);
+        return redirect('/login')->with('error', 'Akses divisi Anda sedang ditutup sementara (Stock Opname).');
+      }
     }
 
-    // If the user's role is not in the allowed roles, return a 403 Unauthorized error
-    abort(403, 'Unauthorized action.');
+    // 4. Cek Hak Akses Rute (RBAC)
+    $userRole = $role->slug;
+    if (!empty($roles) && !in_array($userRole, $roles)) {
+      abort(403, 'Unauthorized action.');
+    }
+
+    return $next($request);
   }
 }
