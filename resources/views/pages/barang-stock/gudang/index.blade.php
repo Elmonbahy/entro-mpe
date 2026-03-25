@@ -11,9 +11,6 @@
       </div>
 
       <div class="p-3">
-        <a href="{{ route('gudang.stock.excel') }}" class="btn btn-secondary" title="Download Excel">
-          <i class="bi bi-file-earmark-arrow-down"></i>
-        </a>
         @livewire('table.barang-stock-table')
       </div>
     </div>

@@ -47,7 +47,6 @@ Route::prefix('beli')->as('beli.')->group(function () {
 
 Route::prefix('stock')->as('stock.')->group(function () {
   Route::get('/', [BarangStockController::class, 'index'])->name('index');
-  Route::get('/excel', [BarangStockController::class, 'exportExcel'])->name('excel');
 });
 
 Route::prefix('mutation')->as('mutation.')->group(function () {
