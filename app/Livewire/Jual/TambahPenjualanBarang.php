@@ -139,10 +139,21 @@ class TambahPenjualanBarang extends Component
         $harga_jual = (float) $item->harga_jual_pemerintah;
       }
 
-      $harga_beli = (float) BeliDetail::where('barang_id', $item->id)->latest()->value('harga_beli');
+      // Format tampilan harga jual
+      if (fmod($harga_jual, 1) == 0) {
+        $this->harga_jual = number_format($harga_jual, 0, ',', '.');
+      } else {
+        $this->harga_jual = rtrim(rtrim(number_format($harga_jual, 4, ',', '.'), '0'), ',');
+      }
 
-      $this->harga_jual = number_format((float) $harga_jual, 4, ',', '.');
-      $this->harga_beli_formatted = \Number::currency($harga_beli, 'IDR', 'id_ID');
+      // Ambil harga beli terakhir
+      $harga_beli = (float) BeliDetail::where('barang_id', $item->id)
+        ->latest()
+        ->value('harga_beli');
+
+      $this->harga_beli_formatted = (fmod($harga_beli, 1) == 0)
+        ? number_format($harga_beli, 0, ',', '.')
+        : rtrim(rtrim(number_format($harga_beli, 4, ',', '.'), '0'), ',');
 
       $this->setBarangStock($item->id);
       $this->calculateTotalTagihan();
@@ -275,7 +286,7 @@ class TambahPenjualanBarang extends Component
         'diskon1' => $this->diskon1,
         'diskon2' => $this->diskon2,
         'keterangan' => $this->keterangan,
-        'harga_jual' => (float) str_replace(',', '.', str_replace('.', '', $this->harga_jual)),
+        'harga_jual' => $this->harga_jual,
       ]);
 
       $remaining -= $usableStock;

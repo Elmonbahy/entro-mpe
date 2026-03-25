@@ -21,7 +21,10 @@
 
     <div class="col-md-3 mb-3">
       <x-form.label value="Harga beli terakhir" />
-      <x-form.input name="harga_beli_formatted" :readonly="true" wire:model="harga_beli_formatted" />
+      <div class="input-group">
+        <span class="input-group-text bg-light border-end-0">Rp</span>
+        <x-form.input name="harga_beli_formatted" :readonly="true" wire:model="harga_beli_formatted" />
+      </div>
     </div>
   </div>
 
@@ -56,9 +59,11 @@
   <div class="row border pt-3 mb-3 mx-0 rounded">
     <div class="col-md mb-3">
       <x-form.label value="Harga jual" />
-      <x-form.input name="harga_jual" type="text" placeholder="Input harga jual..." wire:model.lazy="harga_jual" />
+      <div class="input-group">
+        <span class="input-group-text bg-light border-end-0">Rp</span>
+        <x-form.input name="harga_jual" type="text" placeholder="Input harga jual..." wire:model.lazy="harga_jual" />
+      </div>
     </div>
-
 
     <div class="col-md mb-3">
       <x-form.label value="Diskon 1" />
@@ -90,7 +95,7 @@
       </p>
     </div>
 
-    <div class="col-md mb-3">
+    <div class="col-md mb-3 border-start">
       <x-form.label value="Tagihan" />
       <p class="mb-0 fw-bold fs-5">
         {{ $total_tagihan_formatted }}
