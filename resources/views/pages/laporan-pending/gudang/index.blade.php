@@ -9,10 +9,6 @@
     <div class="card mb-3">
       <div class="p-3 card-header d-flex align-items-center">
         <p class="mb-0 fw-semibold me-2">Form Laporan Barang Pending</p>
-        <x-info-tooltip
-          message="• Pilih tanggal awal & akhir untuk laporan.
-• Jika tidak memilih pelanggan, rentang maksimal 1 bulan.
-• Jika memilih pelanggan, rentang bisa lebih 1 bulan." />
       </div>
 
       <div class="p-3">

@@ -11,11 +11,6 @@
         <p class="mb-0 fw-semibold me-2">
           Form Laporan Beli
         </p>
-        <x-info-tooltip
-          message="• Pilih tanggal awal & akhir untuk laporan.
-• Jika tidak memilih supplier, rentang maksimal 1 bulan.
-• Jika memilih supplier, rentang bisa lebih 1 bulan.
-• Status bayar opsional: Lunas / Belum Lunas." />
       </div>
 
       <div class="p-3">
