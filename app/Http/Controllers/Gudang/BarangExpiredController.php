@@ -23,8 +23,8 @@ class BarangExpiredController extends Controller
     if ($request->tgl_akhir) {
       $query->whereDate('tgl_expired', '<=', Carbon::parse($request->tgl_akhir)->endOfDay());
     } else {
-      // Default batas maksimal 3 bulan dari sekarang
-      $query->whereDate('tgl_expired', '<=', now()->addMonths(3)->endOfDay());
+      // Default batas maksimal 6 bulan dari sekarang
+      $query->whereDate('tgl_expired', '<=', now()->addMonths(6)->endOfDay());
     }
 
     return $query->get()->map(function ($item) {
@@ -82,6 +82,6 @@ class BarangExpiredController extends Controller
 
     $filename = "laporan_barang_expired_{$tgl_awal}_{$tgl_akhir}.xlsx";
 
-    return Excel::download(new BarangExpiredExport($data),$filename);
+    return Excel::download(new BarangExpiredExport($data), $filename);
   }
 }
