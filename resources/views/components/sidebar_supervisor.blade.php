@@ -15,6 +15,7 @@
               ['title' => 'Data Pelanggan', 'route' => 'supervisor.pelanggan.index'],
               ['title' => 'Data Salesman', 'route' => 'supervisor.salesman.index'],
               ['title' => 'Data Supplier', 'route' => 'supervisor.supplier.index'],
+              ['title' => 'Data User', 'route' => 'supervisor.user.index'],
           ],
       ],
       [

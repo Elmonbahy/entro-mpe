@@ -46,6 +46,7 @@ class User extends Authenticatable
     'password' => 'hashed',
   ];
 
+  // Di dalam class User
   public function getIsOnlineAttribute(): bool
   {
     // Jika di controller Anda sudah melakukan join 'last_interaction', gunakan itu

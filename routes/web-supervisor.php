@@ -13,6 +13,7 @@ use App\Http\Controllers\Supervisor\BeliController;
 use App\Http\Controllers\Supervisor\BarangStockController;
 use App\Http\Controllers\Supervisor\JualController;
 use App\Http\Controllers\Supervisor\SuratJalanController;
+use App\Http\Controllers\Supervisor\UsersController;
 use App\Http\Controllers\Supervisor\WorkProgressController;
 
 Route::resource('/barang', BarangController::class);
@@ -21,6 +22,10 @@ Route::resource('/group', GroupController::class);
 Route::resource('/pelanggan', PelangganController::class);
 Route::resource('/salesman', SalesmanController::class);
 Route::resource('/supplier', SupplierController::class);
+
+Route::prefix('user')->as('user.')->group(function () {
+  Route::get('/', [UsersController::class, 'index'])->name('index');
+});
 
 Route::prefix('export')->group(function () {
   Route::get('/barang', [BarangController::class, 'exportExcel'])->name('barang.export');
