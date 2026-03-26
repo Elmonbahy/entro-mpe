@@ -114,14 +114,14 @@ class LaporanFakturJualController extends Controller
     ];
 
     $messages = [
-      'tgl_akhir.before_or_equal' => 'Tanggal akhir tidak boleh lebih dari 1 bulan setelah tanggal awal.',
+      'tgl_akhir.before_or_equal' => 'Tanggal akhir tidak boleh lebih dari 2 bulan setelah tanggal awal.',
     ];
 
     if (!$request->filled('pelanggan_id')) {
       if ($request->filled('tgl_awal')) {
         $rules['tgl_akhir'] = array_merge(
           $rules['tgl_akhir'],
-          ['before_or_equal:' . Carbon::parse($request->tgl_awal)->addMonths(1)->toDateString()]
+          ['before_or_equal:' . Carbon::parse($request->tgl_awal)->addMonths(2)->toDateString()]
         );
       }
     } else {
