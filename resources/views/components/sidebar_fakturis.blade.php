@@ -50,7 +50,7 @@
           'title' => 'Laporan Jual',
           'icon' => 'bi bi-file-earmark',
           'items' => [
-              ['title' => 'Profit', 'route' => 'fakturis.laporan-jual.index'],
+              //   ['title' => 'Profit', 'route' => 'fakturis.laporan-jual.index'],
               ['title' => 'Faktur', 'route' => 'fakturis.laporan-jual-faktur.index'],
               ['title' => 'List Faktur', 'route' => 'fakturis.laporan-list-faktur-jual.index'],
           ],

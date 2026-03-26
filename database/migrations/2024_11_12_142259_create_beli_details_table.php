@@ -23,8 +23,8 @@ return new class extends Migration {
 
       $table->enum('status_barang_masuk', ['BELUM_LENGKAP', 'LENGKAP'])->default('BELUM_LENGKAP');
 
-      $table->foreignId('beli_id')->constrained()->cascadeOnDelete()->restrictOnUpdate();
-      $table->foreignId('barang_id')->constrained()->restrictOnDelete()->restrictOnUpdate();
+      $table->foreignId('beli_id')->constrained()->cascadeOnDelete()->restrictOnUpdate()->index();
+      $table->foreignId('barang_id')->constrained()->restrictOnDelete()->restrictOnUpdate()->index();
       $table->timestamps();
     });
   }
