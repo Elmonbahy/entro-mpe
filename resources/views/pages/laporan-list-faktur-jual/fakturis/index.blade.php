@@ -26,7 +26,7 @@
 
           <div class="row">
             <div class="col-md-4 mb-3">
-              <x-form.label value="Pelanggan" />
+              <x-form.label value="Pelanggan" optional />
               <x-form.select name="pelanggan_id" placeholder="Cari atau pilih pelanggan" :options="$pelanggans" valueKey="id"
                 labelKey="nama" :selected="$pelanggan_id" />
             </div>

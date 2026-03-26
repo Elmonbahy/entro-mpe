@@ -15,11 +15,23 @@ class LaporanBeliController extends Controller
   {
     $column = $request->filter_berdasarkan === 'tgl_terima' ? 'tgl_terima_faktur' : 'tgl_faktur';
 
-    $query = Beli::with([
-      'beliDetails',
-      'beliDetails.barang:nama,id,satuan',
-      'supplier:nama,id',
-    ])
+    $query = Beli::query()
+      ->select([
+        'id',
+        'nomor_faktur',
+        'tgl_faktur',
+        'tgl_terima_faktur',
+        'status_bayar',
+        'supplier_id',
+        'bayar'
+      ])
+      ->with([
+        'supplier:id,nama',
+        'beliDetails' => function ($q) {
+          $q->select('id', 'beli_id', 'barang_id', 'jumlah_barang_masuk', 'jumlah_barang_dipesan', 'harga_beli', 'diskon1', 'diskon2');
+        },
+        'beliDetails.barang:id,nama,satuan',
+      ])
       ->withCount('beliDetails')
       ->whereBetween($column, [
         $request->tgl_awal,

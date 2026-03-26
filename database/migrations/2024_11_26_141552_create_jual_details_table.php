@@ -22,8 +22,8 @@ return new class extends Migration {
       $table->decimal('harga_jual', 15, 4)->unsigned();
       $table->enum('status_barang_keluar', ['BELUM_LENGKAP', 'LENGKAP'])->default('BELUM_LENGKAP');
 
-      $table->foreignId('jual_id')->constrained()->cascadeOnDelete()->restrictOnUpdate();
-      $table->foreignId('barang_id')->constrained()->restrictOnDelete()->restrictOnUpdate();
+      $table->foreignId('jual_id')->constrained()->cascadeOnDelete()->restrictOnUpdate()->index();
+      $table->foreignId('barang_id')->constrained()->restrictOnDelete()->restrictOnUpdate()->index();
       $table->timestamps();
     });
   }
