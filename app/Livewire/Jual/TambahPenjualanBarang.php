@@ -293,7 +293,7 @@ class TambahPenjualanBarang extends Component
     }
   }
 
-  //untuk jumlah barang yang dapat dipesan hanya 40 item
+  //untuk jumlah barang yang dapat dipesan hanya 35 item
   private function getJumlahDetailAktif(): int
   {
     return JualDetail::where('jual_id', $this->jual_id)
@@ -315,8 +315,8 @@ class TambahPenjualanBarang extends Component
         // Hitung berapa baris yang akan tercipta (pecah batch vs virtual)
         $jumlahYangAkanDitambah = $allocatedStocks->count();
 
-        if ($jumlahDetailAktif + $jumlahYangAkanDitambah > 40) {
-          throw new \Exception("Maksimal hanya boleh 40 item penjualan per transaksi.");
+        if ($jumlahDetailAktif + $jumlahYangAkanDitambah > 35) {
+          throw new \Exception("Maksimal hanya boleh 35 item penjualan per transaksi.");
         }
 
         $this->createJualDetailRecords($allocatedStocks);

@@ -52,10 +52,10 @@ class DaftarBarang extends Component
         throw new \Exception('Jumlah barang dikirim tidak benar.');
       }
 
-      // Cek apakah sudah 40 item dikirim
+      // Cek apakah sudah 35 item dikirim
       $jumlahBarangTerkirim = SuratJalanDetail::where('surat_jalan_id', $this->surat_jalan_id)->count();
-      if ($jumlahBarangTerkirim >= 40) {
-        throw new \Exception('Maksimum 40 item barang dikirim per surat jalan.');
+      if ($jumlahBarangTerkirim >= 35) {
+        throw new \Exception('Maksimum 35 item barang dikirim per surat jalan.');
       }
 
 
@@ -98,10 +98,10 @@ class DaftarBarang extends Component
   public function submitSemuaBarang()
   {
     try {
-      // Cek batas 40 item
+      // Cek batas 35 item
       $jumlahBarangTerkirim = SuratJalanDetail::where('surat_jalan_id', $this->surat_jalan_id)->count();
-      if ($jumlahBarangTerkirim >= 40) {
-        throw new \Exception('Maksimum 40 item barang dikirim per surat jalan.');
+      if ($jumlahBarangTerkirim >= 35) {
+        throw new \Exception('Maksimum 35 item barang dikirim per surat jalan.');
       }
 
       $jualDetails = JualDetail::where('jual_id', $this->jual_id)->get();

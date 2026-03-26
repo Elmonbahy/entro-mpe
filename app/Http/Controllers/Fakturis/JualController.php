@@ -190,9 +190,10 @@ class JualController extends Controller
   }
 
 
-  public function exportFakur(int $id)
+  public function exportFakur(int $id, Request $request)
   {
     $jual = Jual::findOrFail($id);
+
     $jual_detail = JualDetail::where('jual_id', $id)
       ->where('jumlah_barang_dipesan', '>', 0)
       ->with([
@@ -220,12 +221,24 @@ class JualController extends Controller
       'sum_total_tagihan' => $sum_total_tagihan,
     ]);
 
-    $pdf->setPaper('legal');
+    $type = $request->query('type');
+
+    if ($type == 'pendek') {
+      // Ukuran Faktur Pendek (8.5 x 5.5 inci)
+      $pdf->setPaper([0, 0, 612, 415], 'portrait');
+    } elseif ($type == 'panjang') {
+      // Ukuran Faktur Panjang (8.5 x 11 inci)
+      $pdf->setPaper([0, 0, 612, 792], 'portrait');
+    } else {
+      // Default tetap Legal sesuai permintaan Anda
+      $pdf->setPaper('legal', 'portrait');
+    }
+
     $pdf->setOption('isJavascriptEnabled', false);
     $pdf->setOption('isRemoteEnabled', true);
 
     $filename = 'FAKTUR_' . $jual->nomor_faktur . '_' . $jual->pelanggan->nama;
-    $filename = str_replace(' ', '_', $filename) . '.pdf';
+    $filename = str_replace([' ', '/', '\\'], '_', $filename) . '.pdf';
 
     return $pdf->stream($filename);
   }

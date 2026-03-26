@@ -1,6 +1,23 @@
 @extends('layouts.pdf-layout')
 @push('styles')
   <style>
+    @page {
+      margin: 0;
+      /* Biarkan CSS body yang mengatur jarak */
+    }
+
+    body {
+      margin-top: 0cm;
+      margin-bottom: 0.5cm;
+      margin-left: 0.5cm;
+      /* Jangan terlalu lebar agar tidak terpotong di kanan */
+      margin-right: 0.3cm;
+      width: 20cm;
+      /* Batasi lebar maksimal konten (Lebar kertas 21.5cm - margin) */
+      font-family: 'Courier', sans-serif;
+      font-size: 10pt;
+    }
+
     td span {
       font-size: 10px;
     }
@@ -74,7 +91,7 @@
       <!-- Bagian Kanan -->
       <div style="border: 1px solid black; float: right; width: 40%; min-height: 50px;" class="p-2">
         <p>Kepada Yth.</p>
-        <p class="fw-bold mb-1">{{ $jual->pelanggan->nama }}</p>
+        <p class="fw-bold mb-0">{{ $jual->pelanggan->nama }}</p>
 
         <table class="table table-compact">
           <tbody>
@@ -211,7 +228,7 @@
           <td>Hormat Kami</td>
         </tr>
         <tr>
-          <td height="15" colspan="3"></td>
+          <td height="10" colspan="3"></td>
         </tr>
         <tr>
           <td>
