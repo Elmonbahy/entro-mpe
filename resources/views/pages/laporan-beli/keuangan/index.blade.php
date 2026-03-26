@@ -17,6 +17,15 @@
         <form method="GET" action="{{ route('keuangan.laporan-beli.index') }}" autocomplete="off">
           <div class="row">
             <div class="col-md-4 mb-3">
+              <x-form.label value="Filter Berdasarkan" />
+              <select name="filter_berdasarkan" class="form-control">
+                <option value="tgl_faktur" {{ request('filter_berdasarkan') == 'tgl_faktur' ? 'selected' : '' }}>Tanggal
+                  Faktur</option>
+                <option value="tgl_terima" {{ request('filter_berdasarkan') == 'tgl_terima' ? 'selected' : '' }}>Tanggal
+                  Terima Faktur</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
               <x-form.label value="Tanggal awal" />
               <x-form.input name="tgl_awal" wire:model="tgl_awal" type="date" value="{{ $tgl_awal }}" />
             </div>
@@ -67,7 +76,7 @@
       <div class="card">
         <div class="p-3 card-header d-flex justify-content-between align-items-center">
           <p class="mb-0 fw-semibold">Tabel Laporan Beli</p>
-          <a href="{{ route('keuangan.laporan-beli.excel') }}?tgl_awal={{ request('tgl_awal') }}&tgl_akhir={{ request('tgl_akhir') }}&supplier_id={{ request('supplier_id') }}&status_bayar={{ request('status_bayar') }}"
+          <a href="{{ route('keuangan.laporan-beli.excel') }}?tgl_awal={{ request('tgl_awal') }}&tgl_akhir={{ request('tgl_akhir') }}&supplier_id={{ request('supplier_id') }}&status_bayar={{ request('status_bayar') }}&filter_berdasarkan={{ request('filter_berdasarkan') }}"
             class="btn btn-primary">
             Export Excel
           </a>

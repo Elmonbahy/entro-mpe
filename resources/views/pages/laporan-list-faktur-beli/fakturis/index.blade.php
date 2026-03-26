@@ -74,7 +74,7 @@
       <div class="card">
         <div class="p-3 card-header d-flex justify-content-between align-items-center">
           <p class="mb-0 fw-semibold">Tabel Laporan Beli</p>
-          <a href="{{ route('fakturis.laporan-list-faktur-beli.excel') }}?tgl_awal={{ request('tgl_awal') }}&tgl_akhir={{ request('tgl_akhir') }}&supplier_id={{ request('supplier_id') }}&status_bayar={{ request('status_bayar') }}"
+          <a href="{{ route('fakturis.laporan-list-faktur-beli.excel') }}?tgl_awal={{ request('tgl_awal') }}&tgl_akhir={{ request('tgl_akhir') }}&supplier_id={{ request('supplier_id') }}&status_bayar={{ request('status_bayar') }}&filter_berdasarkan={{ request('filter_berdasarkan') }}"
             class="btn btn-primary">
             Export Excel
           </a>

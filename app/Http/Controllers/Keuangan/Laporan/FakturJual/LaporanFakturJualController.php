@@ -16,12 +16,25 @@ class LaporanFakturJualController extends Controller
   private function getLaporanFakturJualData(Request $request)
   {
 
-    $query = Jual::with([
-      'jualDetails',
-      'jualDetails.barang:nama,id,satuan',
-      'pelanggan:nama,id',
-      'salesman:nama,id'
-    ])
+    $query = Jual::query()
+      ->select([
+        'id',
+        'nomor_faktur',
+        'tgl_faktur',
+        'status_bayar',
+        'pelanggan_id',
+        'salesman_id',
+        'ongkir',
+        'bayar'
+      ])
+      ->with([
+        'pelanggan:id,nama',
+        'salesman:id,nama',
+        'jualDetails' => function ($q) {
+          $q->select('id', 'jual_id', 'barang_id', 'jumlah_barang_keluar', 'jumlah_barang_dipesan', 'harga_jual', 'diskon1', 'diskon2');
+        },
+        'jualDetails.barang:id,nama,satuan'
+      ])
       ->withCount('jualDetails')
       ->where('status_faktur', 'DONE')
       ->whereBetween('tgl_faktur', [
