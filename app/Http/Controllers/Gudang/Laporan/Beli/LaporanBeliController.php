@@ -13,14 +13,36 @@ class LaporanBeliController extends Controller
 {
   private function getLaporanBeliData(Request $request)
   {
-    $query = Beli::with([
-      'beliDetails',
-      'beliDetails.barang:nama,id,satuan,brand_id',
-      'beliDetails.barang.brand:nama,id',
-      'supplier:nama,id',
-    ])
+    $column = $request->filter_berdasarkan === 'tgl_terima' ? 'tgl_terima_faktur' : 'tgl_faktur';
+
+    $query = Beli::query()
+      ->select([
+        'id',
+        'nomor_faktur',
+        'tgl_terima_faktur',
+        'tgl_faktur',
+        'supplier_id',
+        'status_faktur'
+      ])
+      ->with([
+        'supplier:id,nama',
+        'beliDetails' => function ($q) {
+          $q->select([
+            'id',
+            'beli_id',
+            'barang_id',
+            'jumlah_barang_masuk',
+            'jumlah_barang_dipesan',
+            'status_barang_masuk',
+          ]);
+        },
+        'beliDetails.barang' => function ($q) {
+          $q->select(['id', 'nama', 'satuan', 'brand_id']);
+        },
+        'beliDetails.barang.brand:id,nama'
+      ])
       ->withCount('beliDetails')
-      ->whereBetween('tgl_terima_faktur', [
+      ->whereBetween($column, [
         $request->tgl_awal,
         $request->tgl_akhir ? Carbon::parse($request->tgl_akhir)->endOfDay() : null
       ]);
@@ -68,17 +90,18 @@ class LaporanBeliController extends Controller
       'tgl_akhir' => ['nullable', 'date', 'after_or_equal:tgl_awal'],
       'supplier_id' => 'nullable|exists:suppliers,id',
       'status_faktur' => 'nullable|in:PROCESS_GUDANG,DONE',
+      'filter_berdasarkan' => 'nullable|in:tgl_faktur,tgl_terima'
     ];
 
     $messages = [
-      'tgl_akhir.before_or_equal' => 'Tanggal akhir tidak boleh lebih dari 1 bulan setelah tanggal awal.',
+      'tgl_akhir.before_or_equal' => 'Tanggal akhir tidak boleh lebih dari 2 bulan setelah tanggal awal.',
     ];
 
     if (!$request->filled('supplier_id')) {
       if ($request->filled('tgl_awal')) {
         $rules['tgl_akhir'] = array_merge(
           $rules['tgl_akhir'],
-          ['before_or_equal:' . Carbon::parse($request->tgl_awal)->addMonths(1)->toDateString()]
+          ['before_or_equal:' . Carbon::parse($request->tgl_awal)->addMonths(2)->toDateString()]
         );
       }
     } else {
@@ -98,6 +121,7 @@ class LaporanBeliController extends Controller
       'supplier_id' => $request->supplier_id,
       'tgl_awal' => $request->tgl_awal,
       'tgl_akhir' => $request->tgl_akhir,
+      'filter_berdasarkan' => $request->filter_berdasarkan ?? 'tgl_faktur',
       'data' => $data
     ]);
   }
@@ -108,7 +132,8 @@ class LaporanBeliController extends Controller
       'tgl_awal' => 'required|date',
       'tgl_akhir' => 'required|date|after_or_equal:tgl_awal',
       'supplier_id' => 'nullable|exists:suppliers,id',
-      'status_faktur' => 'nullable|in:PROCESS_GUDANG,DONE'
+      'status_faktur' => 'nullable|in:PROCESS_GUDANG,DONE',
+      'filter_berdasarkan' => 'nullable|in:tgl_faktur,tgl_terima'
     ]);
 
     $data = $this->getLaporanBeliData($request);
@@ -131,7 +156,7 @@ class LaporanBeliController extends Controller
     }
 
     return Excel::download(
-      new LaporanBeliExport($data, $request->tgl_awal, $request->tgl_akhir),
+      new LaporanBeliExport($data, $request->tgl_awal, $request->tgl_akhir, $request->filter_berdasarkan ?? 'tgl_faktur'),
       $filename
     );
   }

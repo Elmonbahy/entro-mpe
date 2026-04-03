@@ -10,18 +10,33 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 
+use function Symfony\Component\String\s;
+
 class LaporanJualController extends Controller
 {
 
   private function getLaporanJualData(Request $request)
   {
 
-    $query = Jual::with([
-      'jualDetails',
-      'jualDetails.barang:nama,id,satuan,brand_id',
-      'jualDetails.barang.brand:nama,id',
-      'pelanggan:nama,id',
-    ])
+    $query = Jual::query()
+      ->select([
+        'id',
+        'nomor_faktur',
+        'tgl_faktur',
+        'pelanggan_id',
+        'status_faktur'
+      ])
+      ->with([
+        'pelanggan:id,nama',
+        'salesman:id,nama',
+        'jualDetails' => function ($q) {
+          $q->select('id', 'jual_id', 'barang_id', 'jumlah_barang_keluar', 'jumlah_barang_dipesan', 'status_barang_keluar');
+        },
+        'jualDetails.barang' => function ($q) {
+          $q->select(['id', 'nama', 'satuan', 'brand_id']);
+        },
+        'jualDetails.barang.brand:id,nama'
+      ])
       ->withCount('jualDetails')
       ->whereBetween('tgl_faktur', [
         $request->tgl_awal,
@@ -73,14 +88,14 @@ class LaporanJualController extends Controller
     ];
 
     $messages = [
-      'tgl_akhir.before_or_equal' => 'Tanggal akhir tidak boleh lebih dari 1 bulan setelah tanggal awal.',
+      'tgl_akhir.before_or_equal' => 'Tanggal akhir tidak boleh lebih dari 2 bulan setelah tanggal awal.',
     ];
 
     if (!$request->filled('pelanggan_id')) {
       if ($request->filled('tgl_awal')) {
         $rules['tgl_akhir'] = array_merge(
           $rules['tgl_akhir'],
-          ['before_or_equal:' . Carbon::parse($request->tgl_awal)->addMonths(1)->toDateString()]
+          ['before_or_equal:' . Carbon::parse($request->tgl_awal)->addMonths(2)->toDateString()]
         );
       }
     } else {

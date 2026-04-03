@@ -13,12 +13,15 @@ class LaporanBeliExport implements FromView, ShouldAutoSize, WithEvents
   protected $data;
   protected $tglAwal;
   protected $tglAkhir;
+  protected $filterBerdasarkan;
 
-  public function __construct($data, $tglAwal, $tglAkhir)
+
+  public function __construct($data, $tglAwal, $tglAkhir, $filterBerdasarkan)
   {
     $this->data = $data;
     $this->tglAwal = $tglAwal;
     $this->tglAkhir = $tglAkhir;
+    $this->filterBerdasarkan = $filterBerdasarkan;
   }
 
   public function view(): View
@@ -26,7 +29,8 @@ class LaporanBeliExport implements FromView, ShouldAutoSize, WithEvents
     return view('pages.laporan-beli.gudang.excel', [
       'data' => $this->data,
       'tglAwal' => $this->tglAwal,
-      'tglAkhir' => $this->tglAkhir
+      'tglAkhir' => $this->tglAkhir,
+      'filterBerdasarkan' => $this->filterBerdasarkan,
     ]);
   }
 
