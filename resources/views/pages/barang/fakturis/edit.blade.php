@@ -24,7 +24,7 @@
                 valueKey="id" labelKey="nama" />
             </div>
             <div class="mb-3 col-md">
-              <x-form.label value="kode barang" optional />
+              <x-form.label value="kode barang" />
               <x-form.input name="kode" placeholder="Input kode barang..." :value="$barang->kode" />
             </div>
           </div>

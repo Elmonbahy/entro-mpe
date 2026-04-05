@@ -14,7 +14,7 @@
       </div>
 
       <div class="p-3">
-        <form action="{{ route('fakturis.barang.store') }}" method="post" autocomplete="off">
+        <form action="{{ route('superadmin.barang.store') }}" method="post" autocomplete="off">
           @csrf
           <div class="row">
             <div class="mb-3 col-md">

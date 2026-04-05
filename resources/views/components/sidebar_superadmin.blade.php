@@ -5,6 +5,7 @@
           'icon' => 'bi bi-database',
           'items' => [
               ['title' => 'Data User', 'route' => 'user.index'],
+              ['title' => 'Data Barang', 'route' => 'superadmin.barang.index'],
               ['title' => 'Kontrol Akses', 'route' => 'superadmin.manage-access.index'],
           ],
       ],
