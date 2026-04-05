@@ -6,6 +6,7 @@
           'items' => [
               ['title' => 'Data User', 'route' => 'user.index'],
               ['title' => 'Data Barang', 'route' => 'superadmin.barang.index'],
+              ['title' => 'Data Brand', 'route' => 'superadmin.brand.index'],
               ['title' => 'Kontrol Akses', 'route' => 'superadmin.manage-access.index'],
           ],
       ],
