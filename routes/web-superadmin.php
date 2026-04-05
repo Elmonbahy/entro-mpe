@@ -6,6 +6,7 @@ use App\Http\Controllers\Superadmin\GroupController;
 use App\Http\Controllers\Superadmin\PelangganController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Superadmin\RoleAccessController;
+use App\Http\Controllers\Superadmin\SalesmanController;
 
 Route::prefix('manage-access')->as('manage-access.')->group(function () {
   Route::get('/', [RoleAccessController::class, 'index'])->name('index');
@@ -16,6 +17,7 @@ Route::resource('/barang', BarangController::class);
 Route::resource('/brand', BrandController::class);
 Route::resource('/group', GroupController::class);
 Route::resource('/pelanggan', PelangganController::class);
+Route::resource('/salesman', SalesmanController::class);
 
 Route::prefix('export')->group(function () {
   Route::get('/barang', [BarangController::class, 'exportExcel'])->name('barang.export');
