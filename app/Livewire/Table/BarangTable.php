@@ -46,7 +46,7 @@ final class BarangTable extends PowerGridComponent
       ->add('nama')
       ->add('satuan');
 
-    if (Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (Auth::user()->hasAnyRole(['as', 'af', 'su'])) {
       // Kolom tambahan khusus untuk role 'af'
       $fields
         ->add('harga_jual_pemerintah', fn($row) => Number::currency($row->harga_jual_pemerintah ?? 0, in: 'IDR', locale: 'id_ID'))
@@ -71,7 +71,7 @@ final class BarangTable extends PowerGridComponent
         ->sortable(),
     ];
 
-    if (Auth::user()->hasAnyRole(['as', 'af'])) {
+    if (Auth::user()->hasAnyRole(['as', 'af', 'su'])) {
       // Kolom tambahan khusus untuk role 'af'
       $columns[] = Column::make('Harga jual pemerintah', 'harga_jual_pemerintah');
       $columns[] = Column::make('Harga jual swasta', 'harga_jual_swasta');
@@ -96,7 +96,7 @@ final class BarangTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['af'])) {
+    if (!Auth::user()->hasAnyRole(['af', 'su'])) {
       abort(403);
     }
 
@@ -117,11 +117,13 @@ final class BarangTable extends PowerGridComponent
         'af' => 'fakturis.barang.show',
         'aa' => 'accounting.barang.show',
         'as' => 'supervisor.barang.show',
+        'su' => 'superadmin.barang.show',
       ],
       'edit' => [
         'ag' => 'gudang.barang.edit',
         'aw' => 'warehouse.barang.edit',
         'af' => 'fakturis.barang.edit',
+        'su' => 'superadmin.barang.edit',
       ],
     ];
 
@@ -143,7 +145,7 @@ final class BarangTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['barang' => $row->id]);
     }
 
-    if (Auth::user()->hasAnyRole(['af'])) {
+    if (Auth::user()->hasAnyRole(['af', 'su'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)

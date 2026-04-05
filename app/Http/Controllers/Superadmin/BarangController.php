@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Fakturis;
+namespace App\Http\Controllers\Superadmin;
 
 use App\Http\Controllers\Controller;
 use App\Constants\Satuan;
@@ -21,7 +21,7 @@ class BarangController extends Controller
    */
   public function index()
   {
-    return view('pages.barang.fakturis.index');
+    return view('pages.barang.superadmin.index');
   }
 
 
@@ -75,7 +75,7 @@ class BarangController extends Controller
     $suppliers = Supplier::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
     $groups = Group::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
     $brands = Brand::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
-    return view('pages.barang.fakturis.create', [
+    return view('pages.barang.superadmin.create', [
       'satuans' => $satuans,
       'suppliers' => $suppliers,
       'groups' => $groups,
@@ -111,9 +111,9 @@ class BarangController extends Controller
         'kegunaan' => $request->kegunaan,
       ]);
 
-      return redirect()->route('fakturis.barang.index')->with('success', 'Berhasil menambahkan data barang.');
+      return redirect()->route('superadmin.barang.index')->with('success', 'Berhasil menambahkan data barang.');
     } catch (\Throwable $th) {
-      return redirect()->route('fakturis.barang.index')->with('error', 'Gagal menambahkan data barang.');
+      return redirect()->route('superadmin.barang.index')->with('error', 'Gagal menambahkan data barang.');
     }
   }
 
@@ -125,7 +125,7 @@ class BarangController extends Controller
     $barang_stocks = BarangStock::where('barang_id', $barang->id)
       ->where('jumlah_stock', '>', 0)
       ->get();
-    return view('pages.barang.fakturis.show', ['barang' => $barang, 'barang_stocks' => $barang_stocks]);
+    return view('pages.barang.superadmin.show', ['barang' => $barang, 'barang_stocks' => $barang_stocks]);
   }
 
   /**
@@ -138,7 +138,7 @@ class BarangController extends Controller
     $groups = Group::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
     $brands = Brand::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
 
-    return view('pages.barang.fakturis.edit', [
+    return view('pages.barang.superadmin.edit', [
       'barang' => $barang,
       'satuans' => $satuans,
       'suppliers' => $suppliers,
@@ -174,7 +174,7 @@ class BarangController extends Controller
     $barang->kegunaan = $request->kegunaan;
     $barang->save();
 
-    return redirect()->route('fakturis.barang.index')->with('success', 'Berhasil mengubah data barang.');
+    return redirect()->route('superadmin.barang.index')->with('success', 'Berhasil mengubah data barang.');
   }
 
   public function exportExcel()

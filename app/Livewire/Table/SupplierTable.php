@@ -72,7 +72,7 @@ final class SupplierTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['af'])) {
+    if (!Auth::user()->hasAnyRole(['af', 'su'])) {
       abort(403);
     }
 
@@ -91,10 +91,12 @@ final class SupplierTable extends PowerGridComponent
         'ak' => 'keuangan.supplier.show',
         'af' => 'fakturis.supplier.show',
         'as' => 'supervisor.supplier.show',
+        'su' => 'superadmin.supplier.show',
       ],
       'edit' => [
         'ak' => 'keuangan.supplier.edit',
         'af' => 'fakturis.supplier.edit',
+        'su' => 'superadmin.supplier.edit',
       ],
     ];
 
@@ -118,8 +120,8 @@ final class SupplierTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['supplier' => $row->id]);
     }
 
-    // Tombol Delete (hanya untuk 'af')
-    if (Auth::user()->hasAnyRole(['af'])) {
+    // Tombol Delete (hanya untuk 'af' dan 'su')
+    if (Auth::user()->hasAnyRole(['af', 'su'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)

@@ -52,7 +52,7 @@ final class PelangganTable extends PowerGridComponent
       ->add('kota')
       ->add('npwp')
       ->add('contact_phone');
-    if (Auth::user()->hasRole('ak')) {
+    if (Auth::user()->hasAnyRole(['af', 'su'])) {
       // Kolom tambahan khusus untuk role 'ak'
       $fields
         ->add('plafon_hutang', fn($row) => Number::currency($row->plafon_hutang ?? 0, in: 'IDR', locale: 'id_ID'))
@@ -74,7 +74,7 @@ final class PelangganTable extends PowerGridComponent
       Column::make('Npwp', 'npwp')
     ];
 
-    if (Auth::user()->hasRole('ak')) {
+    if (Auth::user()->hasAnyRole(['af', 'su'])) {
       // Kolom tambahan khusus untuk role 'af'
       $columns[] = Column::make('Plafon Hutang', 'plafon_hutang');
       $columns[] = Column::make('Limit Hari', 'limit_hari');
@@ -98,7 +98,7 @@ final class PelangganTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['af'])) {
+    if (!Auth::user()->hasAnyRole(['af', 'su'])) {
       abort(403);
     }
 
@@ -120,12 +120,14 @@ final class PelangganTable extends PowerGridComponent
         'af' => 'fakturis.pelanggan.show',
         'ag' => 'gudang.pelanggan.show',
         'as' => 'supervisor.pelanggan.show',
+        'su' => 'superadmin.pelanggan.show',
       ],
       'edit' => [
         'al' => 'logistik.pelanggan.edit',
         'ak' => 'keuangan.pelanggan.edit',
         'af' => 'fakturis.pelanggan.edit',
         'ag' => 'gudang.pelanggan.edit',
+        'su' => 'superadmin.pelanggan.edit',
       ],
     ];
 
@@ -149,8 +151,8 @@ final class PelangganTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['pelanggan' => $row->id]);
     }
 
-    // Tombol Delete (hanya role 'af')
-    if (Auth::user()->hasAnyRole(['af'])) {
+    // Tombol Delete (hanya role 'af' dan 'su')
+    if (Auth::user()->hasAnyRole(['af', 'su'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)

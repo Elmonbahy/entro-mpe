@@ -37,7 +37,7 @@
           <td>{{ $data->contact_phone }}</td>
         </tr>
 
-        @roles(['af', 'ak', 'as'])
+        @roles(['af', 'ak', 'as', 'su'])
         <tr>
           <td>Tipe pelanggan</td>
           <td>{{ $data->tipe }}</td>
