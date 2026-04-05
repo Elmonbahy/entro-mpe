@@ -10,6 +10,7 @@
               ['title' => 'Data Group', 'route' => 'superadmin.group.index'],
               ['title' => 'Data Pelanggan', 'route' => 'superadmin.pelanggan.index'],
               ['title' => 'Data Salesman', 'route' => 'superadmin.salesman.index'],
+              ['title' => 'Data Supplier', 'route' => 'superadmin.supplier.index'],
               ['title' => 'Kontrol Akses', 'route' => 'superadmin.manage-access.index'],
           ],
       ],
