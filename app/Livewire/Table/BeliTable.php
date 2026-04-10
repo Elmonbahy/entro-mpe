@@ -74,7 +74,7 @@ final class BeliTable extends PowerGridComponent
         ]);
       });
 
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as'])) {
+    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
       $fields->add('status_bayar_x', function (Beli $model) {
         return \Blade::render('<x-badge.status-bayar :status="$status->value" />', [
           'status' => $model->status_bayar,
@@ -104,11 +104,11 @@ final class BeliTable extends PowerGridComponent
       Column::make('Status faktur', 'status_faktur_x'),
     ];
 
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as'])) {
+    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
       $columns[] = Column::make('Total Faktur', 'total_faktur_formatted');
     }
 
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as'])) {
+    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
       $columns[] = Column::make('Status bayar', 'status_bayar_x');
     }
 
@@ -161,6 +161,7 @@ final class BeliTable extends PowerGridComponent
         'ak' => 'keuangan.beli.show',
         'aa' => 'accounting.beli.show',
         'as' => 'supervisor.beli.show',
+        'ap' => 'pajak.beli.show',
       ],
       'edit' => [
         'af' => 'fakturis.beli.edit',

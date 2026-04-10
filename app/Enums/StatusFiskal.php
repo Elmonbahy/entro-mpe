@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 enum StatusFiskal: string
 {

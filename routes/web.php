@@ -84,3 +84,10 @@ Route::middleware(['auth', CheckRole::class . ':al'])
   ->group(function () {
     require base_path('routes/web-logistik.php');
   });
+
+Route::middleware(['auth', CheckRole::class . ':ap'])
+  ->prefix('pajak')
+  ->as('pajak.')
+  ->group(function () {
+    require base_path('routes/web-pajak.php');
+  });

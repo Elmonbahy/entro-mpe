@@ -49,6 +49,10 @@
       @include('components/sidebar_logistik')
     @endrole
 
+    @role('ap')
+      @include('components/sidebar_pajak')
+    @endrole
+
   </ul>
   <div class="sidebar-footer border-top d-none d-md-flex justify-content-end">
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>

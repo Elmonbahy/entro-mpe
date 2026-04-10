@@ -80,7 +80,7 @@ final class JualTable extends PowerGridComponent
         ]);
       });
 
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as'])) {
+    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
       $fields->add('status_bayar_x', function (Jual $model) {
         return \Blade::render('<x-badge.status-bayar :status="$status->value" />', [
           'status' => $model->status_bayar,
@@ -93,7 +93,7 @@ final class JualTable extends PowerGridComponent
       );
     }
 
-    if (Auth::user()->hasAnyRole(['ag', 'aw', 'af', 'as'])) {
+    if (Auth::user()->hasAnyRole(['ag', 'aw', 'af', 'as', 'ap'])) {
       $fields->add('status_kirim_x', function (Jual $model) {
         return \Blade::render('<x-badge.status-kirim :status="$status->value" />', [
           'status' => $model->status_kirim,
@@ -120,15 +120,15 @@ final class JualTable extends PowerGridComponent
       Column::make('Status faktur', 'status_faktur_x'),
     ];
 
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as'])) {
+    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
       $columns[] = Column::make('Total Faktur', 'total_faktur_formatted');
     }
 
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as'])) {
+    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
       $columns[] = Column::make('Status bayar', 'status_bayar_x');
     }
 
-    if (Auth::user()->hasAnyRole(['ag', 'aw', 'af', 'as'])) {
+    if (Auth::user()->hasAnyRole(['ag', 'aw', 'af', 'as', 'ap'])) {
       $columns[] = Column::make('Status kirim', 'status_kirim_x');
     }
 
@@ -190,6 +190,7 @@ final class JualTable extends PowerGridComponent
         'ak' => 'keuangan.jual.show',
         'aa' => 'accounting.jual.show',
         'as' => 'supervisor.jual.show',
+        'ap' => 'pajak.jual.show',
       ],
       'edit' => [
         'af' => 'fakturis.jual.edit',
