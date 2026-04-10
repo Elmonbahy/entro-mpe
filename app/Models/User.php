@@ -97,6 +97,7 @@ class User extends Authenticatable
       'aa' => 'accounting',
       'aw' => 'warehouse',
       'as' => 'supervisor',
+      'ap' => 'pajak',
       'su' => 'superadmin',
       default => 'dashboard',
     };

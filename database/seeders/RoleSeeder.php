@@ -34,17 +34,13 @@ class RoleSeeder extends Seeder
         'slug' => 'ak'
       ],
       [
-        'name' => 'Admin Inventory',
-        'slug' => 'aiv'
-      ],
-      [
         'name' => 'Admin Supervisor',
         'slug' => 'as'
       ],
       [
-        'name' => 'Admin Inkaso',
-        'slug' => 'aik'
-      ]
+        'name' => 'Admin Pajak',
+        'slug' => 'ap'
+      ],
     ];
 
     // Bulk insert

@@ -21,6 +21,7 @@ class AdminSeeder extends Seeder
     $keuanganUser = Role::where('slug', 'ak')->first();
     $logistikUser = Role::where('slug', 'al')->first();
     $supervisorUser = Role::where('slug', 'as')->first();
+    $pajakUser = Role::where('slug', 'ap')->first();
     // TODO: minta daftar user
 
     User::create([
@@ -69,5 +70,13 @@ class AdminSeeder extends Seeder
       'password' => Hash::make('password'),
       'role_id' => $supervisorUser->id
     ]);
+    User::create([
+      'name' => 'Emma Pajak',
+      'username' => 'pajak',
+      'email' => 'pajak@apm.com',
+      'password' => Hash::make('password'),
+      'role_id' => $pajakUser->id
+    ]);
+
   }
 }
