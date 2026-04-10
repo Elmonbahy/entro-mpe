@@ -133,6 +133,7 @@ final class SuratJalanTable extends PowerGridComponent
         'aa' => 'accounting.surat-jalan.show',
         'aw' => 'warehouse.surat-jalan.show',
         'as' => 'supervisor.surat-jalan.show',
+        'ap' => 'pajak.surat-jalan.show',
       ],
       'edit' => [
         'ag' => 'gudang.surat-jalan.edit',
