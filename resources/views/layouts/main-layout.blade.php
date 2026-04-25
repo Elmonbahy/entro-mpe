@@ -16,7 +16,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <title>APM Web Dashboard Admin</title>
+  <title>ENTRO-MPE Web Dashboard Admin</title>
 
   @livewireStyles
   @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))

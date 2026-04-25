@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col">
         <div class="card callout callout-primary">
-          <p class="mb-0 h5">Welcome to APM Dashboard
+          <p class="mb-0 h5">Welcome to ENTRO-MPE Dashboard
           </p>
         </div>
       </div>

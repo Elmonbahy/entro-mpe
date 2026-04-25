@@ -1,8 +1,8 @@
 <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
   <div class="sidebar-header border-bottom">
     <div class="sidebar-brand">
-      <strong class="sidebar-brand-full">Anna Putra Mandiri</strong>
-      <strong class="sidebar-brand-narrow">APM</strong>
+      <strong class="sidebar-brand-full">ENTRO-MPE</strong>
+      <strong class="sidebar-brand-narrow">ENTRO MPE</strong>
     </div>
     <button class="btn-close d-lg-none close-sidebar" type="button" data-coreui-theme="dark"></button>
   </div>
