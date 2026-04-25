@@ -34,11 +34,6 @@
           ],
       ],
       [
-          'title' => 'Surat Jalan',
-          'icon' => '"bi bi-card-text',
-          'route' => 'fakturis.surat-jalan.index',
-      ],
-      [
           'title' => 'Laporan Beli',
           'icon' => 'bi bi-file-earmark',
           'items' => [

@@ -12,13 +12,11 @@ use App\Http\Controllers\Fakturis\SupplierController;
 use App\Http\Controllers\Fakturis\BeliController;
 use App\Http\Controllers\Fakturis\BarangStockController;
 use App\Http\Controllers\Fakturis\JualController;
-use App\Http\Controllers\Fakturis\SuratJalanController;
 use App\Http\Controllers\Fakturis\BarangStockAwalController;
 use App\Http\Controllers\Fakturis\BarangRusakController;
 use App\Http\Controllers\Fakturis\Laporan\Jual\LaporanJualController;
 use App\Http\Controllers\Fakturis\Laporan\FakturJual\LaporanFakturJualController;
 use App\Http\Controllers\Fakturis\Laporan\Beli\LaporanBeliController;
-use App\Http\Controllers\Fakturis\Laporan\SlowMoving\LaporanSlowMovingController;
 use App\Http\Controllers\Fakturis\Laporan\ListFakturJual\LaporanListFakturJualController;
 use App\Http\Controllers\Fakturis\Laporan\ListFakturBeli\LaporanListFakturBeliController;
 use App\Http\Controllers\Fakturis\ReturController;
@@ -74,12 +72,6 @@ Route::prefix('jual')->as('jual.')->group(function () {
   Route::get('/{id}/pdf/spkb', [JualController::class, 'exportSpkb'])->name('spkb');
 });
 
-Route::prefix('surat-jalan')->as('surat-jalan.')->group(function () {
-  Route::get('/', [SuratJalanController::class, 'index'])->name('index');
-  Route::get('/excel', [SuratJalanController::class, 'exportExcel'])->name('excel');
-  Route::get('/{id}', [SuratJalanController::class, 'show'])->name('show');
-});
-
 Route::prefix('mutation')->as('mutation.')->group(function () {
   Route::get('/', [MutationController::class, 'index'])->name('index');
   Route::get('/excel', [MutationController::class, 'exportExcelMutation'])->name('excel-mutation');
@@ -120,11 +112,6 @@ Route::prefix('laporan-beli')->as('laporan-beli.')->group(function () {
 Route::prefix('laporan-list-faktur-beli')->as('laporan-list-faktur-beli.')->group(function () {
   Route::get('/', [LaporanListFakturBeliController::class, 'index'])->name('index');
   Route::get('/excel', [LaporanListFakturBeliController::class, 'exportExcel'])->name('excel');
-});
-
-Route::prefix('slow-moving')->as('slow-moving.')->group(function () {
-  Route::get('/', [LaporanSlowMovingController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanSlowMovingController::class, 'exportExcel'])->name('excel');
 });
 
 Route::prefix('retur')->as('retur.')->group(function () {

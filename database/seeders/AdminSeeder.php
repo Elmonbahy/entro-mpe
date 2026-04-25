@@ -49,33 +49,11 @@ class AdminSeeder extends Seeder
     ]);
 
     User::create([
-      'name' => 'Emma keuangan',
-      'username' => 'keuangan',
-      'email' => 'keuangan@apm.com',
-      'password' => Hash::make('password'),
-      'role_id' => $keuanganUser->id
-    ]);
-
-    User::create([
-      'name' => 'Emma Logistik',
-      'username' => 'logistik',
-      'email' => 'logistik@apm.com',
-      'password' => Hash::make('password'),
-      'role_id' => $logistikUser->id
-    ]);
-    User::create([
       'name' => 'Emma supervisor',
       'username' => 'supervisor',
       'email' => 'supervisor@apm.com',
       'password' => Hash::make('password'),
       'role_id' => $supervisorUser->id
-    ]);
-    User::create([
-      'name' => 'Emma Pajak',
-      'username' => 'pajak',
-      'email' => 'pajak@apm.com',
-      'password' => Hash::make('password'),
-      'role_id' => $pajakUser->id
     ]);
 
   }
