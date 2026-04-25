@@ -26,20 +26,8 @@ class RoleSeeder extends Seeder
         'slug' => 'ag'
       ],
       [
-        'name' => 'Admin Logistik',
-        'slug' => 'al'
-      ],
-      [
-        'name' => 'Admin Keuangan',
-        'slug' => 'ak'
-      ],
-      [
         'name' => 'Admin Supervisor',
         'slug' => 'as'
-      ],
-      [
-        'name' => 'Admin Pajak',
-        'slug' => 'ap'
       ],
     ];
 

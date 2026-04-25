@@ -57,37 +57,4 @@ Route::middleware(['auth', CheckRole::class . ':ag'])
     require base_path('routes/web-gudang.php');
   });
 
-Route::middleware(['auth', CheckRole::class . ':aw'])
-  ->prefix('warehouse')
-  ->as('warehouse.')
-  ->group(function () {
-    require base_path('routes/web-warehouse.php');
-  });
 
-Route::middleware(['auth', CheckRole::class . ':ak'])
-  ->prefix('keuangan')
-  ->as('keuangan.')
-  ->group(function () {
-    require base_path('routes/web-keuangan.php');
-  });
-
-Route::middleware(['auth', CheckRole::class . ':aa'])
-  ->prefix('accounting')
-  ->as('accounting.')
-  ->group(function () {
-    require base_path('routes/web-accounting.php');
-  });
-
-Route::middleware(['auth', CheckRole::class . ':al'])
-  ->prefix('logistik')
-  ->as('logistik.')
-  ->group(function () {
-    require base_path('routes/web-logistik.php');
-  });
-
-Route::middleware(['auth', CheckRole::class . ':ap'])
-  ->prefix('pajak')
-  ->as('pajak.')
-  ->group(function () {
-    require base_path('routes/web-pajak.php');
-  });

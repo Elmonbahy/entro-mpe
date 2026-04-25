@@ -94,10 +94,7 @@ class User extends Authenticatable
     return match ($this->role->slug) {
       'af' => 'fakturis',
       'ag' => 'gudang',
-      'aa' => 'accounting',
-      'aw' => 'warehouse',
       'as' => 'supervisor',
-      'ap' => 'pajak',
       'su' => 'superadmin',
       default => 'dashboard',
     };
