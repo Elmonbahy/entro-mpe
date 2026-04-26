@@ -14,7 +14,6 @@ class Jual extends Model
     'tgl_faktur',
     'status_faktur',
     'keterangan_faktur',
-    'keterangan_bayar',
     'pelanggan_id',
     'salesman_id',
   ];

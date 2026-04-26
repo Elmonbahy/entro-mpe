@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Table;
 
-use App\Enums\StatusBayar;
 use App\Enums\StatusFaktur;
 use App\Models\Beli;
 use Illuminate\Database\Eloquent\Builder;

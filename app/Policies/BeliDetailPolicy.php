@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Enums\StatusBarangMasuk;
-use App\Enums\StatusBayar;
 use App\Enums\StatusFaktur;
 use App\Models\BeliDetail;
 use App\Models\User;
@@ -17,10 +16,6 @@ class BeliDetailPolicy
   {
     if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
-    }
-
-    if ($beli_detail->beli->status_bayar === StatusBayar::PAID) {
-      return Response::deny('Gagal! Faktur sudah lunas!');
     }
 
     if ($beli_detail->status_barang_masuk === StatusBarangMasuk::LENGKAP) {
@@ -38,10 +33,6 @@ class BeliDetailPolicy
   {
     if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
-    }
-
-    if ($beli_detail->beli->status_bayar === StatusBayar::PAID) {
-      return Response::deny('Gagal! Faktur sudah lunas!');
     }
 
     return Response::allow();
@@ -69,10 +60,6 @@ class BeliDetailPolicy
     if (!$user->hasRole('ag')) {
       return Response::deny();
     }
-
-    // if ($beli_detail->beli->status_bayar === StatusBayar::PAID) {
-    //   return Response::deny('Gagal! Faktur sudah lunas!');
-    // }
 
     if ($beli_detail->beli->status_faktur === StatusFaktur::PROCESS_FAKTUR || $beli_detail->beli->status_faktur === StatusFaktur::DONE) {
       return Response::deny('Gagal! Faktur masih diproses fakturis atau sudah selesai!');

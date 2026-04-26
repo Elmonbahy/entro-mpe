@@ -17,12 +17,9 @@
     <div class="card mt-3">
       <div class="card-header p-3 d-flex justify-content-between align-items-center">
         <p class="mb-0 fw-semibold">Daftar Pembelian Barang</p>
-
-        @if ($beli->status_bayar !== \App\Enums\StatusBayar::PAID)
-          <a class="btn btn-primary" href="{{ route('fakturis.beli.add-item', ['id' => $beli->id]) }}">
-            Sesuaikan
-          </a>
-        @endif
+        <a class="btn btn-primary" href="{{ route('fakturis.beli.add-item', ['id' => $beli->id]) }}">
+          Sesuaikan
+        </a>
       </div>
 
       <div class="card-body">
@@ -77,20 +74,3 @@
 
   </div>
 @endsection
-
-@push('scripts')
-  <script>
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('form', () => ({
-        terbayar_display: '',
-        terbayar: 0,
-        tipe_bayar: '{{ $beli->bayar === null ? \App\Constants\Bayar::KONTAN : \App\Constants\Bayar::CICIL }}',
-      }));
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-      new TomSelect('#metode_bayar');
-      new TomSelect('#tipe_bayar');
-    });
-  </script>
-@endpush

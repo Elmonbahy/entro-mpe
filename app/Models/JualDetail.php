@@ -3,9 +3,6 @@
 namespace App\Models;
 
 use App\Enums\StatusBarangKeluar;
-use App\Enums\StatusKirim;
-use App\Services\SuratJalanService;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

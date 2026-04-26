@@ -39,7 +39,6 @@
       "Tests\\": "tests/"
     },
     "files": [
-      "app/Helpers/TerbilangHelper.php",
       "app/Helpers/FormatHelper.php"
     ]
   },

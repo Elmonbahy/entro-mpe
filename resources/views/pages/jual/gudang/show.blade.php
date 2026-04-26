@@ -61,14 +61,12 @@
 
                     <td>
                       <div class="d-flex gap-2">
-                        @unless ($jual->status_bayar === \App\Enums\StatusBayar::PAID)
-                          @can('stock', $item)
-                            <a href="{{ route('gudang.jual.stock-item', ['jual_detail_id' => $item->id, 'id' => $jual->id]) }}"
-                              class="btn btn-primary" title="stock barang keluar">
-                              <i class="bi bi-plus-slash-minus"></i>
-                            </a>
-                          @endcan
-                        @endunless
+                        @can('stock', $item)
+                          <a href="{{ route('gudang.jual.stock-item', ['jual_detail_id' => $item->id, 'id' => $jual->id]) }}"
+                            class="btn btn-primary" title="stock barang keluar">
+                            <i class="bi bi-plus-slash-minus"></i>
+                          </a>
+                        @endcan
                       </div>
                     </td>
                   </tr>

@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Enums\StatusBarangKeluar;
-use App\Enums\StatusBayar;
 use App\Enums\StatusFaktur;
 use App\Models\Jual;
 use App\Models\User;

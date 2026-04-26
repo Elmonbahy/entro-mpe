@@ -28,7 +28,6 @@ class JualController extends Controller
   {
     $jual = Jual::with([
       'jualDetails',
-      'suratJalanDetails.suratJalan.kendaraan',
     ])->findOrFail($id);
 
     $jual_details = JualDetail::where('jual_id', $id)->get();

@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
         BarangSeeder::class,
         SalesmanSeeder::class,
         PelangganSeeder::class,
-        KendaraanSeeder::class
       ]);
     }
 

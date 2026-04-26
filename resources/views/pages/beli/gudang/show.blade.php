@@ -62,22 +62,12 @@
 
                     <td>
                       <div class="d-flex gap-2">
-                        @unless ($beli->status_bayar === \App\Enums\StatusBayar::PAID)
-                          {{-- Dipindah ke fakturis --}}
-                          {{-- @can('retur', $item)
-                            <a href="{{ route('gudang.beli.retur-item', ['beli_detail_id' => $item->id, 'id' => $beli->id]) }}"
-                              class="btn btn-warning" title="retur barang masuk">
-                              <i class="bi bi-arrow-counterclockwise"></i>
-                            </a>
-                          @endcan --}}
-
-                          @can('stock', $item)
-                            <a href="{{ route('gudang.beli.stock-item', ['beli_detail_id' => $item->id, 'id' => $beli->id]) }}"
-                              class="btn btn-primary" title="stock barang masuk">
-                              <i class="bi bi-plus-slash-minus"></i>
-                            </a>
-                          @endcan
-                        @endunless
+                        @can('stock', $item)
+                          <a href="{{ route('gudang.beli.stock-item', ['beli_detail_id' => $item->id, 'id' => $beli->id]) }}"
+                            class="btn btn-primary" title="stock barang masuk">
+                            <i class="bi bi-plus-slash-minus"></i>
+                          </a>
+                        @endcan
                       </div>
                     </td>
                   </tr>

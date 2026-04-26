@@ -27,24 +27,12 @@
       <x-card.faktur-jual-detail :jual="$jual" />
     </div>
 
-    <div class="mb-3">
-      <x-card.faktur-jual-surat-jalan :jual="$jual" />
-    </div>
-
-    <div class="mb-3">
-      <x-card.faktur-jual-detail-bayar :jual="$jual" />
-    </div>
-
     <div class="card mt-3">
       <div class="card-header p-3 d-flex justify-content-between align-items-center">
         <p class="mb-0 fw-semibold">Daftar Penjualan Barang</p>
-
-        @if ($jual->status_bayar !== \App\Enums\StatusBayar::PAID)
-          <a class="btn btn-primary" href="{{ route('supervisor.jual.add-item', ['id' => $jual->id]) }}">
-            Sesuaikan
-          </a>
-        @endif
-
+        <a class="btn btn-primary" href="{{ route('supervisor.jual.add-item', ['id' => $jual->id]) }}">
+          Sesuaikan
+        </a>
       </div>
 
       <div class="card-body">
