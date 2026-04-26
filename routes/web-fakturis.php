@@ -14,11 +14,8 @@ use App\Http\Controllers\Fakturis\BarangStockController;
 use App\Http\Controllers\Fakturis\JualController;
 use App\Http\Controllers\Fakturis\BarangStockAwalController;
 use App\Http\Controllers\Fakturis\BarangRusakController;
-use App\Http\Controllers\Fakturis\Laporan\Jual\LaporanJualController;
 use App\Http\Controllers\Fakturis\Laporan\FakturJual\LaporanFakturJualController;
 use App\Http\Controllers\Fakturis\Laporan\Beli\LaporanBeliController;
-use App\Http\Controllers\Fakturis\Laporan\ListFakturJual\LaporanListFakturJualController;
-use App\Http\Controllers\Fakturis\Laporan\ListFakturBeli\LaporanListFakturBeliController;
 use App\Http\Controllers\Fakturis\ReturController;
 
 Route::resource('/barang', BarangController::class);
@@ -87,19 +84,9 @@ Route::prefix('persediaan')->as('persediaan.')->group(function () {
   Route::get('/excel', [PersediaanController::class, 'exportExcel'])->name('excel');
 });
 
-Route::prefix('laporan-jual')->as('laporan-jual.')->group(function () {
-  Route::get('/', [LaporanJualController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanJualController::class, 'exportExcel'])->name('excel');
-});
-
 Route::prefix('laporan-jual-faktur')->as('laporan-jual-faktur.')->group(function () {
   Route::get('/', [LaporanFakturJualController::class, 'index'])->name('index');
   Route::get('/excel', [LaporanFakturJualController::class, 'exportExcel'])->name('excel');
-});
-
-Route::prefix('laporan-list-faktur-jual')->as('laporan-list-faktur-jual.')->group(function () {
-  Route::get('/', [LaporanListFakturJualController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanListFakturJualController::class, 'exportExcel'])->name('excel');
 });
 
 Route::prefix('laporan-beli')->as('laporan-beli.')->group(function () {
@@ -107,10 +94,6 @@ Route::prefix('laporan-beli')->as('laporan-beli.')->group(function () {
   Route::get('/excel', [LaporanBeliController::class, 'exportExcel'])->name('excel');
 });
 
-Route::prefix('laporan-list-faktur-beli')->as('laporan-list-faktur-beli.')->group(function () {
-  Route::get('/', [LaporanListFakturBeliController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanListFakturBeliController::class, 'exportExcel'])->name('excel');
-});
 
 Route::prefix('retur')->as('retur.')->group(function () {
   Route::post('/store', [ReturController::class, 'store'])->name('store');

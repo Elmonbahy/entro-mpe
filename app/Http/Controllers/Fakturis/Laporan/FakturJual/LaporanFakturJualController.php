@@ -21,17 +21,14 @@ class LaporanFakturJualController extends Controller
         'id',
         'nomor_faktur',
         'tgl_faktur',
-        'status_bayar',
         'pelanggan_id',
         'salesman_id',
-        'ongkir',
-        'bayar'
       ])
       ->with([
         'pelanggan:id,nama',
         'salesman:id,nama',
         'jualDetails' => function ($q) {
-          $q->select('id', 'jual_id', 'barang_id', 'jumlah_barang_keluar', 'jumlah_barang_dipesan', 'harga_jual', 'diskon1', 'diskon2');
+          $q->select('id', 'jual_id', 'barang_id', 'jumlah_barang_keluar', 'jumlah_barang_dipesan', 'harga_jual');
         },
         'jualDetails.barang:id,nama,satuan'
       ])
@@ -50,49 +47,21 @@ class LaporanFakturJualController extends Controller
       $query = $query->where('pelanggan_id', $request->pelanggan_id);
     }
 
-    if ($request->status_bayar) {
-      $query->where('status_bayar', $request->status_bayar);
-    }
-
     $data = $query->get()
       ->map(function ($jual) {
-        $bayar = $jual->bayar ?? [];
-        $tgl_bayar = !empty($bayar)
-          ? collect($bayar)->pluck('tgl_bayar')->filter()
-            ->map(fn($tgl) => Carbon::parse($tgl)->format('d/m/Y'))
-            ->implode(', ')
-          : '-';
-        $tipe_bayar = !empty($bayar)
-          ? collect($bayar)->pluck('tipe_bayar')->filter()->first()
-          : '-';
 
         return [
           'pelanggan_nama' => $jual->pelanggan->nama,
           'nomor_faktur' => $jual->nomor_faktur,
           'sales_nama' => $jual->salesman->nama,
-          'ongkir' => $jual->ongkir,
           'tgl_faktur' => Carbon::parse($jual->tgl_faktur)->format('d/m/Y'),
-          'status_bayar' => $jual->status_bayar,
-          'status_bayar_label' => $jual->status_bayar_label,
-          'tipe_bayar' => $tipe_bayar,
-          'tgl_bayar' => $tgl_bayar,
-          'total_tagihan' => $jual->jualDetails->sum('total_tagihan'),
-          'total_dpp' => $jual->jualDetails->sum('total'),
-          'total_harga_ppn' => $jual->jualDetails->sum('harga_ppn'),
           'jual_details_count' => $jual->jual_details_count,
           'jual_details' => $jual->jualDetails->map(fn($item) => [
             'barang_nama' => $item->barang->nama,
             'barang_satuan' => $item->barang->satuan,
             'barang_id' => $item->barang->id,
             'jumlah_barang_keluar' => $item->jumlah_barang_keluar,
-            'diskon1' => $item->diskon1,
-            'harga_diskon1' => $item->harga_diskon1,
-            'diskon2' => $item->diskon2,
-            'harga_diskon2' => $item->harga_diskon2,
             'harga_jual' => $item->harga_jual,
-            'total_tagihan' => $item->total_tagihan,
-            'dpp' => $item->total,
-            'harga_ppn' => $item->harga_ppn,
           ])
         ];
       });
@@ -109,7 +78,6 @@ class LaporanFakturJualController extends Controller
       'tgl_awal' => 'nullable|date',
       'tgl_akhir' => ['nullable', 'date', 'after_or_equal:tgl_awal'],
       'pelanggan_id' => 'nullable|exists:pelanggans,id',
-      'status_bayar' => 'nullable|in:PAID,UNPAID',
       'sales_id' => 'nullable|exists:salesmen,id',
     ];
 
@@ -142,7 +110,6 @@ class LaporanFakturJualController extends Controller
       'tgl_akhir' => $request->tgl_akhir,
       'pelanggan_id' => $request->pelanggan_id,
       'sales_id' => $request->sales_id,
-      'status_bayar' => $request->status_bayar,
       'data' => $data
     ]);
   }
@@ -154,7 +121,6 @@ class LaporanFakturJualController extends Controller
       'tgl_akhir' => 'required|date|after_or_equal:tgl_awal',
       'pelanggan_id' => 'nullable|exists:pelanggans,id',
       'sales_id' => 'nullable|exists:salesmen,id',
-      'status_bayar' => 'nullable|in:PAID,UNPAID'
     ]);
 
     $data = $this->getLaporanFakturJualData($request);
@@ -169,11 +135,6 @@ class LaporanFakturJualController extends Controller
 
     if ($request->sales_id) {
       $filename = "laporan_faktur_jual_Sales $tgl_awal - $tgl_akhir.xlsx";
-    }
-
-    if ($request->status_bayar) {
-      $status = $request->status_bayar == 'PAID' ? 'Lunas' : 'Belum Lunas';
-      $filename = "laporan_faktur_jual_{$status} $tgl_awal $tgl_akhir.xlsx";
     }
 
     if ($data->isEmpty()) {

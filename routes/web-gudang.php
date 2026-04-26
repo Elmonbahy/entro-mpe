@@ -9,19 +9,12 @@ use App\Http\Controllers\Gudang\BarangController;
 use App\Http\Controllers\Gudang\BeliController;
 use App\Http\Controllers\Gudang\BarangRusakController;
 use App\Http\Controllers\Gudang\PelangganController;
-use App\Http\Controllers\Gudang\KendaraanController;
 use App\Http\Controllers\Gudang\MutationController;
-use App\Http\Controllers\Gudang\Laporan\Beli\LaporanBeliController;
-use App\Http\Controllers\Gudang\Laporan\Jual\LaporanJualController;
-use App\Http\Controllers\Gudang\Laporan\Pengiriman\LaporanPengirimanController;
-use App\Http\Controllers\Gudang\Laporan\ListPengiriman\LaporanListPengirimanController;
-use App\Http\Controllers\Gudang\Laporan\Pending\LaporanPendingController;
 use App\Http\Controllers\Gudang\BarangExpiredController;
 use App\Http\Controllers\Gudang\ReturController;
 
 Route::resource('/barang', BarangController::class);
 Route::resource('/pelanggan', PelangganController::class);
-Route::resource('/kendaraan', KendaraanController::class);
 
 Route::prefix('export')->group(function () {
   Route::get('/barang', [BarangController::class, 'exportExcel'])->name('barang.export');
@@ -81,31 +74,6 @@ Route::prefix('jual')->as('jual.')->group(function () {
   Route::patch('/{id}/stock/{jual_detail_id}', [JualDetailController::class, 'stockUpdate'])->name('stock-item-update');
 
   Route::patch('{id}/stock/{jual_detail_id}/split', [JualDetailController::class, 'splitRemainingStock'])->name('split-stock');
-});
-
-Route::prefix('laporan-beli')->as('laporan-beli.')->group(function () {
-  Route::get('/', [LaporanBeliController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanBeliController::class, 'exportExcel'])->name('excel');
-});
-
-Route::prefix('laporan-jual')->as('laporan-jual.')->group(function () {
-  Route::get('/', [LaporanJualController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanJualController::class, 'exportExcel'])->name('excel');
-});
-
-Route::prefix('laporan-pengiriman')->as('laporan-pengiriman.')->group(function () {
-  Route::get('/', [LaporanPengirimanController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanPengirimanController::class, 'exportExcel'])->name('excel');
-});
-
-Route::prefix('laporan-list-pengiriman')->as('laporan-list-pengiriman.')->group(function () {
-  Route::get('/', [LaporanListPengirimanController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanListPengirimanController::class, 'exportExcel'])->name('excel');
-});
-
-Route::prefix('laporan-pending')->as('laporan-pending.')->group(function () {
-  Route::get('/', [LaporanPendingController::class, 'index'])->name('index');
-  Route::get('/excel', [LaporanPendingController::class, 'exportExcel'])->name('excel');
 });
 
 Route::prefix('retur')->as('retur.')->group(function () {

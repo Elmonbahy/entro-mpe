@@ -36,19 +36,12 @@
       [
           'title' => 'Laporan Beli',
           'icon' => 'bi bi-file-earmark',
-          'items' => [
-              ['title' => 'Faktur', 'route' => 'fakturis.laporan-beli.index'],
-              ['title' => 'List Faktur', 'route' => 'fakturis.laporan-list-faktur-beli.index'],
-          ],
+          'items' => [['title' => 'Faktur', 'route' => 'fakturis.laporan-beli.index']],
       ],
       [
           'title' => 'Laporan Jual',
           'icon' => 'bi bi-file-earmark',
-          'items' => [
-              //   ['title' => 'Profit', 'route' => 'fakturis.laporan-jual.index'],
-              ['title' => 'Faktur', 'route' => 'fakturis.laporan-jual-faktur.index'],
-              ['title' => 'List Faktur', 'route' => 'fakturis.laporan-list-faktur-jual.index'],
-          ],
+          'items' => [['title' => 'Faktur', 'route' => 'fakturis.laporan-jual-faktur.index']],
       ],
   ];
 

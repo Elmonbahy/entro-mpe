@@ -35,14 +35,6 @@
               <x-form.select name="sales_id" placeholder="Cari atau pilih sales" :options="$sales" valueKey="id"
                 labelKey="nama" :selected="$sales_id" />
             </div>
-            <div class="col-md-4 mb-3">
-              <x-form.label value="Status Bayar" optional />
-              <select name="status_bayar" class="form-control">
-                <option value="" {{ request('status_bayar') == '' ? 'selected' : '' }}>Semua Status</option>
-                <option value="PAID" {{ request('status_bayar') == 'PAID' ? 'selected' : '' }}>Lunas</option>
-                <option value="UNPAID" {{ request('status_bayar') == 'UNPAID' ? 'selected' : '' }}>Belum Lunas</option>
-              </select>
-            </div>
           </div>
 
           <button type="submit" class="btn btn-primary">
@@ -70,7 +62,7 @@
       <div class="card">
         <div class="p-3 card-header d-flex justify-content-between align-items-center">
           <p class="mb-0 fw-semibold">Tabel Laporan Faktur Jual</p>
-          <a href="{{ route('fakturis.laporan-jual-faktur.excel') }}?tgl_awal={{ $tgl_awal }}&tgl_akhir={{ $tgl_akhir }}&pelanggan_id={{ $pelanggan_id }}&sales_id={{ $sales_id }}&status_bayar={{ request('status_bayar') }}"
+          <a href="{{ route('fakturis.laporan-jual-faktur.excel') }}?tgl_awal={{ $tgl_awal }}&tgl_akhir={{ $tgl_akhir }}&pelanggan_id={{ $pelanggan_id }}&sales_id={{ $sales_id }}"
             class="btn btn-primary">
             Export Excel
           </a>
@@ -87,21 +79,11 @@
                   <th>Nomor Faktur</th>
                   <th>Sales</th>
                   <th>Tanggal</th>
-                  <th>Status Bayar</th>
-                  <th>Tipe Bayar</th>
-                  <th>Tanggal Bayar</th>
                   <th>No</th>
                   <th>Nama Barang</th>
                   <th>Jumlah</th>
                   <th>Satuan</th>
-                  <th>Disc</th>
-                  <th>DiscRp</th>
-                  <th>Disc2</th>
-                  <th>Disc2Rp</th>
                   <th>Harga Jual</th>
-                  <th>Total</th>
-                  <th>DPP</th>
-                  <th>PPN</th>
                 </tr>
               </thead>
 
@@ -111,7 +93,6 @@
                     $rowspan = $faktur['jual_details_count'] + 2;
                   @endphp
 
-                  {{-- Start jual --}}
                   <tr>
                     {{-- rowspan 4: total jual detail + 2 --}}
                     <td rowspan="{{ $rowspan }}" class="text-start">
@@ -126,15 +107,6 @@
                     <td rowspan="{{ $rowspan }}">
                       {{ $faktur['tgl_faktur'] }}
                     </td>
-                    <td rowspan="{{ $rowspan }}">
-                      {{ $faktur['status_bayar_label'] }}
-                    </td>
-                    <td rowspan="{{ $rowspan }}">
-                      {{ $faktur['tipe_bayar'] }}
-                    </td>
-                    <td rowspan="{{ $rowspan }}">
-                      {{ $faktur['tgl_bayar'] ?? '-' }}
-                    </td>
                   </tr>
                   {{-- end jual --}}
 
@@ -145,42 +117,11 @@
                       <td class="text-start">{{ $item['barang_nama'] }}</td> {{-- nama barang --}}
                       <td>{{ number_format($item['jumlah_barang_keluar'], 0, ',', '.') }}</td> {{-- jumlah barang keluar --}}
                       <td class="text-start">{{ $item['barang_satuan'] }}</td> {{-- nama barang --}}
-                      <td>{{ $item['diskon1'] }}</td> {{-- diskon 1 --}}
-                      <td class="text-end">{{ number_format($item['harga_diskon1'], 0, ',', '.') }}</td>
-                      {{-- harga diskon 1  --}}
-                      <td>{{ $item['diskon2'] }}</td> {{-- diskon 2 --}}
-                      <td class="text-end">{{ number_format($item['harga_diskon2'], 0, ',', '.') }}</td>
-                      {{-- harga diskon 2 --}}
                       <td class="text-end">{{ number_format($item['harga_jual'], 2, ',', '.') }}</td>
-                      <td class="text-end">{{ number_format($item['total_tagihan'], 0, ',', '.') }}</td>
-                      {{-- tagihan --}}
-                      <td class="text-end">{{ number_format($item['dpp'], 0, ',', '.') }}</td>
-                      {{-- HNA jual --}}
-                      <td class="text-end">{{ number_format($item['harga_ppn'], 0, ',', '.') }}</td>
-                      {{-- PPN jual --}}
                     </tr>
                   @endforeach
-                  {{-- end jual detail --}}
-
-                  {{-- start total jual detail --}}
-                  <tr class="fw-bold text-end">
-                    <td colspan="9"><strong>Total Faktur</strong></td>
-                    <td>{{ number_format($faktur['total_tagihan'], 0, ',', '.') }}</td>
-                    <td>{{ number_format($faktur['total_dpp'], 0, ',', '.') }}</td>
-                    <td>{{ number_format($faktur['total_harga_ppn'], 0, ',', '.') }}</td>
-                  </tr>
-
-                  {{-- end total jual detail --}}
                 @endforeach
               </tbody>
-              <tfoot>
-                <tr class="fw-bold text-end">
-                  <td colspan="16"><strong>Grand Total</strong></td>
-                  <td>{{ number_format(collect($data)->sum('total_tagihan'), 0, ',', '.') }}</td>
-                  <td>{{ number_format(collect($data)->sum('total_dpp'), 0, ',', '.') }}</td>
-                  <td>{{ number_format(collect($data)->sum('total_harga_ppn'), 0, ',', '.') }}</td>
-                </tr>
-              </tfoot>
             </table>
           </div>
         </div>

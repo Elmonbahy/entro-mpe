@@ -38,7 +38,7 @@ class LaporanBeliExport implements FromView, ShouldAutoSize, WithEvents
     return [
       AfterSheet::class => function (AfterSheet $event) {
         // Menyesuaikan header
-        $event->sheet->getStyle('A1:S1')->applyFromArray([
+        $event->sheet->getStyle('A1:I1')->applyFromArray([
           'font' => [
             'bold' => true,
           ],
@@ -48,13 +48,7 @@ class LaporanBeliExport implements FromView, ShouldAutoSize, WithEvents
           ]
         ]);
         $event->sheet->getStyle('B2:B' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
-        $event->sheet->getStyle('J2:J' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('#,##0');
-        $event->sheet->getStyle('L2:L' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('#,##0.00');
-        $event->sheet->getStyle('M2:M' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('#,##0');
-        $event->sheet->getStyle('N2:N' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('#,##0.00');
-        $event->sheet->getStyle('O2:O' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('#,##0');
-        $event->sheet->getStyle('P2:P' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('#,##0.00');
-        $event->sheet->getStyle('Q2:S' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('#,##0');
+        $event->sheet->getStyle('I2:I' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('#,##0.00');
       },
     ];
   }
