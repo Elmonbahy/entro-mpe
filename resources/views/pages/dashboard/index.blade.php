@@ -107,18 +107,5 @@
       <!-- /.col-->
     </div>
 
-    @roles(['af', 'ak', 'as'])
-    <div class="row g-3">
-      <div class="col-md-6 mb-3">
-        @livewire('weekly-sales-chart')
-      </div>
-
-      {{-- ⭐ New Purchase Chart Component --}}
-      <div class="col-md-6 mb-3">
-        @livewire('weekly-purchase-chart')
-      </div>
-    </div>
-    @endroles
-
   </div>
 @endsection

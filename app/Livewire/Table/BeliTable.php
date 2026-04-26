@@ -52,7 +52,6 @@ final class BeliTable extends PowerGridComponent
         'belis.tgl_faktur',
         'belis.tgl_terima_faktur',
         'belis.status_faktur',
-        'belis.status_bayar',
         'suppliers.nama as supplier_nama',
       ]);
   }
@@ -74,19 +73,6 @@ final class BeliTable extends PowerGridComponent
         ]);
       });
 
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
-      $fields->add('status_bayar_x', function (Beli $model) {
-        return \Blade::render('<x-badge.status-bayar :status="$status->value" />', [
-          'status' => $model->status_bayar,
-        ]);
-      });
-      $fields->add(
-        'total_faktur_formatted',
-        fn(Beli $model) =>
-        number_format((float) $model->total_faktur, 0, ',', '.')
-      );
-    }
-
     return $fields;
   }
 
@@ -103,16 +89,6 @@ final class BeliTable extends PowerGridComponent
       Column::make('Tgl terima faktur', 'tgl_terima_faktur'),
       Column::make('Status faktur', 'status_faktur_x'),
     ];
-
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
-      $columns[] = Column::make('Total Faktur', 'total_faktur_formatted');
-    }
-
-    if (Auth::user()->hasAnyRole(['af', 'ak', 'aa', 'as', 'ap'])) {
-      $columns[] = Column::make('Status bayar', 'status_bayar_x');
-    }
-
-    // Kolom aksi tetap ditambahkan untuk semua role
     $columns[] = Column::action('Action');
 
     return $columns;
@@ -129,9 +105,6 @@ final class BeliTable extends PowerGridComponent
       Filter::enumSelect('status_faktur_x', 'status_faktur')
         ->datasource(StatusFaktur::cases())
         ->optionLabel('status_faktur_x'),
-      Filter::enumSelect('status_bayar_x', 'status_bayar')
-        ->datasource(StatusBayar::cases())
-        ->optionLabel('status_bayar_x'),
     ];
   }
 
@@ -155,13 +128,8 @@ final class BeliTable extends PowerGridComponent
     $routeMaps = [
       'show' => [
         'ag' => 'gudang.beli.show',
-        'aw' => 'warehouse.beli.show',
-        'al' => 'logistik.beli.show',
         'af' => 'fakturis.beli.show',
-        'ak' => 'keuangan.beli.show',
-        'aa' => 'accounting.beli.show',
         'as' => 'supervisor.beli.show',
-        'ap' => 'pajak.beli.show',
       ],
       'edit' => [
         'af' => 'fakturis.beli.edit',
@@ -196,17 +164,5 @@ final class BeliTable extends PowerGridComponent
     }
 
     return $actions;
-  }
-
-  public function actionRules(): array
-  {
-    return [
-      Rule::button('edit')
-        ->when(fn($row) => $row->status_bayar === StatusBayar::PAID)
-        ->hide(),
-      Rule::button('delete')
-        ->when(fn($row) => $row->status_bayar === StatusBayar::PAID)
-        ->hide(),
-    ];
   }
 }

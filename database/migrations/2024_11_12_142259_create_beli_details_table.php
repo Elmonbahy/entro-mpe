@@ -16,8 +16,6 @@ return new class extends Migration {
       $table->unsignedInteger('jumlah_barang_masuk')->default(0);
       $table->string('batch')->nullable();
       $table->dateTime('tgl_expired')->nullable();
-      $table->decimal('diskon1', 5, 2)->default(0);
-      $table->decimal('diskon2', 5, 2)->default(0);
       $table->string('keterangan')->nullable();
       $table->decimal('harga_beli', 15, 4)->unsigned();
 

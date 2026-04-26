@@ -23,11 +23,6 @@
         <x-form.input name="harga_beli_terakhir" :readonly="true" wire:model="harga_beli_terakhir" />
       </div>
     </div>
-
-    <div class="col-md-2 mb-3">
-      <x-form.label value="Diskon" />
-      <x-form.input name="diskon1_terakhir" :readonly="true" wire:model="diskon1_terakhir" />
-    </div>
   </div>
 
   <div class="row">
@@ -55,16 +50,6 @@
       </div>
     </div>
     <div class="col-md mb-3">
-      <x-form.label value="Diskon 1" />
-      <x-form.input name="diskon1" type="text" placeholder="Input diskon 1..."
-        wire:model.live.debounce.300ms="diskon1" oninput="this.value = this.value.replace(',', '.')" />
-    </div>
-    <div class="col-md mb-3">
-      <x-form.label value="Diskon 2" />
-      <x-form.input name="diskon2" type="text" placeholder="Input diskon 2..."
-        wire:model.live.debounce.300ms="diskon2" oninput="this.value = this.value.replace(',', '.')" />
-    </div>
-    <div class="col-md mb-3">
       <x-form.label value="Jumlah" />
       <x-form.input name="jumlah_barang_dipesan" type="number" placeholder="Input jumlah beli..."
         wire:model.live.debounce.300ms="jumlah_barang_dipesan" />
@@ -72,19 +57,6 @@
     <div class="col-md mb-3">
       <x-form.label value="Satuan" />
       <x-form.input name="satuan" :readonly="true" wire:model="satuan" />
-    </div>
-
-    <div class="col-md mb-3">
-      <x-form.label value="DPP" />
-      <p class="mb-0 fw-bold fs-5">
-        {{ $total_formatted }}
-      </p>
-    </div>
-    <div class="col-md mb-3 border-start">
-      <x-form.label value="Tagihan" />
-      <p class="mb-0 fw-bold fs-5">
-        {{ $total_tagihan_formatted }}
-      </p>
     </div>
   </div>
 

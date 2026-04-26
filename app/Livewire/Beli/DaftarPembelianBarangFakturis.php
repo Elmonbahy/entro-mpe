@@ -13,12 +13,7 @@ use Livewire\Attributes\Locked;
 
 class DaftarPembelianBarangFakturis extends Component
 {
-  public $editingId = null;
-  public $editHargaBeli = null;
-  public $editHargaBeliFormatted;
-  public $editDiskon1 = null;
-  public $editDiskon2 = null;
-  public $editJumlahDipesan = null;
+
 
   #[Locked]
   public Beli $beli;
@@ -84,47 +79,6 @@ class DaftarPembelianBarangFakturis extends Component
       return redirect()->route($routeName, ['id' => $this->beli->id]);
     } catch (\Exception $th) {
       $this->js('alert("' . $th->getMessage() . '")');
-    }
-  }
-
-  public function edit(int $id)
-  {
-    $beli_detail = BeliDetail::findOrFail($id);
-    $this->editingId = $id;
-    $this->editHargaBeli = $beli_detail->harga_beli;
-    $this->editHargaBeliFormatted = number_format($beli_detail->harga_beli, 4, ',', '.');
-    $this->editDiskon1 = $beli_detail->diskon1;
-    $this->editDiskon2 = $beli_detail->diskon2;
-    $this->editJumlahDipesan = $beli_detail->jumlah_barang_dipesan;
-  }
-  public function updatedEditHargaBeliFormatted($value)
-  {
-    $this->editHargaBeli = (float) str_replace(['.', ','], ['', '.'], $value);
-  }
-
-  public function updateHargaBeli()
-  {
-    try {
-      DB::transaction(function () {
-
-        $beli_detail = BeliDetail::findOrFail($this->editingId);
-
-        \Gate::authorize('edit', $beli_detail);
-
-        $beli_detail->harga_beli = $this->editHargaBeli;
-        $beli_detail->diskon1 = $this->editDiskon1;
-        $beli_detail->diskon2 = $this->editDiskon2;
-        if (!$beli_detail->jumlah_barang_masuk) {
-          $beli_detail->jumlah_barang_dipesan = $this->editJumlahDipesan;
-        }
-        $beli_detail->save();
-      });
-
-      $this->reset(['editingId', 'editHargaBeli', 'editDiskon1', 'editDiskon2', 'editJumlahDipesan']);
-      $this->getBeliDetail();
-
-    } catch (\Exception $e) {
-      $this->js("alert('{$e->getMessage()}')");
     }
   }
 

@@ -61,14 +61,8 @@ class BeliController extends Controller
         ? Rule::unique('belis')->ignore($id) // For updates
         : 'unique:belis,nomor_pemesanan',       // For creation
       ],
-      'diskon_faktur' => 'nullable|numeric|min:0|max:100',
       'tgl_faktur' => 'required|date',
       'tgl_terima_faktur' => 'required|date|after_or_equal:tgl_faktur',
-      'kredit' => 'nullable|integer|min:0',
-      'ppn' => 'required|in:0,11,12',
-      'ongkir' => 'nullable|numeric|min:0',
-      'materai' => 'nullable|numeric|min:0',
-      'biaya_lainnya' => 'nullable|numeric|min:0',
       'keterangan_faktur' => 'nullable|string|max:255',
     ]);
   }
@@ -124,12 +118,6 @@ class BeliController extends Controller
         'nomor_faktur' => $request->nomor_faktur,
         'tgl_faktur' => $request->tgl_faktur,
         'tgl_terima_faktur' => $request->tgl_terima_faktur,
-        'diskon_faktur' => $request->input('diskon_faktur', 0),
-        'kredit' => $request->input('kredit', 0),
-        'ppn' => $request->ppn,
-        'ongkir' => $request->ongkir,
-        'biaya_lainnya' => $request->biaya_lainnya,
-        'materai' => $request->materai,
         'supplier_id' => $request->supplier,
         'keterangan_faktur' => $request->keterangan_faktur,
       ]);

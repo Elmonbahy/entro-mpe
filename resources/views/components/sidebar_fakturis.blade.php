@@ -50,11 +50,6 @@
               ['title' => 'List Faktur', 'route' => 'fakturis.laporan-list-faktur-jual.index'],
           ],
       ],
-      [
-          'title' => 'Laporan Lainya',
-          'icon' => 'bi bi-file-earmark',
-          'items' => [['title' => 'Slow Moving', 'route' => 'fakturis.slow-moving.index']],
-      ],
   ];
 
 @endphp

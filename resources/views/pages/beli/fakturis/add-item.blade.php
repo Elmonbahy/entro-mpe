@@ -22,7 +22,7 @@
 
             <div id="collapse-tambah-beli" class="accordion-collapse collapse show" data-coreui-parent="#accordion-beli">
               <div class="accordion-body p-3">
-                @livewire('beli.tambah-pembelian-barang', ['beli_id' => $beli->id, 'ppn' => $beli->ppn])
+                @livewire('beli.tambah-pembelian-barang', ['beli_id' => $beli->id])
               </div>
             </div>
           </div>

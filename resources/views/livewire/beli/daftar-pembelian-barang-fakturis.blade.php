@@ -25,12 +25,9 @@
             <th>Pesanan</th>
             <th>Masuk</th>
             <th>Satuan</th>
-            <th>Diskon1</th>
-            <th>Diskon2</th>
             <th>Batch</th>
             <th>Tgl Expired</th>
             <th>Harga Beli</th>
-            <th>Total</th>
             <th>Action</th>
           </thead>
           <tbody>
@@ -40,32 +37,11 @@
                 <td>{{ $item->barang->kode }}</td>
                 <td>{{ $item->barang->nama }}</td>
                 <td>
-                  @if ($editingId === $item->id && !$item->jumlah_barang_masuk)
-                    <input type="number" class="form-control" wire:model.defer="editJumlahDipesan">
-                  @else
-                    {{ number_format($item->jumlah_barang_dipesan, 0, ',', '.') }}
-
-                    @if ($editingId === $item->id && $item->jumlah_barang_masuk)
-                      <br><small class="text-danger">Sudah ada barang masuk</small>
-                    @endif
-                  @endif
+                  {{ number_format($item->jumlah_barang_dipesan, 0, ',', '.') }}
                 </td>
                 <td>{{ $item->jumlah_barang_masuk ? number_format($item->jumlah_barang_masuk, 0, ',', '.') : '-' }}</td>
                 <td>{{ $item->barang->satuan }}</td>
-                <td>
-                  @if ($editingId === $item->id)
-                    <input type="number" class="form-control" wire:model.defer="editDiskon1">
-                  @else
-                    {{ $item->diskon1 > 0 ? $item->diskon1 : '-' }}
-                  @endif
-                </td>
-                <td>
-                  @if ($editingId === $item->id)
-                    <input type="number" class="form-control" wire:model.defer="editDiskon2">
-                  @else
-                    {{ $item->diskon2 > 0 ? $item->diskon2 : '-' }}
-                  @endif
-                </td>
+
                 <td>{{ $item->batch ?? '-' }}</td>
                 <td>
                   @if ($item->tgl_expired)
@@ -75,50 +51,20 @@
                   @endif
                 </td>
                 <td>
-                  @if ($editingId === $item->id)
-                    <input type="text" class="form-control" wire:model.defer="editHargaBeliFormatted"
-                      oninput="formatRupiah(this)" />
-                  @else
-                    {{ formatCurrencyDinamis($item->harga_beli) }}
-                  @endif
+                  {{ formatCurrencyDinamis($item->harga_beli) }}
                 </td>
-                <td>{{ Number::currency($item->total_tagihan, in: 'IDR', locale: 'id_ID') }}</td>
                 <td>
                   <button class="btn btn-danger mb-1" wire:click="delete({{ $item->id }})"
                     wire:confirm="Hapus barang dari daftar pembelian?">
                     <i class="bi-trash text-white"></i>
                   </button>
-                  @if ($item->jumlah_barang_dipesan > 0)
-                    {{-- Cek jika bukan retur --}}
-                    <button class="btn btn-warning mb-1" wire:click="edit({{ $item->id }})">
-                      <i class="bi-pencil text-white"></i>
-                    </button>
-                  @else
-                    <button class="btn btn-secondary mb-1" disabled title="Barang retur tidak bisa diedit">
-                      <i class="bi-pencil text-white"></i>
-                    </button>
-                  @endif
 
-                  @if ($editingId === $item->id)
-                    <button class="btn btn-primary mb-1" wire:click="updateHargaBeli"
-                      wire:confirm="edit dari daftar pembelian?"><i class="bi bi-check-circle"></i></button>
-                    <button class="btn btn-secondary mb-1" wire:click="$set('editingId', null)"><i
-                        class="bi bi-x-circle"></i></button>
-                  @endif
 
                 </td>
               </tr>
             @endforeach
           </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="11" class="fw-bold text-end">
-                Total Faktur
-              </td>
-              <td class="fw-bold" colspan="3">
-                {{ Number::currency(round($beli_details->sum('total_tagihan')), in: 'IDR', locale: 'id_ID') }}</td>
-            </tr>
-          </tfoot>
+
         </table>
 
       </div>

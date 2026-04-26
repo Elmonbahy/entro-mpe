@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Enums\StatusBarangMasuk;
-use App\Enums\StatusBayar;
 use App\Enums\StatusFaktur;
 use App\Models\Beli;
 use App\Models\User;
@@ -17,14 +16,6 @@ class BeliPolicy
       return Response::deny();
     }
 
-    // if ($beli->status_bayar === StatusBayar::PAID) {
-    //   return Response::deny('Gagal! Faktur sudah lunas!');
-    // }
-
-    // if ($beli->total_terbayar > 0) {
-    //   return Response::deny('Gagal! Faktur sudah dibayar!');
-    // }
-
     return Response::allow();
   }
 
@@ -32,14 +23,6 @@ class BeliPolicy
   {
     if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
-    }
-
-    if ($beli->status_bayar === StatusBayar::PAID) {
-      return Response::deny('Gagal! Faktur sudah lunas!');
-    }
-
-    if ($beli->total_terbayar > 0) {
-      return Response::deny('Gagal! Faktur sudah dibayar!');
     }
 
     $isStockChanged = $beli->beliDetails()
@@ -72,14 +55,6 @@ class BeliPolicy
       return Response::deny();
     }
 
-    // if ($beli->status_bayar === StatusBayar::PAID) {
-    //   return Response::deny('Gagal! Faktur sudah lunas!');
-    // }
-
-    // if ($beli->total_terbayar > 0) {
-    //   return Response::deny('Gagal! Faktur sudah dibayar!');
-    // }
-
     return Response::allow();
   }
 
@@ -101,20 +76,6 @@ class BeliPolicy
 
     if ($belumLengkap) {
       return Response::deny('Gagal! masih ada barang dengan status belum lengkap!');
-    }
-
-    return Response::allow();
-  }
-
-
-  public function payment(User $user, Beli $beli)
-  {
-    if (!$user->hasRole('ak')) {
-      return Response::deny();
-    }
-
-    if ($beli->status_bayar == StatusBayar::PAID) {
-      return Response::deny('Gagal! Faktur sudah lunas!');
     }
 
     return Response::allow();
