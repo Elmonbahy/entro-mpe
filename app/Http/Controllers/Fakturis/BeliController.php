@@ -148,14 +148,8 @@ class BeliController extends Controller
         'supplier_id' => $request->supplier,
         'nomor_faktur' => $request->nomor_faktur,
         'nomor_pemesanan' => $request->nomor_pemesanan,
-        'diskon_faktur' => $request->diskon_faktur,
         'tgl_faktur' => $request->tgl_faktur,
         'tgl_terima_faktur' => $request->tgl_terima_faktur,
-        'kredit' => $request->kredit,
-        'ppn' => $request->ppn,
-        'ongkir' => $request->ongkir,
-        'biaya_lainnya' => $request->biaya_lainnya,
-        'materai' => $request->materai,
         'keterangan_faktur' => $request->keterangan_faktur,
       ]);
 

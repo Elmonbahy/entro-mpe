@@ -3,19 +3,11 @@
 @section('content')
   <div class="container-fluid px-4">
     <x-page-header title="Barang Keluar" class="mb-3">
-      <a href="{{ route('gudang.jual.pdf', ['id' => $jual->id]) }}" class="btn btn-primary" target="_blank">
-        <i class="bi bi-file-pdf-fill"></i>
-        Ekspor PDF
-      </a>
     </x-page-header>
     <x-alert.session-alert />
 
     <div class="mb-3">
       <x-card.faktur-jual-detail :jual="$jual" />
-    </div>
-
-    <div class="mb-3">
-      <x-card.faktur-jual-surat-jalan :jual="$jual" />
     </div>
 
     <div class="card mt-3">
@@ -70,14 +62,6 @@
                     <td>
                       <div class="d-flex gap-2">
                         @unless ($jual->status_bayar === \App\Enums\StatusBayar::PAID)
-                          {{-- Dipindah ke fakturis --}}
-                          {{-- @can('retur', $item)
-                            <a href="{{ route('gudang.jual.retur-item', ['jual_detail_id' => $item->id, 'id' => $jual->id]) }}"
-                              class="btn btn-warning" title="retur barang keluar">
-                              <i class="bi bi-arrow-counterclockwise"></i>
-                            </a>
-                          @endcan --}}
-
                           @can('stock', $item)
                             <a href="{{ route('gudang.jual.stock-item', ['jual_detail_id' => $item->id, 'id' => $jual->id]) }}"
                               class="btn btn-primary" title="stock barang keluar">

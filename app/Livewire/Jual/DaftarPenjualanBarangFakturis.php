@@ -15,9 +15,6 @@ class DaftarPenjualanBarangFakturis extends Component
   public $editingId = null;
   public $editHargaJual = null;
   public $editHargaJualFormatted;
-  public $editDiskon1 = null;
-  public $editDiskon2 = null;
-  public $editJumlahDipesan = null;
 
   #[Locked]
   public Jual $jual;
@@ -95,51 +92,11 @@ class DaftarPenjualanBarangFakturis extends Component
     $this->editingId = $id;
     $this->editHargaJual = $jual_detail->harga_jual;
     $this->editHargaJualFormatted = number_format($jual_detail->harga_jual, 4, ',', '.');
-    $this->editDiskon1 = $jual_detail->diskon1;
-    $this->editDiskon2 = $jual_detail->diskon2;
-    $this->editJumlahDipesan = $jual_detail->jumlah_barang_dipesan;
   }
 
   public function updatedEditHargaJualFormatted($value)
   {
     $this->editHargaJual = (float) str_replace(['.', ','], ['', '.'], $value);
-  }
-
-  public function updateHargaJual()
-  {
-    try {
-      \DB::transaction(function () {
-
-        $jual_detail = JualDetail::findOrFail($this->editingId);
-
-        \Gate::authorize('edit', $jual_detail);
-
-        if (!$jual_detail->jumlah_barang_keluar) {
-          // Ambil total stok dari relasi atau tabel stok (sesuaikan dengan struktur DB Anda)
-          // Contoh: Mengambil dari tabel stok berdasarkan barang_id
-          $totalStock = BarangStock::where('barang_id', $jual_detail->barang_id)
-            ->sum('jumlah_stock');
-
-          if ($totalStock < $this->editJumlahDipesan) {
-            throw new \Exception("Gagal! Stok barang tidak cukup. Sisa stok: $totalStock");
-          }
-
-          $jual_detail->jumlah_barang_dipesan = $this->editJumlahDipesan;
-        }
-
-        $jual_detail->harga_jual = $this->editHargaJual;
-        $jual_detail->diskon1 = $this->editDiskon1;
-        $jual_detail->diskon2 = $this->editDiskon2;
-
-        $jual_detail->save();
-      });
-
-      $this->reset(['editingId', 'editHargaJual', 'editDiskon1', 'editDiskon2', 'editJumlahDipesan']);
-      $this->getJualDetail();
-
-    } catch (\Exception $e) {
-      $this->js("alert('{$e->getMessage()}')");
-    }
   }
 
 

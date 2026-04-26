@@ -41,28 +41,9 @@
               <td>Keterangan </td>
               <td>{{ $jual->keterangan ?? '-' }}</td>
             </tr>
-            @if (!auth()->user()->hasRole('ak'))
-              <tr>
-                <td>Status Kirim</td>
-                <td>
-                  <x-badge.status-kirim :status="$jual->status_kirim" />
-                </td>
-              </tr>
-            @endif
-            @role('ak')
-              <tr>
-                <td>Titip Faktur</td>
-                <td>
-                  @if ($jual->cetak_titip_faktur_at)
-                    {{ \Carbon\Carbon::parse($jual->cetak_titip_faktur_at)->format('d/m/Y') }}
-                  @else
-                    -
-                  @endif
-                </td>
-              </tr>
-            @endrole
+
             @if (auth()->check() &&
-                    auth()->user()->hasAnyRole(['af', 'ag', 'as']))
+                    auth()->user()->hasAnyRole(['af', 'ag']))
               <tr>
                 <td>Tanggal Dibuat</td>
                 <td>{{ \Carbon\Carbon::parse($jual->created_at)->format('d/m/Y H:i') }}</td>

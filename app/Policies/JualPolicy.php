@@ -17,14 +17,6 @@ class JualPolicy
       return Response::deny();
     }
 
-    // if ($jual->status_bayar === StatusBayar::PAID) {
-    //   return Response::deny('Gagal! Faktur sudah lunas!');
-    // }
-
-    // if ($jual->total_terbayar > 0) {
-    //   return Response::deny('Gagal! Faktur sudah dibayar!');
-    // }
-
     return Response::allow();
   }
 
@@ -32,14 +24,6 @@ class JualPolicy
   {
     if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
-    }
-
-    if ($jual->status_bayar === StatusBayar::PAID) {
-      return Response::deny('Gagal! Faktur sudah lunas!');
-    }
-
-    if ($jual->total_terbayar > 0) {
-      return Response::deny('Gagal! Faktur sudah dibayar!');
     }
 
     $isStockChanged = $jual->jualDetails()
@@ -72,14 +56,6 @@ class JualPolicy
       return Response::deny();
     }
 
-    // if ($jual->status_bayar === StatusBayar::PAID) {
-    //   return Response::deny('Gagal! Faktur sudah lunas!');
-    // }
-
-    // if ($jual->total_terbayar > 0) {
-    //   return Response::deny('Gagal! Faktur sudah dibayar!');
-    // }
-
     return Response::allow();
   }
 
@@ -101,19 +77,6 @@ class JualPolicy
 
     if ($belumLengkap) {
       return Response::deny('Gagal! masih ada barang dengan status belum lengkap!');
-    }
-
-    return Response::allow();
-  }
-
-  public function payment(User $user, Jual $jual)
-  {
-    if (!$user->hasRole('ak')) {
-      return Response::deny();
-    }
-
-    if ($jual->status_bayar === StatusBayar::PAID) {
-      return Response::deny('Gagal! Faktur sudah lunas!');
     }
 
     return Response::allow();

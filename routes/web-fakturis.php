@@ -68,8 +68,6 @@ Route::prefix('jual')->as('jual.')->group(function () {
   Route::get('/{id}/add-item', [JualController::class, 'addItem'])->name('add-item');
   Route::get('/{id}/edit', [JualController::class, 'edit'])->name('edit');
   Route::patch('/{id}/edit', [JualController::class, 'update'])->name('update');
-  Route::get('/{id}/pdf/faktur', [JualController::class, 'exportFakur'])->name('faktur');
-  Route::get('/{id}/pdf/spkb', [JualController::class, 'exportSpkb'])->name('spkb');
 });
 
 Route::prefix('mutation')->as('mutation.')->group(function () {

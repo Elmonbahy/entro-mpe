@@ -19,7 +19,7 @@
 
             <div id="collapse2" class="accordion-collapse collapse show" data-coreui-parent="#accordion2">
               <div class="accordion-body p-3">
-                @livewire('jual.tambah-penjualan-barang', ['jual_id' => $jual->id, 'ppn' => $jual->ppn, 'tipe_harga' => $tipe_harga])
+                @livewire('jual.tambah-penjualan-barang', ['jual_id' => $jual->id])
               </div>
             </div>
           </div>

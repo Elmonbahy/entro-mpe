@@ -5,61 +5,19 @@
     <x-alert.session-alert />
 
     <x-page-header title="Penjualan" class="mb-3">
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-coreui-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-file-pdf-fill"></i> Ekspor PDF
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-            <a class="dropdown-item" href="{{ route('fakturis.jual.faktur', ['id' => $jual->id, 'type' => 'pendek']) }}"
-              target="_blank">
-              <i class="bi bi-file-earmark-arrow-down"></i> Faktur Pendek
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{ route('fakturis.jual.faktur', ['id' => $jual->id, 'type' => 'panjang']) }}"
-              target="_blank">
-              <i class="bi bi-file-earmark-arrow-down"></i> Faktur Panjang
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{ route('fakturis.jual.faktur', ['id' => $jual->id]) }}" target="_blank">
-              <i class="bi bi-file-earmark-arrow-down"></i> Faktur Default (Legal)
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{ route('fakturis.jual.spkb', ['id' => $jual->id]) }}" target="_blank">
-              <i class="bi bi-file-earmark-arrow-down"></i> SPKB
-            </a>
-          </li>
-        </ul>
-      </div>
     </x-page-header>
 
     <div class="mb-3">
       <x-card.faktur-jual-detail :jual="$jual" />
     </div>
 
-    <div class="mb-3">
-      <x-card.faktur-jual-surat-jalan :jual="$jual" />
-    </div>
-
-    <div class="mb-3">
-      <x-card.faktur-jual-detail-bayar :jual="$jual" />
-    </div>
-
     <div class="card mt-3">
       <div class="card-header p-3 d-flex justify-content-between align-items-center">
         <p class="mb-0 fw-semibold">Daftar Penjualan Barang</p>
 
-        @if ($jual->status_bayar !== \App\Enums\StatusBayar::PAID)
-          <a class="btn btn-primary" href="{{ route('fakturis.jual.add-item', ['id' => $jual->id]) }}">
-            Sesuaikan
-          </a>
-        @endif
+        <a class="btn btn-primary" href="{{ route('fakturis.jual.add-item', ['id' => $jual->id]) }}">
+          Sesuaikan
+        </a>
 
       </div>
 
@@ -75,12 +33,9 @@
                 <th>Pesanan</th>
                 <th>Keluar</th>
                 <th>Satuan</th>
-                <th>Diskon1</th>
-                <th>Diskon2</th>
                 <th>Batch</th>
                 <th>Tgl Expired</th>
                 <th>Harga Jual</th>
-                <th>Total</th>
                 <th>Action</th>
               </thead>
               <tbody>
@@ -92,8 +47,6 @@
                     <td>{{ $item->jumlah_barang_keluar ? number_format($item->jumlah_barang_keluar, 0, ',', '.') : '-' }}
                     </td>
                     <td>{{ $item->barang->satuan }}</td>
-                    <td>{{ $item->diskon1 }}</td>
-                    <td>{{ $item->diskon2 }}</td>
                     <td>{{ $item->batch ?? '-' }}</td>
                     <td>
                       @if ($item->tgl_expired)
@@ -103,22 +56,12 @@
                       @endif
                     </td>
                     <td>{{ formatCurrencyDinamis($item->harga_jual) }}</td>
-                    <td>{{ Number::currency($item->total_tagihan, in: 'IDR', locale: 'id_ID') }}</td>
                     <td>
                       <x-modal.fakturis-ajukan-retur :item="$item" />
                     </td>
                   </tr>
                 @endforeach
               </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="10" class="fw-bold text-end">
-                    Total Faktur
-                  </td>
-                  <td class="fw-bold" colspan="3">
-                    {{ Number::currency(round($jual_details->sum('total_tagihan')), in: 'IDR', locale: 'id_ID') }}</td>
-                </tr>
-              </tfoot>
             </table>
 
           </div>

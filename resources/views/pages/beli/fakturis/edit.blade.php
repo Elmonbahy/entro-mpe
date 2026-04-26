@@ -49,44 +49,6 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md mb-3">
-              <x-form.label value="Kredit (hari)" optional />
-              <x-form.input name="kredit" type="number" placeholder="Input kredit..." :value="$beli->kredit" />
-            </div>
-
-            <div class="col-md mb-3">
-              <x-form.label value="Ongkir" optional />
-              <x-form.input name="ongkir" type="number" placeholder="Input ongkir..." :value="$beli->ongkir ?? 0"
-                :readonly="$beli->status_bayar === \App\Enums\StatusBayar::PAID" />
-            </div>
-            <div class="col-md mb-3">
-              <x-form.label value="Materai" optional />
-              <x-form.input name="materai" type="number" placeholder="Input materai..." :value="$beli->materai ?? 0"
-                :readonly="$beli->status_bayar === \App\Enums\StatusBayar::PAID" />
-            </div>
-
-            <div class="col-md mb-3">
-              <x-form.label value="Diskon faktur" optional />
-              <x-form.input name="diskon_faktur" type="text" value="{{ old('diskon_faktur', '0') }}"
-                placeholder="Input diskon ..." oninput="this.value = this.value.replace(',', '.')" />
-            </div>
-
-            <div class="col-md mb-3">
-              <x-form.label value="Biaya Lainya" optional />
-              <x-form.input name="biaya_lainnya" type="number" placeholder="Input biaya lainya..." :value="$beli->biaya_lainnya ?? 0"
-                :readonly="$beli->status_bayar === \App\Enums\StatusBayar::PAID" />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <x-form.radio-group name="ppn" label="PPN" :options="[
-                '0' => 'Tanpa PPN',
-                '11' => '11%',
-                '12' => '12%',
-            ]" :value="old('ppn') ?? $beli->ppn" />
-          </div>
-
           <div class="mb-3">
             <x-form.label value="Keterangan" optional />
             <x-form.input name="keterangan_faktur" placeholder="Input keterangan..." :value="$beli->keterangan_faktur" />

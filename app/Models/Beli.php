@@ -32,7 +32,7 @@ class Beli extends Model
     $tahun = $date->format('Y');
     $bulan = $date->format('m');
 
-    $prefix = "MJP/{$tahun}/{$bulan}-";
+    $prefix = "SP/{$tahun}/{$bulan}-";
 
     // Cari nomor terakhir untuk bulan & tahun tersebut
     $lastFaktur = self::where('nomor_pemesanan', 'like', $prefix . '%')

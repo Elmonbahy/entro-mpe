@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Gudang\BarangController;
 use App\Http\Controllers\Gudang\BeliController;
 use App\Http\Controllers\Gudang\BarangRusakController;
-use App\Http\Controllers\Gudang\SuratJalanController;
 use App\Http\Controllers\Gudang\PelangganController;
 use App\Http\Controllers\Gudang\KendaraanController;
 use App\Http\Controllers\Gudang\MutationController;
@@ -72,8 +71,6 @@ Route::prefix('jual')->as('jual.')->group(function () {
   Route::get('/', [JualController::class, 'index'])->name('index');
   Route::get('/{id}', [JualController::class, 'show'])->name('show');
   Route::patch('/{id}/done', [JualController::class, 'done'])->name('done');
-  Route::get('/{id}/pdf', [JualController::class, 'exportPdf'])->name('pdf');
-  Route::put('/retur/update-keterangan/{id}', [JualController::class, 'updateKeterangan'])->name('updateKeterangan');
 
   Route::get('/retur/{id}', [JualDetailController::class, 'returDone'])->name('retur-done');
   Route::get('/{id}/retur/{jual_detail_id}', [JualDetailController::class, 'retur'])->name('retur-item');
@@ -84,18 +81,6 @@ Route::prefix('jual')->as('jual.')->group(function () {
   Route::patch('/{id}/stock/{jual_detail_id}', [JualDetailController::class, 'stockUpdate'])->name('stock-item-update');
 
   Route::patch('{id}/stock/{jual_detail_id}/split', [JualDetailController::class, 'splitRemainingStock'])->name('split-stock');
-});
-
-Route::prefix('surat-jalan')->as('surat-jalan.')->group(function () {
-  Route::get('/', [SuratJalanController::class, 'index'])->name('index');
-  Route::post('/', [SuratJalanController::class, 'store'])->name('store');
-  Route::get('/create', [SuratJalanController::class, 'create'])->name('create');
-  Route::get('/{id}/pdf', [SuratJalanController::class, 'exportPdf'])->name('pdf');
-  Route::get('/excel', [SuratJalanController::class, 'exportExcel'])->name('excel');
-  Route::get('/{id}', [SuratJalanController::class, 'show'])->name('show');
-  Route::get('/{id}/add-item', [SuratJalanController::class, 'addItem'])->name('add-item');
-  Route::get('/{id}/edit', [SuratJalanController::class, 'edit'])->name('edit');
-  Route::patch('/{id}/edit', [SuratJalanController::class, 'update'])->name('update');
 });
 
 Route::prefix('laporan-beli')->as('laporan-beli.')->group(function () {

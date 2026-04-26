@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Fakturis;
 
 use App\Http\Controllers\Controller;
-use App\Models\Barang;
 use App\Models\BarangRetur;
 use App\Models\Jual;
 use App\Models\Salesman;
 use App\Models\Pelanggan;
-use App\Constants\TipePenjualan;
 use App\Models\JualDetail;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -31,7 +28,6 @@ class JualController extends Controller
   {
     return view('pages.jual.fakturis.create', [
       'pelanggans' => Pelanggan::select('id', 'nama')->get(),
-      'tipe_penjualans' => TipePenjualan::all(),
       'salesmans' => Salesman::select('id', 'nama')->get(),
     ]);
   }
@@ -44,7 +40,6 @@ class JualController extends Controller
 
     return view('pages.jual.fakturis.edit', [
       'jual' => $jual,
-      'tipe_penjualans' => TipePenjualan::all(),
       'salesmans' => Salesman::select('id', 'nama')->get(),
       'pelanggans' => Pelanggan::select('id', 'nama')->get()
     ]);
@@ -55,15 +50,6 @@ class JualController extends Controller
     $request->validate([
       'pelanggan' => $id ? 'nullable' : 'required|exists:pelanggans,id',
       'salesman' => 'required|exists:salesmen,id',
-      'tipe_penjualan' => [
-        'required',
-        'string',
-        function ($attribute, $value, $fail) {
-          if (!in_array($value, TipePenjualan::all())) {
-            $fail('The selected ' . $attribute . ' is invalid.');
-          }
-        }
-      ],
       'nomor_pemesanan' => [
         'nullable',
         'string',
@@ -72,11 +58,7 @@ class JualController extends Controller
         ? Rule::unique('juals')->ignore($id) // For updates
         : 'unique:juals,nomor_pemesanan',       // For creation
       ],
-      'diskon_faktur' => 'nullable|numeric|min:0|max:100',
       'tgl_faktur' => 'required|date',
-      'kredit' => 'nullable|integer|min:0',
-      'ppn' => 'required|in:0,11,12',
-      'ongkir' => 'nullable|numeric|min:0',
       'keterangan_faktur' => 'nullable|string|max:255',
     ]);
   }
@@ -93,15 +75,10 @@ class JualController extends Controller
 
       $jual->update([
         'pelanggan_id' => $request->pelanggan,
-        'tipe_penjualan' => $request->tipe_penjualan,
         'salesman_id' => $request->salesman,
         'nomor_pemesanan' => $request->nomor_pemesanan,
-        'diskon_faktur' => $request->diskon_faktur,
         'tgl_faktur' => $request->tgl_faktur,
-        'kredit' => $request->kredit,
-        'ppn' => $request->ppn,
         'keterangan_faktur' => $request->keterangan_faktur,
-        'ongkir' => $request->ongkir,
       ]);
 
       \DB::commit();
@@ -124,15 +101,10 @@ class JualController extends Controller
       $jual = Jual::create([
         'nomor_faktur' => Jual::generateNomorFaktur($request->tgl_faktur),
         'nomor_pemesanan' => $request->nomor_pemesanan,
-        'tipe_penjualan' => $request->tipe_penjualan,
         'tgl_faktur' => $request->tgl_faktur,
-        'diskon_faktur' => $request->input('diskon_faktur', 0),
-        'kredit' => $request->input('kredit', 0),
-        'ppn' => $request->ppn,
         'keterangan_faktur' => $request->keterangan_faktur,
         'pelanggan_id' => $request->pelanggan,
         'salesman_id' => $request->salesman,
-        'ongkir' => $request->ongkir,
       ]);
 
       return redirect()
@@ -150,7 +122,6 @@ class JualController extends Controller
   {
     $jual = Jual::with([
       'jualDetails',
-      'suratJalanDetails.suratJalan.kendaraan',
     ])->findOrFail($id);
 
     $jual_details = JualDetail::where('jual_id', $id)->get();
@@ -187,85 +158,6 @@ class JualController extends Controller
 
     $tipe_harga = Pelanggan::where('id', $jual->pelanggan_id)->value('tipe_harga');
     return view('pages.jual.fakturis.add-item', compact('jual', 'tipe_harga'));
-  }
-
-
-  public function exportFakur(int $id, Request $request)
-  {
-    $jual = Jual::findOrFail($id);
-
-    $jual_detail = JualDetail::where('jual_id', $id)
-      ->where('jumlah_barang_dipesan', '>', 0)
-      ->with([
-        'barang:barangs.nama,barangs.id,barangs.satuan,barangs.kode,barangs.brand_id,barangs.nie',
-        'barang.brand:id,nama'
-      ])->get();
-
-    $sum_sub_nilai = $jual_detail->sum('sub_nilai');
-    $sum_harga_diskon1 = $jual_detail->sum('harga_diskon1');
-    $sum_nilai_diskon1 = $jual_detail->sum('nilai_diskon1');
-    $sum_harga_diskon2 = $jual_detail->sum('harga_diskon2');
-    $sum_total = $jual_detail->sum('total');
-    $sum_harga_ppn = $jual_detail->sum('harga_ppn');
-    $sum_total_tagihan = $jual_detail->sum('total_tagihan');
-
-    $pdf = Pdf::loadView('pages.faktur.fakturis.pdf', [
-      'jual' => $jual,
-      'jual_detail' => $jual_detail,
-      'sum_sub_nilai' => $sum_sub_nilai,
-      'sum_harga_diskon1' => $sum_harga_diskon1,
-      'sum_nilai_diskon1' => $sum_nilai_diskon1,
-      'sum_harga_diskon2' => $sum_harga_diskon2,
-      'sum_total' => $sum_total,
-      'sum_harga_ppn' => $sum_harga_ppn,
-      'sum_total_tagihan' => $sum_total_tagihan,
-    ]);
-
-    $type = $request->query('type');
-
-    if ($type == 'pendek') {
-      // Ukuran Faktur Pendek (8.5 x 5.5 inci)
-      $pdf->setPaper([0, 0, 612, 415], 'portrait');
-    } elseif ($type == 'panjang') {
-      // Ukuran Faktur Panjang (8.5 x 11 inci)
-      $pdf->setPaper([0, 0, 612, 792], 'portrait');
-    } else {
-      // Default tetap Legal sesuai permintaan Anda
-      $pdf->setPaper('legal', 'portrait');
-    }
-
-    $pdf->setOption('isJavascriptEnabled', false);
-    $pdf->setOption('isRemoteEnabled', true);
-
-    $filename = 'FAKTUR_' . $jual->nomor_faktur . '_' . $jual->pelanggan->nama;
-    $filename = str_replace([' ', '/', '\\'], '_', $filename) . '.pdf';
-
-    return $pdf->stream($filename);
-  }
-  public function exportSpkb(int $id)
-  {
-    $jual = Jual::findOrFail($id);
-    $jual_detail = JualDetail::where('jual_id', $id)
-      ->where('jumlah_barang_dipesan', '>', 0)
-      ->with([
-        'barang:barangs.nama,barangs.id,barangs.satuan,barangs.kode,barangs.brand_id,barangs.nie',
-        'barang.brand:id,nama'
-      ])->get();
-
-    $pdf = Pdf::loadView('pages.spkb.fakturis.pdf', [
-      'jual' => $jual,
-      'jual_detail' => $jual_detail,
-      'waktu_cetak' => now()->setTimezone('Asia/Makassar')->format('d/m/Y H:i')
-    ]);
-
-    $pdf->setPaper('legal');
-    $pdf->setOption('isJavascriptEnabled', false);
-    $pdf->setOption('isRemoteEnabled', true);
-
-    $filename = 'SPKB_' . $jual->nomor_faktur . '_' . $jual->pelanggan->nama;
-    $filename = str_replace(' ', '_', $filename) . '.pdf';
-
-    return $pdf->stream($filename);
   }
 
 }

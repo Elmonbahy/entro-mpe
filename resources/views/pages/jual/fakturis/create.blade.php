@@ -21,12 +21,6 @@
           </div>
 
           <div class="row">
-            <div class="col-md mb-3">
-              <x-form.label value="Tipe penjualan" />
-              <x-form.select name="tipe_penjualan" placeholder="Cari atau pilih tipe penjualan" :options="$tipe_penjualans"
-                :selected="old('tipe_penjualan')" valueKey="id" labelKey="nama" />
-            </div>
-
             <div class="mb-3 col-md">
               <x-form.label value="Salesman" />
               <x-form.select name="salesman" placeholder="Cari atau pilih salesman" :options="$salesmans" :selected="old('salesman')"
@@ -44,32 +38,6 @@
               <x-form.label value="Nomor pemesanan" optional />
               <x-form.input name="nomor_pemesanan" placeholder="Input nomor pemesanan..." />
             </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md mb-3">
-              <x-form.label value="Kredit (hari)" optional />
-              <x-form.input name="kredit" type="number" placeholder="Input kredit..." value="30" />
-            </div>
-
-            <div class="col-md mb-3">
-              <x-form.label value="Ongkir" optional />
-              <x-form.input name="ongkir" type="number" placeholder="Input ongkir..." value="0" />
-            </div>
-
-            <div class="col-md mb-3">
-              <x-form.label value="Diskon faktur" optional />
-              <x-form.input name="diskon_faktur" type="text" value="0" placeholder="Input diskon ..."
-                oninput="this.value = this.value.replace(',', '.')" />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <x-form.radio-group name="ppn" label="PPN" :options="[
-                '0' => 'Tanpa PPN',
-                '11' => '11%',
-                '12' => '12%',
-            ]" :value="old('ppn', 11)" />
           </div>
 
           <div class="mb-3">
