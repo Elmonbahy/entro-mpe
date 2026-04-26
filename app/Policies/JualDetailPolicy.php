@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Enums\StatusBarangKeluar;
-use App\Enums\StatusBayar;
 use App\Enums\StatusFaktur;
 use App\Models\JualDetail;
 use App\Models\User;
@@ -21,10 +20,6 @@ class JualDetailPolicy
       return Response::deny('Gagal! Status barang keluar sudah lengkap.');
     }
 
-    if ($jual_detail->jual->status_bayar === StatusBayar::PAID) {
-      return Response::deny('Gagal! Faktur sudah lunas!');
-    }
-
     if ($jual_detail->jumlah_barang_keluar > 0) {
       return Response::deny('Gagal! Sudah ada barang keluar!');
     }
@@ -35,10 +30,6 @@ class JualDetailPolicy
   {
     if (!$user->hasAnyRole(['af'])) {
       return Response::deny();
-    }
-
-    if ($jual_detail->jual->status_bayar === StatusBayar::PAID) {
-      return Response::deny('Gagal! Faktur sudah lunas!');
     }
 
     return Response::allow();

@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Supervisor\MutationController;
-use App\Http\Controllers\PersediaanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Supervisor\BrandController;
 use App\Http\Controllers\Supervisor\GroupController;
@@ -12,9 +11,7 @@ use App\Http\Controllers\Supervisor\SupplierController;
 use App\Http\Controllers\Supervisor\BeliController;
 use App\Http\Controllers\Supervisor\BarangStockController;
 use App\Http\Controllers\Supervisor\JualController;
-use App\Http\Controllers\Supervisor\SuratJalanController;
 use App\Http\Controllers\Supervisor\UsersController;
-use App\Http\Controllers\Supervisor\WorkProgressController;
 
 Route::resource('/barang', BarangController::class);
 Route::resource('/brand', BrandController::class);
@@ -35,10 +32,6 @@ Route::prefix('export')->group(function () {
   Route::get('/supplier', [SupplierController::class, 'exportExcel'])->name('supplier.export');
 });
 
-Route::prefix('work-progres')->as('work-progres.')->group(function () {
-  Route::get('/', [WorkProgressController::class, 'index'])->name('index');
-});
-
 Route::prefix('beli')->as('beli.')->group(function () {
   Route::get('/', [BeliController::class, 'index'])->name('index');
   Route::get('/{id}', [BeliController::class, 'show'])->name('show');
@@ -54,19 +47,8 @@ Route::prefix('jual')->as('jual.')->group(function () {
   Route::get('/{id}', [JualController::class, 'show'])->name('show');
 });
 
-Route::prefix('surat-jalan')->as('surat-jalan.')->group(function () {
-  Route::get('/', [SuratJalanController::class, 'index'])->name('index');
-  Route::get('/excel', [SuratJalanController::class, 'exportExcel'])->name('excel');
-  Route::get('/{id}', [SuratJalanController::class, 'show'])->name('show');
-});
-
 Route::prefix('mutation')->as('mutation.')->group(function () {
   Route::get('/', [MutationController::class, 'index'])->name('index');
   Route::get('/excel', [MutationController::class, 'exportExcelMutation'])->name('excel-mutation');
   Route::get('/kartu-stock', [MutationController::class, 'kartuStock'])->name('kartu-stock');
-});
-
-Route::prefix('persediaan')->as('persediaan.')->group(function () {
-  Route::get('/', [PersediaanController::class, 'index'])->name('index');
-  Route::get('/excel', [PersediaanController::class, 'exportExcel'])->name('excel');
 });

@@ -1,11 +1,6 @@
 @php
   $navigation = [
       [
-          'title' => 'Work Progress',
-          'icon' => 'bi bi-activity',
-          'route' => 'supervisor.work-progres.index',
-      ],
-      [
           'title' => 'Master Data',
           'icon' => 'bi bi-database',
           'items' => [
@@ -33,11 +28,6 @@
               ['title' => 'Kartu Stock', 'route' => 'supervisor.mutation.kartu-stock'],
               ['title' => 'Stock Barang', 'route' => 'supervisor.stock.index'],
           ],
-      ],
-      [
-          'title' => 'Surat Jalan',
-          'icon' => '"bi bi-card-text',
-          'route' => 'supervisor.surat-jalan.index',
       ],
   ];
 
