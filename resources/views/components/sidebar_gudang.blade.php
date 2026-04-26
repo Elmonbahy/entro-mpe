@@ -32,7 +32,6 @@
               ['title' => 'Stock Barang', 'route' => 'gudang.stock.index'],
               ['title' => 'Barang Expired', 'route' => 'gudang.barang-expired.index'],
               ['title' => 'Barang Rusak', 'route' => 'gudang.barang-rusak.index'],
-              ['title' => 'Mutasi', 'route' => 'gudang.mutation.index'],
           ],
       ],
   ];

@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\MutationController;
-use App\Http\Controllers\PersediaanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Fakturis\BrandController;
 use App\Http\Controllers\Fakturis\GroupController;
@@ -77,11 +76,6 @@ Route::prefix('barang-rusak')->as('barang-rusak.')->group(function () {
   Route::get('/', [BarangRusakController::class, 'index'])->name('index');
   Route::get('/excel', [BarangRusakController::class, 'exportExcel'])->name('excel');
   Route::get('/{id}', [BarangRusakController::class, 'show'])->name('show');
-});
-
-Route::prefix('persediaan')->as('persediaan.')->group(function () {
-  Route::get('/', [PersediaanController::class, 'index'])->name('index');
-  Route::get('/excel', [PersediaanController::class, 'exportExcel'])->name('excel');
 });
 
 Route::prefix('laporan-jual-faktur')->as('laporan-jual-faktur.')->group(function () {

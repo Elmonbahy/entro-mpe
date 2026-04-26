@@ -32,7 +32,6 @@
           'items' => [
               ['title' => 'Kartu Stock', 'route' => 'supervisor.mutation.kartu-stock'],
               ['title' => 'Stock Barang', 'route' => 'supervisor.stock.index'],
-              ['title' => 'Mutasi', 'route' => 'supervisor.mutation.index'],
           ],
       ],
       [

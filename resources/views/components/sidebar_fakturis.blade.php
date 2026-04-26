@@ -29,8 +29,6 @@
               ['title' => 'Stock Barang', 'route' => 'fakturis.stock.index'],
               ['title' => 'Penyesuaian', 'route' => 'fakturis.stock-awal.index'],
               ['title' => 'Barang Rusak', 'route' => 'fakturis.barang-rusak.index'],
-              ['title' => 'Mutasi', 'route' => 'fakturis.mutation.index'],
-              ['title' => 'Persediaan', 'route' => 'fakturis.persediaan.index'],
           ],
       ],
       [
