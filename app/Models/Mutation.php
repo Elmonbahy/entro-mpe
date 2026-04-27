@@ -29,21 +29,6 @@ class Mutation extends Model
     'tgl_mutation'
   ];
 
-  public function getDiscAttribute()
-  {
-    if (in_array($this->mutation_type, ['JualDetail', 'BeliDetail'])) {
-      return [
-        'diskon1' => $this->mutationable->diskon1,
-        'diskon2' => $this->mutationable->diskon2,
-      ];
-    }
-
-    return [
-      'diskon1' => '-',
-      'diskon2' => '-',
-    ];
-  }
-
   public function getHargaAttribute()
   {
     if ($this->mutation_type === 'JualDetail') {
