@@ -15,7 +15,7 @@ class Barang extends Model
    *
    * @var array
    */
-  protected $fillable = ['kode', 'nama', 'satuan', 'nie', 'harga_jual_pemerintah', 'harga_jual_swasta', 'harga_beli', 'group_id', 'brand_id', 'supplier_id', 'kegunaan'];
+  protected $fillable = ['kode', 'nama', 'satuan', 'nie', 'group_id', 'brand_id', 'supplier_id'];
 
 
   public function stocks()

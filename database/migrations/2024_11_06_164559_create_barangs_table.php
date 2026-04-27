@@ -20,10 +20,6 @@ return new class extends Migration {
       $table->string('nama');
       $table->string('satuan');
       $table->string('nie')->nullable();
-      $table->decimal('harga_jual_pemerintah', 12, 2)->unsigned()->default(0)->nullable(); // Menggunakan decimal dan unsigned
-      $table->decimal('harga_jual_swasta', 12, 2)->unsigned()->default(0)->nullable(); // Menggunakan decimal dan unsigned
-      $table->decimal('harga_beli', 12, 2)->unsigned()->default(0)->nullable(); // Menggunakan decimal dan unsigned
-      $table->text('kegunaan')->nullable();
       $table->timestamps();
 
       $table->unique(['nama', 'brand_id'], 'unique_barang_name');

@@ -60,35 +60,6 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="mb-3 col-md">
-              <x-form.label value="Harga jual pemerintah" />
-              <x-form.input name="harga_jual_pemerintah" id="harga_jual_pemerintah"
-                placeholder="Input harga jual pemerintah..." :value="number_format($barang->harga_jual_pemerintah, 2, ',', '.')" oninput="formatRupiah(this)" />
-            </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Harga jual swasta" />
-              <x-form.input name="harga_jual_swasta" id="harga_jual_swasta" placeholder="Input harga jual swasta..."
-                :value="number_format($barang->harga_jual_swasta, 2, ',', '.')" oninput="formatRupiah(this)" />
-            </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Harga beli" />
-              <x-form.input name="harga_beli" id="harga_beli" placeholder="Input harga beli..." :value="number_format($barang->harga_beli, 2, ',', '.')"
-                oninput="formatRupiah(this)" />
-            </div>
-
-          </div>
-
-          <div class="row">
-            <div class="mb-3 col-md">
-              <x-form.label value="Kegunaan" optional />
-              <textarea name="kegunaan" class="form-control" placeholder="Input kegunaan...">{{ old('kegunaan', $barang->kegunaan) }}</textarea>
-            </div>
-
-          </div>
-
           <button type="submit" class="btn btn-primary">
             Simpan
           </button>

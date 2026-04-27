@@ -42,23 +42,6 @@
                   <td class="pe-3">{{ $barang->supplier->nama ?? '-' }}</td>
                 </tr>
                 <tr>
-                  <td class="ps-3 text-muted fw-bold">Harga Jual Pemerintah</td>
-                  <td class="pe-3">
-                    {{ Number::currency($barang->harga_jual_pemerintah ?? 0, in: 'IDR', locale: 'id_ID') }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="ps-3 text-muted fw-bold">Harga Jual Swasta</td>
-                  <td class="pe-3">
-                    {{ Number::currency($barang->harga_jual_swasta ?? 0, in: 'IDR', locale: 'id_ID') }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="ps-3 fw-bold text-muted">Harga Beli</td>
-                  <td class="pe-3">
-                    {{ Number::currency($barang->harga_beli, in: 'IDR', locale: 'id_ID') }}
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>

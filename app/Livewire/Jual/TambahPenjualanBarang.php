@@ -105,7 +105,7 @@ class TambahPenjualanBarang extends Component
   #[Computed()]
   private function barang()
   {
-    $item = Barang::select('id', 'nama', 'satuan', 'harga_jual_pemerintah', 'harga_jual_swasta')->find($this->barang_id);
+    $item = Barang::select('id', 'nama', 'satuan')->find($this->barang_id);
 
     if ($item) {
       $harga_jual = 0;

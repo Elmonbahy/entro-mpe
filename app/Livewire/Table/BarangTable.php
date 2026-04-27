@@ -33,7 +33,6 @@ final class BarangTable extends PowerGridComponent
     return Barang::query()
       ->join('brands', 'barangs.brand_id', '=', 'brands.id')
       ->select('barangs.*', 'brands.nama as brand_nama', 'brands.id as brand_id')
-      ->orderByRaw('ISNULL(kegunaan) DESC') // barang tanpa kegunaan muncul paling atas
       ->orderBy('barangs.id', $this->sortDirection); // urut desc
   }
 
@@ -45,14 +44,6 @@ final class BarangTable extends PowerGridComponent
       ->add('kode', fn($row) => $row->kode ?? '-')
       ->add('nama')
       ->add('satuan');
-
-    if (Auth::user()->hasAnyRole(['as', 'af', 'su'])) {
-      // Kolom tambahan khusus untuk role 'af'
-      $fields
-        ->add('harga_jual_pemerintah', fn($row) => Number::currency($row->harga_jual_pemerintah ?? 0, in: 'IDR', locale: 'id_ID'))
-        ->add('harga_jual_swasta', fn($row) => Number::currency($row->harga_jual_swasta ?? 0, in: 'IDR', locale: 'id_ID'))
-        ->add('harga_beli', fn($row) => Number::currency($row->harga_beli ?? 0, in: 'IDR', locale: 'id_ID'));
-    }
 
     return $fields;
   }
@@ -70,14 +61,6 @@ final class BarangTable extends PowerGridComponent
       Column::make('Satuan', 'satuan')
         ->sortable(),
     ];
-
-    if (Auth::user()->hasAnyRole(['as', 'af', 'su'])) {
-      // Kolom tambahan khusus untuk role 'af'
-      $columns[] = Column::make('Harga jual pemerintah', 'harga_jual_pemerintah');
-      $columns[] = Column::make('Harga jual swasta', 'harga_jual_swasta');
-      $columns[] = Column::make('Harga Beli', 'harga_beli');
-    }
-    // Kolom aksi tetap ditambahkan untuk semua role
     $columns[] = Column::action('Action');
 
     return $columns;
@@ -96,7 +79,7 @@ final class BarangTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['af', 'su'])) {
+    if (!Auth::user()->hasAnyRole(['af'])) {
       abort(403);
     }
 
@@ -113,17 +96,13 @@ final class BarangTable extends PowerGridComponent
     $routeMaps = [
       'show' => [
         'ag' => 'gudang.barang.show',
-        'aw' => 'warehouse.barang.show',
         'af' => 'fakturis.barang.show',
-        'aa' => 'accounting.barang.show',
         'as' => 'supervisor.barang.show',
         'su' => 'superadmin.barang.show',
       ],
       'edit' => [
         'ag' => 'gudang.barang.edit',
-        'aw' => 'warehouse.barang.edit',
         'af' => 'fakturis.barang.edit',
-        'su' => 'superadmin.barang.edit',
       ],
     ];
 
@@ -145,7 +124,7 @@ final class BarangTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['barang' => $row->id]);
     }
 
-    if (Auth::user()->hasAnyRole(['af', 'su'])) {
+    if (Auth::user()->hasAnyRole(['af'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)

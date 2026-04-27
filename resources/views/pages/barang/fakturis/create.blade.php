@@ -58,33 +58,6 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="mb-3 col-md">
-              <x-form.label value="Harga jual pemerintah" />
-              <x-form.input id="harga_jual_pemerintah" name="harga_jual_pemerintah"
-                placeholder="Input harga jual pemerintah..." oninput="formatRupiah(this)" />
-            </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Harga jual swasta" />
-              <x-form.input id="harga_jual_swasta" name="harga_jual_swasta" placeholder="Input harga jual swasta..."
-                oninput="formatRupiah(this)" />
-            </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Harga beli" />
-              <x-form.input id="harga_beli" name="harga_beli" placeholder="Input harga beli..."
-                oninput="formatRupiah(this)" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="mb-3 col-md">
-              <x-form.label value="Kegunaan" optional />
-              <x-form.textarea name="kegunaan" placeholder="Input kegunaan..." />
-            </div>
-          </div>
-
           <button type="submit" class="btn btn-primary">
             Simpan
           </button>

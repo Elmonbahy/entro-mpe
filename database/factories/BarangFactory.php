@@ -22,17 +22,13 @@ class BarangFactory extends Factory
     self::$counter++;
 
     return [
-      // 'kode' => 'BRG' . str_pad(self::$counter, 3, '0', STR_PAD_LEFT),
       'kode' => $this->faker->regexify('[A-Z]{3}[0-9]{4}'),
       'nama' => $this->faker->company,
       'satuan' => $this->faker->randomElement(Satuan::all()),
       'nie' => $this->faker->numberBetween(1, 100),
-      'harga_jual_pemerintah' => $this->faker->randomFloat(2, 9000, 90000),
-      'harga_jual_swasta' => $this->faker->randomFloat(2, 7000, 70000),
       'group_id' => \App\Models\Group::factory(),
       'brand_id' => \App\Models\Brand::factory(),
       'supplier_id' => \App\Models\Supplier::factory(),
-      'kegunaan' => $this->faker->sentence,
     ];
   }
 }

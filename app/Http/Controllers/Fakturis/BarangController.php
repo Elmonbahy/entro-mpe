@@ -56,13 +56,9 @@ class BarangController extends Controller
         }
       ],
       'nie' => ['nullable', 'string', 'max:100'],
-      'harga_jual_pemerintah' => ['nullable', 'numeric', 'min:0'],
-      'harga_jual_swasta' => ['nullable', 'numeric', 'min:0'],
-      'harga_beli' => ['nullable', 'numeric', 'min:0'],
       'group' => ['nullable', 'string', 'exists:' . Group::class . ',id'],
       'brand' => ['required', 'string', 'exists:' . Brand::class . ',id'],
       'supplier' => ['nullable', 'string', 'exists:' . Supplier::class . ',id'],
-      'kegunaan' => ['nullable']
     ]);
   }
 
@@ -88,12 +84,6 @@ class BarangController extends Controller
    */
   public function store(Request $request)
   {
-    $request->merge([
-      'harga_jual_pemerintah' => $request->harga_jual_pemerintah ? str_replace(',', '.', str_replace('.', '', $request->harga_jual_pemerintah)) : 0,
-      'harga_jual_swasta' => $request->harga_jual_swasta ? str_replace(',', '.', str_replace('.', '', $request->harga_jual_swasta)) : 0,
-      'harga_beli' => $request->harga_beli ? str_replace(',', '.', str_replace('.', '', $request->harga_beli)) : 0,
-    ]);
-
     $this->validation($request);
 
     try {
@@ -102,13 +92,9 @@ class BarangController extends Controller
         'nama' => $request->nama,
         'satuan' => $request->satuan,
         'nie' => $request->nie,
-        'harga_jual_pemerintah' => $request->harga_jual_pemerintah,
-        'harga_jual_swasta' => $request->harga_jual_swasta,
-        'harga_beli' => $request->harga_beli,
         'group_id' => $request->group,
         'brand_id' => $request->brand,
         'supplier_id' => $request->supplier,
-        'kegunaan' => $request->kegunaan,
       ]);
 
       return redirect()->route('fakturis.barang.index')->with('success', 'Berhasil menambahkan data barang.');
@@ -152,12 +138,6 @@ class BarangController extends Controller
    */
   public function update(Request $request, int $id)
   {
-    $request->merge([
-      'harga_jual_pemerintah' => $request->harga_jual_pemerintah ? str_replace(',', '.', str_replace('.', '', $request->harga_jual_pemerintah)) : 0,
-      'harga_jual_swasta' => $request->harga_jual_swasta ? str_replace(',', '.', str_replace('.', '', $request->harga_jual_swasta)) : 0,
-      'harga_beli' => $request->harga_beli ? str_replace(',', '.', str_replace('.', '', $request->harga_beli)) : 0,
-    ]);
-
     $this->validation($request, $id);
 
     $barang = Barang::findOrFail($id);
@@ -165,13 +145,9 @@ class BarangController extends Controller
     $barang->kode = $request->kode;
     $barang->satuan = $request->satuan;
     $barang->nie = $request->nie;
-    $barang->harga_jual_pemerintah = $request->harga_jual_pemerintah;
-    $barang->harga_jual_swasta = $request->harga_jual_swasta;
-    $barang->harga_beli = $request->harga_beli;
     $barang->group_id = $request->group;
     $barang->brand_id = $request->brand;
     $barang->supplier_id = $request->supplier;
-    $barang->kegunaan = $request->kegunaan;
     $barang->save();
 
     return redirect()->route('fakturis.barang.index')->with('success', 'Berhasil mengubah data barang.');
