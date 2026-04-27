@@ -33,11 +33,6 @@
             </div>
           </div>
 
-          <div class="mb-3">
-            <x-form.label value="NPWP" />
-            <x-form.input name="npwp" placeholder="Input npwp..." />
-          </div>
-
           <div class="row">
             <div class="mb-3 col">
               <x-form.label value="Contact person" />
@@ -54,20 +49,6 @@
               <x-form.label value="Tipe pelanggan" />
               <x-form.select name="tipe" placeholder="Cari atau pilih tipe pelangan" :options="$tipePelanggans"
                 :selected="old('tipe')" />
-            </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Tipe harga" />
-              @php
-                $tipeHargaOptions = ['SWASTA', 'PEMERINTAH'];
-              @endphp
-              <x-form.select name="tipe_harga" placeholder="Cari atau pilih tipe harga" :options="$tipeHargaOptions"
-                :selected="old('tipe_harga')" />
-            </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Area" />
-              <x-form.select name="area" placeholder="Cari atau pilih area" :options="$areas" :selected="old('area')" />
             </div>
           </div>
 

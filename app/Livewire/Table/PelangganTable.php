@@ -47,17 +47,9 @@ final class PelangganTable extends PowerGridComponent
   {
     $fields = PowerGrid::fields()
       ->add('id')
-      ->add('kode')
       ->add('nama')
       ->add('kota')
-      ->add('npwp')
       ->add('contact_phone');
-    if (Auth::user()->hasAnyRole(['af', 'su'])) {
-      // Kolom tambahan khusus untuk role 'ak'
-      $fields
-        ->add('plafon_hutang', fn($row) => Number::currency($row->plafon_hutang ?? 0, in: 'IDR', locale: 'id_ID'))
-        ->add('limit_hari');
-    }
     return $fields;
   }
 
@@ -70,15 +62,8 @@ final class PelangganTable extends PowerGridComponent
         ->sortable(),
       Column::make('Kota', 'kota')
         ->sortable(),
-      Column::make('Contact phone', 'contact_phone'),
-      Column::make('Npwp', 'npwp')
     ];
 
-    if (Auth::user()->hasAnyRole(['af', 'su'])) {
-      // Kolom tambahan khusus untuk role 'af'
-      $columns[] = Column::make('Plafon Hutang', 'plafon_hutang');
-      $columns[] = Column::make('Limit Hari', 'limit_hari');
-    }
     // Kolom aksi tetap ditambahkan untuk semua role
     $columns[] = Column::action('Action');
 
@@ -115,19 +100,13 @@ final class PelangganTable extends PowerGridComponent
 
     $routeMaps = [
       'show' => [
-        'al' => 'logistik.pelanggan.show',
-        'ak' => 'keuangan.pelanggan.show',
         'af' => 'fakturis.pelanggan.show',
         'ag' => 'gudang.pelanggan.show',
         'as' => 'supervisor.pelanggan.show',
         'su' => 'superadmin.pelanggan.show',
       ],
       'edit' => [
-        'al' => 'logistik.pelanggan.edit',
-        'ak' => 'keuangan.pelanggan.edit',
         'af' => 'fakturis.pelanggan.edit',
-        'ag' => 'gudang.pelanggan.edit',
-        'su' => 'superadmin.pelanggan.edit',
       ],
     ];
 

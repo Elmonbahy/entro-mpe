@@ -20,10 +20,6 @@
           @method('PATCH')
 
           <div class="mb-3">
-            <p>Kode Pelanggan: <strong>{{ $pelanggan->kode }}</strong></p>
-          </div>
-
-          <div class="mb-3">
             <x-form.label value="Nama pelanggan" />
             <x-form.input name="nama" placeholder="Input nama pelanggan..." :value="$pelanggan->nama" />
           </div>
@@ -38,11 +34,6 @@
               <x-form.label value="Alamat pelanggan" />
               <x-form.input name="alamat" placeholder="Input alamat pelanggan..." :value="$pelanggan->alamat" />
             </div>
-          </div>
-
-          <div class="mb-3">
-            <x-form.label value="NPWP" />
-            <x-form.input name="npwp" placeholder="Input npwp..." :value="$pelanggan->npwp" />
           </div>
 
           <div class="row">
@@ -60,20 +51,6 @@
             <div class="mb-3 col-md">
               <x-form.label value="Tipe pelanggan" />
               <x-form.select name="tipe" placeholder="Cari atau pilih tipe" :options="$tipePelanggans" :selected="old('tipe') ?? $pelanggan->tipe" />
-            </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Tipe harga" />
-              @php
-                $tipeHargaOptions = ['SWASTA', 'PEMERINTAH'];
-              @endphp
-              <x-form.select name="tipe_harga" placeholder="Cari atau pilih tipe harga" :options="$tipeHargaOptions"
-                :selected="old('tipe_harga', $pelanggan->tipe_harga)" />
-            </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Area" />
-              <x-form.select name="area" placeholder="Cari atau pilih area" :options="$areas" :selected="old('area') ?? $pelanggan->area" />
             </div>
           </div>
 

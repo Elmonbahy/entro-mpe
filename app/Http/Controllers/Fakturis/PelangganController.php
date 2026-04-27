@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Fakturis;
 
 use App\Http\Controllers\Controller;
-use App\Constants\Area;
 use App\Constants\TipePelanggan;
 use App\Constants\Kota;
 use App\Models\Pelanggan;
@@ -29,11 +28,9 @@ class PelangganController extends Controller
   {
     $tipePelanggans = TipePelanggan::all();
     $kotas = Kota::all();
-    $areas = Area::all();
     return view('pages.pelanggan.fakturis.create', [
       'tipePelanggans' => $tipePelanggans,
       'kotas' => $kotas,
-      'areas' => $areas
     ]);
   }
 
@@ -45,12 +42,6 @@ class PelangganController extends Controller
   protected function validation(Request $request, int $id = null)
   {
     $request->validate([
-      'kode' => [
-        'nullable',
-        'string',
-        'max:100',
-        Rule::unique('pelanggans')->ignore($id)
-      ],
       'nama' => [
         'required',
         'string',
@@ -67,24 +58,13 @@ class PelangganController extends Controller
         }
       ],
       'alamat' => ['required', 'max:255'],
-      'npwp' => ['required', 'max:100'],
       'contact_person' => ['required', 'max:100'],
       'contact_phone' => ['required', 'max:32'],
-      'tipe_harga' => 'required|in:SWASTA,PEMERINTAH',
       'tipe' => [
         'required',
         'string',
         function ($attribute, $value, $fail) {
           if (!in_array($value, TipePelanggan::all())) {
-            $fail('The selected ' . $attribute . ' is invalid.');
-          }
-        }
-      ],
-      'area' => [
-        'required',
-        'string',
-        function ($attribute, $value, $fail) {
-          if (!in_array($value, Area::all())) {
             $fail('The selected ' . $attribute . ' is invalid.');
           }
         }
@@ -101,16 +81,12 @@ class PelangganController extends Controller
 
     try {
       Pelanggan::create([
-        'kode' => Pelanggan::getNewCode(),
         'nama' => $request->nama,
         'alamat' => $request->alamat,
         'kota' => $request->kota,
-        'npwp' => $request->npwp,
         'contact_person' => $request->contact_person,
         'contact_phone' => $request->contact_phone,
         'tipe' => $request->tipe,
-        'tipe_harga' => $request->tipe_harga,
-        'area' => $request->area,
       ]);
 
       return redirect()->route('fakturis.pelanggan.index')->with('success', 'Berhasil menambahkan data pelanggan.');
@@ -134,12 +110,10 @@ class PelangganController extends Controller
   {
     $tipePelanggans = TipePelanggan::all();
     $kotas = Kota::all();
-    $areas = Area::all();
     return view('pages.pelanggan.fakturis.edit', [
       'pelanggan' => $pelanggan,
       'tipePelanggans' => $tipePelanggans,
       'kotas' => $kotas,
-      'areas' => $areas
     ]);
   }
 
@@ -154,12 +128,9 @@ class PelangganController extends Controller
     $pelanggan->nama = $request->nama;
     $pelanggan->alamat = $request->alamat;
     $pelanggan->kota = $request->kota;
-    $pelanggan->npwp = $request->npwp;
     $pelanggan->contact_person = $request->contact_person;
     $pelanggan->contact_phone = $request->contact_phone;
     $pelanggan->tipe = $request->tipe;
-    $pelanggan->tipe_harga = $request->tipe_harga;
-    $pelanggan->area = $request->area;
     $pelanggan->save();
 
     return redirect()->route('fakturis.pelanggan.index')->with('success', 'Berhasil mengubah data pelanggan.');

@@ -155,9 +155,7 @@ class JualController extends Controller
     $jual = Jual::findOrFail($id);
 
     \Gate::authorize('update', $jual);
-
-    $tipe_harga = Pelanggan::where('id', $jual->pelanggan_id)->value('tipe_harga');
-    return view('pages.jual.fakturis.add-item', compact('jual', 'tipe_harga'));
+    return view('pages.jual.fakturis.add-item', compact('jual'));
   }
 
 }

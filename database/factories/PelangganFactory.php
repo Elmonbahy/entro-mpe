@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Constants\Area;
 use App\Constants\Kota;
 use App\Constants\TipePelanggan;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,13 +22,9 @@ class PelangganFactory extends Factory
     self::$counter++;
 
     return [
-      'kode' => 'CUST' . str_pad(self::$counter, 3, '0', STR_PAD_LEFT),
-
       'nama' => $this->faker->company,
       'alamat' => $this->faker->address,
       'kota' => $this->faker->randomElement(Kota::all()),
-      'area' => $this->faker->randomElement(Area::all()),
-      'npwp' => $this->faker->unique()->numerify('##.###.###.#-###.###'),
       'contact_person' => $this->faker->name,
       'contact_phone' => $this->faker->phoneNumber,
       'tipe' => $this->faker->randomElement(TipePelanggan::all()),
