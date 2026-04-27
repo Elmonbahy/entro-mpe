@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Supervisor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Exports\Supervisor\SupplierExport;
 use Maatwebsite\Excel\Facades\Excel;
 

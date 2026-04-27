@@ -12,11 +12,9 @@ return new class extends Migration {
   {
     Schema::create('suppliers', function (Blueprint $table) {
       $table->id();
-      $table->string('kode', 10)->unique();
       $table->string('nama')->unique();
       $table->string('alamat')->nullable();
       $table->string('kota')->nullable();
-      $table->string('npwp')->nullable();
       $table->string('contact_person')->nullable();
       $table->string('contact_phone')->nullable();
       $table->timestamps();

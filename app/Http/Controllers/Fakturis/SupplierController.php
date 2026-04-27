@@ -43,7 +43,6 @@ class SupplierController extends Controller
       ],
       'alamat' => 'max:255',
       'kota' => 'max:100',
-      'npwp' => 'max:100',
       'contact_person' => 'max:100',
       'contact_phone' => 'max:32',
     ]);
@@ -58,11 +57,9 @@ class SupplierController extends Controller
 
     try {
       Supplier::create([
-        'kode' => Supplier::getNewCode(),
         'nama' => $request->nama,
         'alamat' => $request->alamat,
         'kota' => $request->kota,
-        'npwp' => $request->npwp,
         'contact_person' => $request->contact_person,
         'contact_phone' => $request->contact_phone
       ]);
@@ -102,7 +99,6 @@ class SupplierController extends Controller
     $supplier->nama = $request->nama;
     $supplier->alamat = $request->alamat;
     $supplier->kota = $request->kota;
-    $supplier->npwp = $request->npwp;
     $supplier->contact_person = $request->contact_person;
     $supplier->contact_phone = $request->contact_phone;
     $supplier->save();

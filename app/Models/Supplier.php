@@ -10,32 +10,7 @@ class Supplier extends Model
   /** @use HasFactory<\Database\Factories\SupplierFactory> */
   use HasFactory;
 
-  protected $fillable = ['kode', 'nama', 'alamat', 'kota', 'npwp', 'contact_person', 'contact_phone'];
-
-  /**
-   * Generate the next available code for kode column
-   * @return string
-   */
-  public static function getNewCode(): string
-  {
-    $prefix = 'SUPP';
-
-    $lastRecord = self::latest('id')->first();
-
-    if (! $lastRecord) {
-      return "{$prefix}001";
-    }
-
-    // Ekstrak nomor urut terakhir
-    $numericPart = intval(substr($lastRecord->kode, strlen($prefix)));
-
-    // Increment nomor urut
-    $newNumericPart = $numericPart + 1;
-
-    // Gunakan padding sesuai dengan panjang nomor urut, minimal 3 digit
-    $paddingLength = max(3, strlen((string) $newNumericPart));
-    return $prefix . str_pad($newNumericPart, $paddingLength, '0', STR_PAD_LEFT);
-  }
+  protected $fillable = ['nama', 'alamat', 'kota', 'contact_person', 'contact_phone'];
 
   public function barangs()
   {

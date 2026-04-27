@@ -17,10 +17,6 @@
         <table class="table mb-0">
           <tbody>
             <tr>
-              <td width="150">Kode supplier </td>
-              <td>{{ $supplier->kode }}</td>
-            </tr>
-            <tr>
               <td width="200">Nama supplier </td>
               <td>{{ $supplier->nama }}</td>
             </tr>
@@ -31,10 +27,6 @@
             <tr>
               <td>Alamat</td>
               <td>{{ $supplier->alamat }}</td>
-            </tr>
-            <tr>
-              <td>NPWP</td>
-              <td>{{ $supplier->npwp }}</td>
             </tr>
             <tr>
               <td>Person</td>

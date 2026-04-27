@@ -20,11 +20,9 @@ class SupplierFactory extends Factory
     self::$counter++;
 
     return [
-      'kode' => 'SUPP' . str_pad(self::$counter, 3, '0', STR_PAD_LEFT),
       'nama' => $this->faker->company,
       'alamat' => $this->faker->address,
       'kota' => $this->faker->city,
-      'npwp' => $this->faker->unique()->numerify('##.###.###.#-###.###'),
       'contact_person' => $this->faker->name,
       'contact_phone' => $this->faker->phoneNumber,
     ];

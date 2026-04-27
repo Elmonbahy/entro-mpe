@@ -28,11 +28,6 @@
               <x-form.label value="Nama supplier" />
               <x-form.input name="nama" placeholder="Input nama supplier..." :value="$supplier->nama" />
             </div>
-
-            <div class="mb-3 col">
-              <x-form.label value="NPWP" optional />
-              <x-form.input name="npwp" placeholder="Input npwp..." :value="$supplier->npwp" />
-            </div>
           </div>
 
           <div class="row">

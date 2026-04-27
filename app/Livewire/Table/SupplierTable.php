@@ -41,7 +41,6 @@ final class SupplierTable extends PowerGridComponent
   {
     return PowerGrid::fields()
       ->add('nama')
-      ->add('kode')
       ->add('kota')
       ->add('contact_person');
   }
@@ -49,8 +48,6 @@ final class SupplierTable extends PowerGridComponent
   public function columns(): array
   {
     return [
-      Column::make('Kode', 'kode')
-        ->sortable(),
       Column::make('Nama', 'nama')
         ->sortable(),
       Column::make('Kota', 'kota'),
@@ -64,7 +61,6 @@ final class SupplierTable extends PowerGridComponent
     return [
       Filter::inputText('contact_person')->operators(['contains']),
       Filter::inputText('kota')->operators(['contains']),
-      Filter::inputText('kode')->operators(['contains']),
       Filter::inputText('nama')->operators(['contains']),
     ];
   }
@@ -72,7 +68,7 @@ final class SupplierTable extends PowerGridComponent
   #[\Livewire\Attributes\On('delete')]
   public function delete($rowId): void
   {
-    if (!Auth::user()->hasAnyRole(['af', 'su'])) {
+    if (!Auth::user()->hasAnyRole(['af'])) {
       abort(403);
     }
 
@@ -94,9 +90,7 @@ final class SupplierTable extends PowerGridComponent
         'su' => 'superadmin.supplier.show',
       ],
       'edit' => [
-        'ak' => 'keuangan.supplier.edit',
         'af' => 'fakturis.supplier.edit',
-        'su' => 'superadmin.supplier.edit',
       ],
     ];
 
@@ -120,8 +114,8 @@ final class SupplierTable extends PowerGridComponent
         ->route($routeMaps['edit'][$roleSlug], ['supplier' => $row->id]);
     }
 
-    // Tombol Delete (hanya untuk 'af' dan 'su')
-    if (Auth::user()->hasAnyRole(['af', 'su'])) {
+    // Tombol Delete (hanya untuk 'af' )
+    if (Auth::user()->hasAnyRole(['af'])) {
       $actions[] = Button::add('delete')
         ->slot('<i class="bi-trash text-white"></i>')
         ->id($row->id)
