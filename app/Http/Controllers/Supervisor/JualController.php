@@ -3,16 +3,9 @@
 namespace App\Http\Controllers\Supervisor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Barang;
 use App\Models\BarangRetur;
 use App\Models\Jual;
-use App\Models\Salesman;
-use App\Models\Pelanggan;
-use App\Constants\TipePenjualan;
 use App\Models\JualDetail;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class JualController extends Controller
 {

@@ -3,24 +3,6 @@
 @section('content')
   <div class="container-fluid px-4">
     <x-page-header title="Penjualan" class="mb-3">
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-coreui-toggle="dropdown" aria-expanded="false"> <i
-            class="bi bi-file-pdf-fill"></i>
-          Ekspor PDF
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-            <a class="dropdown-item" href="{{ route('supervisor.jual.faktur', ['id' => $jual->id]) }}" target="_blank">
-              <i class="bi bi-file-earmark-arrow-down"></i> Faktur
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{ route('supervisor.jual.spkb', ['id' => $jual->id]) }}" target="_blank">
-              <i class="bi bi-file-earmark-arrow-down"></i> SPKB
-            </a>
-          </li>
-        </ul>
-      </div>
     </x-page-header>
 
     <div class="mb-3">

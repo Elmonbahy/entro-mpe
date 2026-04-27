@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\BarangRetur;
 use App\Models\Jual;
 use App\Models\JualDetail;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
 
 class JualController extends Controller
 {
