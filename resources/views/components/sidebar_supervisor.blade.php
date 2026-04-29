@@ -6,7 +6,6 @@
           'items' => [
               ['title' => 'Data Barang', 'route' => 'supervisor.barang.index'],
               ['title' => 'Data Brand', 'route' => 'supervisor.brand.index'],
-              ['title' => 'Data Group', 'route' => 'supervisor.group.index'],
               ['title' => 'Data Pelanggan', 'route' => 'supervisor.pelanggan.index'],
               ['title' => 'Data Salesman', 'route' => 'supervisor.salesman.index'],
               ['title' => 'Data Supplier', 'route' => 'supervisor.supplier.index'],

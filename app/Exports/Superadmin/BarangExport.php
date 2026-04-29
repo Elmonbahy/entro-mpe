@@ -21,7 +21,6 @@ class BarangExport implements FromCollection, WithHeadings
           'nama' => $barang->nama,
           'satuan' => $barang->satuan,
           'nie' => $barang->nie,
-          'group' => $barang->group ? $barang->group->nama : '',
           'supplier' => $barang->supplier ? $barang->supplier->nama : '',
         ];
       });
@@ -36,7 +35,6 @@ class BarangExport implements FromCollection, WithHeadings
       'Nama Barang',
       'Satuan',
       'NIE',
-      'Group',
       'Supplier',
     ];
   }

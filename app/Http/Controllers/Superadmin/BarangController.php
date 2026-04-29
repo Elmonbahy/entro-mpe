@@ -3,14 +3,8 @@
 namespace App\Http\Controllers\Superadmin;
 
 use App\Http\Controllers\Controller;
-use App\Constants\Satuan;
 use App\Models\Barang;
 use App\Models\BarangStock;
-use App\Models\Brand;
-use App\Models\Group;
-use App\Models\Supplier;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Exports\BarangExport;
 use Maatwebsite\Excel\Facades\Excel;
 

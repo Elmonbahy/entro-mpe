@@ -24,11 +24,6 @@ return new class extends Migration {
 
       $table->unique(['nama', 'brand_id'], 'unique_barang_name');
 
-      // assign foreign key
-      $table->foreignId('group_id')
-        ->nullable()
-        ->constrained()
-        ->nullOnDelete();
       $table->foreignId('supplier_id')
         ->nullable()
         ->constrained()

@@ -15,7 +15,7 @@ class Barang extends Model
    *
    * @var array
    */
-  protected $fillable = ['kode', 'nama', 'satuan', 'nie', 'group_id', 'brand_id', 'supplier_id'];
+  protected $fillable = ['kode', 'nama', 'satuan', 'nie', 'brand_id', 'supplier_id'];
 
 
   public function stocks()
@@ -36,11 +36,6 @@ class Barang extends Model
   public function jual_details()
   {
     return $this->hasMany(JualDetail::class);
-  }
-
-  public function group()
-  {
-    return $this->belongsTo(Group::class, 'group_id');
   }
 
   public function brand()

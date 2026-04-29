@@ -101,7 +101,6 @@ final class BarangTable extends PowerGridComponent
         'su' => 'superadmin.barang.show',
       ],
       'edit' => [
-        'ag' => 'gudang.barang.edit',
         'af' => 'fakturis.barang.edit',
       ],
     ];

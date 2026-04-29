@@ -7,7 +7,6 @@ use App\Constants\Satuan;
 use App\Models\Barang;
 use App\Models\BarangStock;
 use App\Models\Brand;
-use App\Models\Group;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -56,7 +55,6 @@ class BarangController extends Controller
         }
       ],
       'nie' => ['nullable', 'string', 'max:100'],
-      'group' => ['nullable', 'string', 'exists:' . Group::class . ',id'],
       'brand' => ['required', 'string', 'exists:' . Brand::class . ',id'],
       'supplier' => ['nullable', 'string', 'exists:' . Supplier::class . ',id'],
     ]);
@@ -69,12 +67,10 @@ class BarangController extends Controller
   {
     $satuans = Satuan::all();
     $suppliers = Supplier::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
-    $groups = Group::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
     $brands = Brand::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
     return view('pages.barang.fakturis.create', [
       'satuans' => $satuans,
       'suppliers' => $suppliers,
-      'groups' => $groups,
       'brands' => $brands
     ]);
   }
@@ -92,7 +88,6 @@ class BarangController extends Controller
         'nama' => $request->nama,
         'satuan' => $request->satuan,
         'nie' => $request->nie,
-        'group_id' => $request->group,
         'brand_id' => $request->brand,
         'supplier_id' => $request->supplier,
       ]);
@@ -121,14 +116,12 @@ class BarangController extends Controller
   {
     $satuans = Satuan::all();
     $suppliers = Supplier::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
-    $groups = Group::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
     $brands = Brand::select(['id', 'nama'])->orderBy('nama', 'asc')->get();
 
     return view('pages.barang.fakturis.edit', [
       'barang' => $barang,
       'satuans' => $satuans,
       'suppliers' => $suppliers,
-      'groups' => $groups,
       'brands' => $brands
     ]);
   }
@@ -145,7 +138,6 @@ class BarangController extends Controller
     $barang->kode = $request->kode;
     $barang->satuan = $request->satuan;
     $barang->nie = $request->nie;
-    $barang->group_id = $request->group;
     $barang->brand_id = $request->brand;
     $barang->supplier_id = $request->supplier;
     $barang->save();

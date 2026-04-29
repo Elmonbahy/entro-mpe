@@ -6,7 +6,6 @@
           'items' => [
               ['title' => 'Data Barang', 'route' => 'fakturis.barang.index'],
               ['title' => 'Data Brand', 'route' => 'fakturis.brand.index'],
-              ['title' => 'Data Group', 'route' => 'fakturis.group.index'],
               ['title' => 'Data Pelanggan', 'route' => 'fakturis.pelanggan.index'],
               ['title' => 'Data Salesman', 'route' => 'fakturis.salesman.index'],
               ['title' => 'Data Supplier', 'route' => 'fakturis.supplier.index'],

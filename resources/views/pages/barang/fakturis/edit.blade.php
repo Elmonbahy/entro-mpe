@@ -52,12 +52,6 @@
               <x-form.select name="supplier" placeholder="Cari atau pilih supplier" :options="$suppliers" :selected="old('supplier') ?? $barang->supplier_id"
                 valueKey="id" labelKey="nama" />
             </div>
-
-            <div class="mb-3 col-md">
-              <x-form.label value="Group" optional />
-              <x-form.select name="group" placeholder="Cari atau pilih group" :options="$groups" :selected="old('group') ?? $barang->group_id"
-                valueKey="id" labelKey="nama" />
-            </div>
           </div>
 
           <button type="submit" class="btn btn-primary">

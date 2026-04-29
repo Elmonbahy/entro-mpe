@@ -26,7 +26,6 @@ class BarangFactory extends Factory
       'nama' => $this->faker->company,
       'satuan' => $this->faker->randomElement(Satuan::all()),
       'nie' => $this->faker->numberBetween(1, 100),
-      'group_id' => \App\Models\Group::factory(),
       'brand_id' => \App\Models\Brand::factory(),
       'supplier_id' => \App\Models\Supplier::factory(),
     ];
