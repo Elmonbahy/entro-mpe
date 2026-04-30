@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pelanggan;
+use App\Models\BeliDetail;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
-class PelangganSeeder extends Seeder
+class BeliDetailSeeder extends Seeder
 {
   public function run(): void
   {
-    $file = database_path('data/pelanggans.csv');
+    $file = database_path('data/beli_details.csv');
     if (!File::exists($file))
       return;
 
@@ -25,7 +25,7 @@ class PelangganSeeder extends Seeder
         continue;
       $item = array_combine($headers, $data);
       $item = array_map(fn($v) => (trim($v) === '' || strtoupper(trim($v)) === 'NULL') ? null : trim($v), $item);
-      Pelanggan::create($item);
+      BeliDetail::create($item);
     }
   }
 }
