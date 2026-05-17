@@ -55,4 +55,39 @@ class PredictionService
       'Prediksi ' . Carbon::now()->addMonth()->format('M Y')
     ];
   }
+
+  /**
+   * Menghitung nilai MAPE untuk mengevaluasi akurasi prediksi
+   * 
+   * @param array $actualData  Aray data penjualan aktual per periode, contoh: [100, 120, 110]
+   * @param array $forecastData Array data hasil prediksi periode yang sama, contoh: [95, 115, 112]
+   * @return float Nilai MAPE dalam persen (%)
+   */
+  public function calculateMape(array $actualData, array $forecastData)
+  {
+    $totalData = count($actualData);
+    if ($totalData === 0)
+      return 0.0;
+
+    $absolutePercentageErrorSum = 0;
+    $validPeriods = 0;
+
+    foreach ($actualData as $index => $actual) {
+      $forecast = $forecastData[$index] ?? 0;
+
+      // Menghindari pembagian dengan angka 0 jika pada bulan itu aktualnya tidak ada penjualan
+      if ($actual > 0) {
+        $absolutePercentageErrorSum += abs(($actual - $forecast) / $actual);
+        $validPeriods++;
+      }
+    }
+
+    if ($validPeriods === 0)
+      return 0.0;
+
+    // Rumus MAPE: (1/n * Jumlah Absolut Error) * 100%
+    $mape = ($absolutePercentageErrorSum / $validPeriods) * 100;
+
+    return round($mape, 2); // Mengembalikan nilai MAPE dengan 2 angka di belakang koma
+  }
 }

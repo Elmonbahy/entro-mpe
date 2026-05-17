@@ -34,7 +34,6 @@ class LaporanPrediksiController extends Controller
     $barangs = $query->get();
 
     return $barangs->map(function ($barang) {
-      // Cek apakah ada mutasi
       $hasTransaction = $barang->mutations()->exists();
 
       if (!$hasTransaction) {
@@ -45,14 +44,32 @@ class LaporanPrediksiController extends Controller
           'prediksi_keluar' => 0,
           'tren_data' => [],
           'labels' => [],
-          'status' => 'DATA KOSONG', // Status khusus
+          'status' => 'DATA KOSONG',
           'saran_beli' => 0,
+          'mape' => 0, // Tambahan untuk data kosong
           'keterangan' => 'Belum ada riwayat transaksi'
         ];
       }
 
       $predictionResult = $this->predictionService->predictNextMonth($barang->id);
       $currentStock = $barang->stocks->sum('jumlah_stock');
+
+      // === LOGIKA EVALUASI MAPE ===
+      // $predictionResult['history'] berisi data riil: [3 bulan lalu, 2 bulan lalu, 1 bulan lalu]
+      $aktualBulanLalu = $predictionResult['history'][2] ?? 0;
+
+      // Buat simulasi prediksi bulan lalu menggunakan data 3 bulan lalu & 2 bulan lalu
+      $bobotMpe = [0.571, 0.286]; // Bobot disesuaikan untuk 2 periode sebelumnya
+      $simulasiPrediksiBulanLalu = ($bobotMpe[0] * ($predictionResult['history'][1] ?? 0)) +
+        ($bobotMpe[1] * ($predictionResult['history'][0] ?? 0));
+      $simulasiPrediksiBulanLalu = round($simulasiPrediksiBulanLalu);
+
+      // Hitung nilai MAPE untuk barang ini
+      $mape = 0;
+      if ($aktualBulanLalu > 0) {
+        $mape = (abs($aktualBulanLalu - $simulasiPrediksiBulanLalu) / $aktualBulanLalu) * 100;
+      }
+      // ============================
 
       return [
         'barang_nama' => $barang->nama,
@@ -63,6 +80,7 @@ class LaporanPrediksiController extends Controller
         'labels' => $predictionResult['labels'],
         'status' => $currentStock < $predictionResult['forecast'] ? 'KRITIS' : 'AMAN',
         'saran_beli' => $currentStock < $predictionResult['forecast'] ? ($predictionResult['forecast'] - $currentStock) : 0,
+        'mape' => round($mape, 2), // Tambahkan nilai MAPE ke array response
         'keterangan' => null
       ];
     });

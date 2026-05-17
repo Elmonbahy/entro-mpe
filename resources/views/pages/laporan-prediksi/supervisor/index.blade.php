@@ -67,6 +67,7 @@
                   <th>Prediksi Keluar</th>
                   <th>Status</th>
                   <th>Saran Pengadaan</th>
+                  <th>Akurasi (MAPE)</th> <!-- Tambah kolom baru ini -->
                   <th>Chart</th>
                 </tr>
               </thead>
@@ -81,10 +82,10 @@
                     <td class="text-center">{{ $item['stok_saat_ini'] }}</td>
                     <td class="text-center text-primary"><strong>{{ $item['prediksi_keluar'] }}</strong></td>
                     <td class="text-center">
-                      @if ($item['status'] == 'KRITIS')
-                        <span class="badge bg-danger">KRITIS</span>
-                      @elseif($item['status'] == 'DATA KOSONG')
+                      @if ($item['status'] == 'DATA KOSONG')
                         <span class="badge bg-secondary">DATA TIDAK CUKUP</span>
+                      @elseif ($item['status'] == 'KRITIS')
+                        <span class="badge bg-danger">KRITIS</span>
                       @else
                         <span class="badge bg-success">AMAN</span>
                       @endif
@@ -98,6 +99,31 @@
                         -
                       @endif
                     </td>
+
+                    <!-- Tambahan Kolom Tampilan MAPE Baru -->
+                    <td class="text-center">
+                      @if ($item['status'] == 'DATA KOSONG')
+                        -
+                      @else
+                        <span
+                          class="badge {{ $item['mape'] <= 20 ? 'bg-success' : ($item['mape'] <= 50 ? 'bg-warning text-dark' : 'bg-danger') }}">
+                          {{ $item['mape'] }}%
+                        </span>
+                        <br>
+                        <small style="font-size: 10px;" class="text-muted">
+                          @if ($item['mape'] < 10)
+                            Sangat Akurat
+                          @elseif($item['mape'] <= 20)
+                            Baik
+                          @elseif($item['mape'] <= 50)
+                            Layak
+                          @else
+                            Buruk
+                          @endif
+                        </small>
+                      @endif
+                    </td>
+
                     <td>
                       <canvas id="chart-{{ $index }}" height="80"></canvas>
                     </td>
