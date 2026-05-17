@@ -28,6 +28,11 @@
               ['title' => 'Stock Barang', 'route' => 'supervisor.stock.index'],
           ],
       ],
+      [
+          'title' => 'Laporan Prediksi',
+          'icon' => 'bi bi-file-earmark',
+          'items' => [['title' => 'Prediksi Pengadaan', 'route' => 'supervisor.laporan-prediksi.index']],
+      ],
   ];
 
 @endphp

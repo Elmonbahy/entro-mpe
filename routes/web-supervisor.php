@@ -10,6 +10,7 @@ use App\Http\Controllers\Supervisor\SupplierController;
 use App\Http\Controllers\Supervisor\BeliController;
 use App\Http\Controllers\Supervisor\BarangStockController;
 use App\Http\Controllers\Supervisor\JualController;
+use App\Http\Controllers\Supervisor\Laporan\Prediksi\LaporanPrediksiController;
 use App\Http\Controllers\Supervisor\UsersController;
 
 Route::resource('/barang', BarangController::class);
@@ -48,4 +49,8 @@ Route::prefix('mutation')->as('mutation.')->group(function () {
   Route::get('/', [MutationController::class, 'index'])->name('index');
   Route::get('/excel', [MutationController::class, 'exportExcelMutation'])->name('excel-mutation');
   Route::get('/kartu-stock', [MutationController::class, 'kartuStock'])->name('kartu-stock');
+});
+
+Route::prefix('laporan-prediksi')->as('laporan-prediksi.')->group(function () {
+  Route::get('/', [LaporanPrediksiController::class, 'index'])->name('index');
 });
