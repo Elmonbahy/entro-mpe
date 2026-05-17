@@ -24,7 +24,7 @@
       </div>
 
       <div class="p-3">
-        @livewire('supervisor.kartu-stock', [
+        @livewire('kartu-stock', [
             'brand_id' => $brand_id,
             'barang_id' => $barang_id,
             'tgl_akhir' => $tgl_akhir,
@@ -66,8 +66,6 @@
                 <th>Posisi</th>
                 <th>Arus</th>
                 <th>Harga</th>
-                <th>Disc1</th>
-                <th>Disc2</th>
                 <th>Keterangan</th>
               </thead>
               <tbody>
@@ -120,12 +118,6 @@
                     </td>
                     <td>
                       {{ $item->harga }}
-                    </td>
-                    <td>
-                      {{ $item->disc['diskon1'] }}
-                    </td>
-                    <td>
-                      {{ $item->disc['diskon2'] }}
                     </td>
                     <td>
                       {{ $item->keterangan }}
